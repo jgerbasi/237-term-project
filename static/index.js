@@ -22,20 +22,8 @@ $(document).ready(function() {
 
   socket.emit('sendPlayerToServer', {player: player});
 
-  // socket.on('sendPlayerObj', function(data) {
-  //   player = data.player;
-  //   player.x = x;
-  //   player.y = y;
-  //   console.log(player);
-  //   socket.emit('updatePlayerCoord', {player: player});
-  // });
-
   socket.on('playerList', function(data) {
     players = JSON.parse(data.list);
-    console.log(players);
-    $.each(players, function(name, value) {
-      console.log(players[name]);
-    });
   });
 
   function updatePlayers() {
@@ -46,7 +34,6 @@ $(document).ready(function() {
 
   function drawPlayers() {
     for (player in players) {
-      // console.log(player);
       ctx.fillRect(players[player].x, players[player].y, 50, 50);
     }
   }

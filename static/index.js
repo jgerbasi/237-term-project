@@ -10,7 +10,7 @@ $(document).ready(function() {
   canvas.setAttribute('tabindex','0');
   canvas.focus();
 
-  var players = [];
+  var players = {};
 
   var x = Math.floor(Math.random() * (SCREEN_WIDTH-50));
   var y = Math.floor(Math.random() * (SCREEN_HEIGHT-50));

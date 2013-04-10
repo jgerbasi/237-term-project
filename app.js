@@ -120,7 +120,7 @@ app.use(express.static(__dirname + '/static/'));
 // ========================
 var io = require('socket.io').listen(8888);
 
-var players = [];
+var players = {};
 
 function createPlayer(socket) {
     var player = new Object();

@@ -1,0 +1,126 @@
+/* Reset */
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+
+
+
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/* Reset */
+
+html, body, div, h1, h2, h3, em, ul, li, section {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/*body {
+  position: relative;
+  top: -20px;
+  background: #dadbdc;
+  color: #444;
+  font: 16px/1.5 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  padding: 20px 0;
+}*/
+
+#Title {
+  position:absolute;
+  padding: 30px;
+  width: 200px;
+  top: 20%;
+  right: 50%;
+  font-size: 50px;
+  font-weight: bold;
+  text-align: center;
+  color: #FF0000;
+  background-color: #C9C1C9;
+}
+
+#usernameField {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  width: 200px;
+  font-weight: bold;
+  padding: 5px;
+  text-shadow: 1px 1px 1px #000000;
+}
+
+#usernameInput {
+text-align: center;
+}
+
+#passwordField {
+  position: absolute;
+  top: 55%;
+  right: 50%;
+  width: 200px;
+  font-weight: bold;
+  padding: 5px;
+  text-shadow: 1px 1px 1px #000000;
+}
+
+#passwordInput {
+text-align: center;
+}
+
+#loginButton {
+position: absolute;
+top: 60%;
+right: 70%;
+}
+
+#registerButton {
+position: absolute;
+top: 60%;
+right: 60%;
+  
+}

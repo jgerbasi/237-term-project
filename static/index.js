@@ -31,8 +31,11 @@ $(document).ready(function() {
   // });
 
   socket.on('playerList', function(data) {
-    players = data.list;
-    console.log(JSON.parse(players));
+    players = JSON.parse(data.list);
+    console.log(players);
+    $.each(players, function(name, value) {
+      console.log(players[name]);
+    });
   });
 
   function updatePlayers() {
@@ -43,8 +46,8 @@ $(document).ready(function() {
 
   function drawPlayers() {
     for (player in players) {
-      // console.log(player.x);
-      ctx.fillRect(player.x, player.y, 50, 50);
+      // console.log(player);
+      ctx.fillRect(players[player].x, players[player].y, 50, 50);
     }
   }
 

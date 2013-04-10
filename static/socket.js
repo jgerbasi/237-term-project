@@ -1,7 +1,9 @@
-$(document).ready(function() { 
-  var socket = io.connect("http://localhost:8888");
+var socket = io.connect("http://128.237.116.88:8888");
+
+$(document).ready(function() {
 
   $("#chatform").submit(function() {
+    console.log("test");
       // send the msg event, with some data
       socket.emit('msg', {body: $("#chatbody").val() });
       return false;
@@ -14,8 +16,8 @@ $(document).ready(function() {
       console.log("Message failed to send");
     }
   });
+});
 
-  socket.on("newmsg", function(data) {
-    $("#messages").append($("<li>").html(data.body));
-  });
+socket.on("newmsg", function(data) {
+  $("#messages").append($("<li>").html(data.body));
 });

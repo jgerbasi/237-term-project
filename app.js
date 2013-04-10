@@ -138,7 +138,7 @@ io.sockets.on("connection", function(socket) {
     });
 
     socket.on('updatePlayerList', function() {
-        socket.emit('playerList', {list: players});
+        socket.emit('playerList', {list: JSON.stringify(players)});
         console.log(players);
     });
 

@@ -10,7 +10,7 @@ $(document).ready(function() {
   canvas.setAttribute('tabindex','0');
   canvas.focus();
 
-  var players = {};
+  var players = [];
 
   var x = Math.floor(Math.random() * (SCREEN_WIDTH-50));
   var y = Math.floor(Math.random() * (SCREEN_HEIGHT-50));
@@ -31,9 +31,8 @@ $(document).ready(function() {
   // });
 
   socket.on('playerList', function(data) {
-    console.log(data);
-      players = data.list;
-      console.log(players);
+    players = data.list;
+    console.log(JSON.parse(players));
   });
 
   function updatePlayers() {
@@ -44,13 +43,14 @@ $(document).ready(function() {
 
   function drawPlayers() {
     for (player in players) {
+      // console.log(player.x);
       ctx.fillRect(player.x, player.y, 50, 50);
     }
   }
 
   function doDraw(){
     ctx.clearRect(0,0, SCREEN_WIDTH,SCREEN_HEIGHT);
-    // drawPlayers();
+    drawPlayers();
   }
 
   function loop() {

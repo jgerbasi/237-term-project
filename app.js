@@ -134,6 +134,11 @@ io.sockets.on("connection", function(socket) {
     // createPlayer(socket);
     socket.on('sendPlayerToServer', function(data) {
         players[data.player.name] = data.player;
+        // console.log(players);
+    });
+
+    socket.on('updatePlayerList', function() {
+        socket.emit('playerList', {list: players});
         console.log(players);
     });
 

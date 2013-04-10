@@ -30,10 +30,27 @@ $(document).ready(function() {
   //   socket.emit('updatePlayerCoord', {player: player});
   // });
 
+  socket.on('playerList', function(data) {
+    console.log(data);
+      players = data.list;
+      console.log(players);
+  });
+
+  function updatePlayers() {
+    socket.emit('updatePlayerList');
+  }
+
+  updatePlayers();
+
+  function drawPlayers() {
+    for (player in players) {
+      ctx.fillRect(player.x, player.y, 50, 50);
+    }
+  }
+
   function doDraw(){
     ctx.clearRect(0,0, SCREEN_WIDTH,SCREEN_HEIGHT);
-
-    ctx.fillRect(x, y, 50, 50);
+    // drawPlayers();
   }
 
   function loop() {

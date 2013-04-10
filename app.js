@@ -120,13 +120,45 @@ app.use(express.static(__dirname + '/static/'));
 // ========================
 var io = require('socket.io').listen(8888);
 
+var players = [];
+
+function createPlayer(socket) {
+    var player = new Object();
+    player.id = socket.id;
+    player.x;
+    player.y;
+    players[socket.id] = player;
+}
+
 io.sockets.on("connection", function(socket) {
-  socket.on('msg', function(data) {
-    // confirm success to sender
-    socket.emit('status', { success: 'true'});
-    // broadcast message to everyone else
-    socket.broadcast.emit('newmsg', { body: data.body });
-  });
+    // createPlayer(socket);
+    socket.on('sendPlayerToServer', function(data) {
+        players[data.player.name] = data.player;
+        console.log(players);
+    });
+
+    // socket.on('disconnect', function(socket) {
+    //     delete players[socket.id];
+    // });
+
+    // socket.on('getPlayerObj', function() {
+    //     socket.emit('sendPlayerObj', {player: players[socket.id]});
+    // });
+
+    // socket.on('updatePlayerCoord', function(data) {
+    //     players[socket.id] = data.player;
+    //     console.log(players);
+    // });
+    // socket.on('object', function(data) {
+    //     socket.broadcast.emit('objectMove', {x: data.x,
+    //                                          y: data.y})
+    // });
+  // socket.on('msg', function(data) {
+  //   // confirm success to sender
+  //   socket.emit('status', { success: 'true'});
+  //   // broadcast message to everyone else
+  //   socket.broadcast.emit('newmsg', { body: data.body });
+  // });
 });
 
 app.listen(8889);

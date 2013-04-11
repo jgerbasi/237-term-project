@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title> Login </title>
-    <link rel="stylesheet" type="text/css" href="layout.css" media="all">
+    <head>
+        <link href="reset.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" type="text/css" href="login.css" media="all">
+        <link href='http://fonts.googleapis.com/css?family=Oswald:400,700' rel='stylesheet' type='text/css'>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <script src="login.js"></script>
+        <title> Login </title>
+    </head>
+    <body>
+        <div id="content">
+            <h2> Horde Slayer </h2>
 
-    <script src="login.js"></script>
-</head>
-<body>
-        <div id="Title">
-            Title
+            <div id="usernameField" class="input">  
+                <input id="usernameInput" placeholder="Username" type="text"/> 
+            </div>
+
+            <div id="passwordField" class="input">
+                <input id="passwordInput" placeholder="Password" type="password"/> 
+            </div>
+
+            <button id="loginButton"> Login </button>
+            <button id="registerButton"> Register </button>
         </div>
-
-        <div id="usernameField">  
-            <input id="usernameInput" placeholder="Username" type="text"/> 
-        </div>
-
-        <div id="passwordField">
-            <input id="passwordInput" placeholder="Password" type="password"/> 
-        </div>
-
-        <button id="loginButton"> login </button>
-        <button id="registerButton"> register </button>
 </body>
 </html>

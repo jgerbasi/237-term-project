@@ -1,11 +1,11 @@
-var socket = io.connect("http://128.237.116.88:8888");
+var socket = io.connect("http://128.237.249.192:8888");
+var username = docCookies.getItem('username');
 
 $(document).ready(function() {
 
   $("#chatform").submit(function() {
-    console.log("test");
       // send the msg event, with some data
-      socket.emit('msg', {body: $("#chatbody").val() });
+      socket.emit('msg', {body: username + ": " + $("#chatbody").val() });
       return false;
   });
 
@@ -20,4 +20,7 @@ $(document).ready(function() {
 
 socket.on("newmsg", function(data) {
   $("#messages").append($("<li>").html(data.body));
+  $("#messageBox").animate({
+        scrollTop: $(document).height()
+    });
 });

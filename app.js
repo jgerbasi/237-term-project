@@ -48,6 +48,15 @@ function closeDb(){
     client.close();
 }
 
+// open hordeStats colleciton
+var hordeData = null;
+
+openDb(function(coll) {
+   hordeStats = coll; 
+});
+
+
+
 //===========================
 //  Authentication
 //===========================
@@ -66,14 +75,29 @@ mongoExpressAuth.init({
 //  routes
 //===========================
 
+
 app.get('/', function(req, res){
     mongoExpressAuth.checkLogin(req, res, function(err){
         if (err)
             res.sendfile('static/login.html');
         else
-            res.sendfile('static/index.html');
+            res.sendfile('static/main.html');
     });
 });
+
+function sendBackStats(res) {
+    if (hordeStats !== null) {
+        hordeStats.find({ user: "asdasd" }).each(function(object) {
+            res.send({ });
+        })
+    } else {
+        res.send({ error: "error not ope"})
+    }
+}
+
+app.get("/stats", function(req, res) {
+    sendBackStats(res);
+})
 
 app.get('/me', function(req, res){
     mongoExpressAuth.checkLogin(req, res, function(err){
@@ -120,31 +144,49 @@ app.use(express.static(__dirname + '/static/'));
 // ========================
 var io = require('socket.io').listen(8888);
 
+// onlinePlayers = [];
+
+var playerList = {};
+
 var players = {};
 
-function createPlayer(socket) {
-    var player = new Object();
-    player.id = socket.id;
-    player.x;
-    player.y;
-    players[socket.id] = player;
+var states = {
+    START: 0,
+    KILLED: 1,
+    LOGGED_IN: 2,
 }
 
+var currentState = states.START;
+
+// setInterval(function() {
+
+// }, 30)
+
 io.sockets.on("connection", function(socket) {
-    // createPlayer(socket);
+    playerList[socket.id] = { isHere: true, playerData: undefined };
+    socket.broadcast.emit('sendPlayerListToClient', {playerList: JSON.stringify(playerList)});
+
     socket.on('sendPlayerToServer', function(data) {
-        players[data.player.name] = data.player;
-        // console.log(players);
-    });
 
-    socket.on('updatePlayerList', function() {
-        socket.emit('playerList', {list: JSON.stringify(players)});
-        console.log(players);
-    });
+        playerList[socket.id].playerData = data.player;
+        socket.emit('sendPlayerListToClient', {playerList: JSON.stringify(playerList)});
+        console.log(playerList);
+    })
 
-    // socket.on('disconnect', function(socket) {
-    //     delete players[socket.id];
+    // socket.on('sendPlayerToServer', function(data) {
+    //     players[data.player.name] = data.player;
+    //     socket.emit('sendPlayerListToClient', {list: JSON.stringify(players)});
+    //     console.log(players);
     // });
+
+    // socket.on('updatePlayerList', function() {
+    //     socket.emit('playerList', {list: JSON.stringify(players)});
+    //     console.log(players);
+    // });
+
+    socket.on('disconnect', function(socket) {
+        delete players[socket.id];
+    });
 
     // socket.on('getPlayerObj', function() {
     //     socket.emit('sendPlayerObj', {player: players[socket.id]});
@@ -158,12 +200,13 @@ io.sockets.on("connection", function(socket) {
     //     socket.broadcast.emit('objectMove', {x: data.x,
     //                                          y: data.y})
     // });
-  // socket.on('msg', function(data) {
-  //   // confirm success to sender
-  //   socket.emit('status', { success: 'true'});
-  //   // broadcast message to everyone else
-  //   socket.broadcast.emit('newmsg', { body: data.body });
-  // });
+  socket.on('msg', function(data) {
+    // confirm success to sender
+    socket.emit('status', { success: 'true'});
+    // broadcast message to everyone else
+    socket.broadcast.emit('newmsg', { body: data.body });
+    socket.emit('newmsg', { body: data.body });
+  });
 });
 
 app.listen(8889);

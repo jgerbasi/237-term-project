@@ -18,29 +18,92 @@ body {
 }
 
 #chatbox {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  /*text-shadow: 1px 1px 1px #999;*/
   position: absolute;
-  bottom: 0px;
+  bottom: 5px;
   width: 400px;
   height: 100px;
-  border: 2px solid red;
-}
-
-#chatform {
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
+  color: #000000;
+  margin-bottom: 5px;
 }
 
 #messageBox {
   height: 70px;
+  border: 1px solid black;
+  background-color: #fff;
+  padding: 3px 5px;
+  font-weight: 300;
   overflow: scroll;
 }
 
 #playerList {
   position: absolute;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: bold;
   right: 0px;
-  bottom: 0px;
-  height: 100px;
+  bottom: 30px;
+  height: 105px;
   width: 150px;
-  border: 2px solid blue;
+  margin-right: 5px;
+}
+
+#chatbody {
+  border: 1px solid #ccc;
+  border-radius: 0px;
+  width: 75%;
+  height: 17px;
+  margin-left: 1px;
+}
+
+#submit {
+  margin-top: 3px;
+  margin-left: 1px;
+  height: 26px;
+  width: 20%;
+}
+
+.button {
+  width: 100px;
+  height: 25px;
+  border: 1px solid black;
+  border-radius: 5px;
+  color: #fff;
+  font: bold 15px/1 "helvetica neue", helvetica, arial, sans-serif;
+  text-shadow: 1px 1px 1px #000000;
+  background-image: -webkit-linear-gradient(top, #ee432e 0%, #c63929 50%, #b51700 50%, #891100 100%);
+  -webkit-box-shadow: inset 0px 0px 0px 1px rgba(255, 115, 100, 0.4), 0 1px 3px #333333;
+  box-shadow: inset 0px 0px 0px 1px rgba(255, 115, 100, 0.4), 0 1px 3px #333333;
+}
+
+span {
+  color: red;
+  font-weight: 400;
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 2px 2px 2px #222;
+}
+
+#players li{
+  font-weight: 300;
+  padding: 5px 7px;
+  border-bottom: 1px solid #000;
+  background: -webkit-linear-gradient(top, #4c4c4c 0%,#595959 12%,#666666 25%,#474747 39%,#2c2c2c 50%,#000000 51%,#111111 60%,#2b2b2b 76%,#1c1c1c 91%,#131313 100%); /* Chrome10+,Safari5.1+ */
+}
+
+#players li:nth-child(even) {
+  background-image: -webkit-linear-gradient(top, #ee432e 0%, #c63929 50%, #b51700 50%, #891100 100%);
+}
+
+#playerListWrapper {
+  height: 100%;
+  margin-top: 5px;
+  border: 1px solid black;
+  overflow: scroll; 
+  -webkit-box-shadow: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.2), 0 1px 3px #333333;
+  box-shadow: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.2), 0 1px 3px #333333;
 }

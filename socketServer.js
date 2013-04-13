@@ -24,7 +24,7 @@ exports.init = function() {
           playerList[socket.id].playerData = data.player;
           io.sockets.emit('sendPlayerListToClient', {playerList: JSON.stringify(playerList)});
           console.log(playerList);
-      })
+      });
 
       // socket.on('sendPlayerToServer', function(data) {
       //     players[data.player.name] = data.player;
@@ -37,10 +37,11 @@ exports.init = function() {
       //     console.log(players);
       // });
 
-      socket.on('disconnect', function(socket) {
-          console.log("socket id => " + playerList[socket.id]);
+      socket.on('disconnect', function() {
+          console.log("socket id => " + socket.id);
           delete playerList[socket.id];
-          console.log(playerList);
+          // console.log(playerList);
+          io.sockets.emit('sendPlayerListToClient', {playerList: JSON.stringify(playerList)});
       });
 
       // socket.on('getPlayerObj', function() {
@@ -59,8 +60,11 @@ exports.init = function() {
       // confirm success to sender
       socket.emit('status', { success: 'true'});
       // broadcast message to everyone else
-      socket.broadcast.emit('newmsg', { body: data.body });
-      socket.emit('newmsg', { body: data.body });
+      socket.broadcast.emit('newmsg', { 
+                                        sender: data.sender, 
+                                        body: data.body });
+      socket.emit('newmsg', { sender: data.sender,
+                              body: data.body });
     });
   });
 };

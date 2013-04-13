@@ -17,7 +17,7 @@
   </head>
   <body>
     <div id="content">
-        <button id="logoutButton"> logout </button>
+        <button id="logoutButton" class="button"> Logout </button>
 
         <div id="chatbox">
             <div id="messageBox">
@@ -26,11 +26,14 @@
 
             <form id="chatform">
                 <input id="chatbody" type="text" name="msg">
-                <input id="submit" type="submit" value="Submit">
+                <input id="submit" class="button" type="submit" value="Submit">
             </form>
         </div>
         <div id="playerList">
-            <ul id="players">
+            <h2>Players Online</h2>
+            <div id="playerListWrapper">
+                <ul id="players">
+            </div>
         </div>
     </div>
 

@@ -19,12 +19,10 @@ exports.init = function() {
 
   io.sockets.on("connection", function(socket) {
       playerList[socket.id] = { isHere: true, playerData: undefined };
-      // socket.emit('sendPlayerListToClient', {playerList: JSON.stringify(playerList)});
 
       socket.on('sendPlayerToServer', function(data) {
-
           playerList[socket.id].playerData = data.player;
-          socket.emit('sendPlayerListToClient', {playerList: JSON.stringify(playerList)});
+          io.sockets.emit('sendPlayerListToClient', {playerList: JSON.stringify(playerList)});
           console.log(playerList);
       })
 

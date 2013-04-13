@@ -6,16 +6,14 @@ $(document).ready(function() {
   player.name = username;
 
   function updatePlayerList() {
+    $("#players").empty();
     for (id in players) {
       player = players[id];
       if (player !== undefined) {
         if (player.playerData !== undefined) {
             console.log(player.playerData.name);
+            $("#players").append($("<li>").html(player.playerData.name));
         }
-
-        // $("#players").html();
-        // $("#players").append($("<li>").html(player.playerData.name));
-        // console.log(player.playerData.name);
       }
     }
   }

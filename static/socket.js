@@ -1,4 +1,4 @@
-var socket = io.connect("http://128.237.249.192:8888");
+var socket = io.connect("http://128.237.228.141:8888");
 var username = docCookies.getItem('username');
 
 $(document).ready(function() {

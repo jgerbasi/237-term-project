@@ -1,17 +1,21 @@
 $(document).ready(function() {
   var username = docCookies.getItem('username');
 
-  var players = [];
+  var players = {};
   var player = new Object();
   player.name = username;
 
   function updatePlayerList() {
     for (id in players) {
       player = players[id];
-      if (player !== true) {
-        $("#players").html();
-        $("#players").append($("<li>").html(player.name));
-        console.log(player.name);
+      if (player !== undefined) {
+        if (player.playerData !== undefined) {
+            console.log(player.playerData.name);
+        }
+
+        // $("#players").html();
+        // $("#players").append($("<li>").html(player.playerData.name));
+        // console.log(player.playerData.name);
       }
     }
   }

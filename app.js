@@ -50,7 +50,7 @@ function closeDb(){
 }
 
 // open hordeStats colleciton
-var hordeData = null;
+var hordeStats = null;
 
 openDb(function(coll) {
    hordeStats = coll; 
@@ -84,7 +84,7 @@ function sendBackStats(res) {
             res.send({ });
         })
     } else {
-        res.send({ error: "error not ope"})
+        res.send({ error: "error not open"})
     }
 }
 

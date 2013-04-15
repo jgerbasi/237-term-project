@@ -4,11 +4,11 @@ var PLAYER = (function(){
 
   var playerX = 200,
       playerY = 200 ,
-      spriteX = 5,
-      spriteY = 11,
-      spriteWidth = 22,
-      spriteHeight = 33,
-      spriteIndex = 0,
+      spriteX = 37,
+      spriteY = 0,
+      spriteWidth = 23,
+      spriteHeight = 34,
+      spriteIndex = 1,
       frames = 3,
       direction = "",
       bgX = -200,
@@ -20,27 +20,9 @@ var PLAYER = (function(){
   var bgImg = new Image();
       bgImg.src = "map1.png";
 
-//   var playerImg = {
-//   "left1": {"sx":7 , "sy":35 , "swidth":17 , "sheight":33 },
-//   "left2": {"sx":35 , "sy":35 , "swidth":21 , "sheight":33 },
-//   "left3": {"sx":71 , "sy":35 , "swidth":17 , "sheight":33 },
-
-//   "right1": {"sx":35 , "sy":69 , "swidth":21 , "sheight":33 },
-//   "right2": {"sx":8 , "sy":69 , "swidth":17 , "sheight":33 },
-//   "right3": {"sx":72 , "sy":69 , "swidth":17 , "sheight":33 },
-
-//   "up1": {"sx":35 , "sy":103 , "swidth":27 , "sheight":33 },
-//   "up2": {"sx":6 , "sy":103 , "swidth":21 , "sheight":33 },
-//   "up3": {"sx":70 , "sy":103 , "swidth":21 , "sheight":33 },
-
-//   "down1": {"sx":5 , "sy":1 , "swidth":22 , "sheight":33 },
-//   "down2": {"sx":3 , "sy":1 , "swidth":27 , "sheight":33 },
-//   "down3": {"sx":70 , "sy":1 , "swidth":22 , "sheight":33 }
-// }
-
 
 exports.onKeyDown = function(){
-  console.log(event.keyCode);
+  
   //moveLeft
   if ((event.keyCode === 65)) {
     playerDir = "left";
@@ -81,48 +63,50 @@ exports.doDraw = function(){
 function animateSprite(direction){
     if (direction === "right"){
       spriteY = 69;
-      if(spriteIndex !== 2){
-        spriteWidth = 17;
-      }
-      else
-        spriteWidth = 21;
+      if(spriteIndex === 1)
+        spriteX = 8;
+      if(spriteIndex === 2)
+        spriteX = 40;
+      if(spriteIndex === 3)
+        spriteX = 72;
+    
     }
 
     if (direction === "down"){
-      spriteY = 1;
-      if(spriteIndex === 2){
-        spriteWidth = 27;
-      }
-      else
-        spriteWidth = 22;
+      spriteY = 0;
+      if(spriteIndex === 1)
+        spriteX = 5;
+      if(spriteIndex === 2)
+        spriteX = 37;
+      if(spriteIndex === 3)
+        spriteX = 70;
     }
 
     if (direction === "left"){
       spriteY = 35;
-      if(spriteIndex !== 2){
-        spriteWidth = 17;
-      }
-      else
-        spriteWidth = 21;
+      if(spriteIndex === 1)
+        spriteX = 7;
+      if(spriteIndex === 2)
+        spriteX = 39;
+      if(spriteIndex === 3)
+        spriteX = 71;
+      
     }
 
     if (direction === "up"){
       spriteY = 103;
-      if(spriteIndex === 1){
-        spriteWidth = 27;
-      }
-      else
-        spriteWidth = 22;
+      if(spriteIndex === 1)
+        spriteX = 6;
+      if(spriteIndex === 2)
+        spriteX = 37;
+      if(spriteIndex === 3)
+        spriteX = 70;
     }
 
     exports.doDraw();
     spriteIndex +=1;
     if(spriteIndex > 3){
-        spriteIndex = 0;
-        spriteX = 5;
-    }
-    else{
-      spriteX += spriteWidth;
+        spriteIndex = 1;
     }
 }
 

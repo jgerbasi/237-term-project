@@ -3,8 +3,8 @@ var PLAYER = (function(){
 
   var username = docCookies.getItem('username');
 
-  var spawnX = 200,
-      spawnY = 200,
+  var spawnX = 750,
+      spawnY = 500,
       playerX = 200,
       playerY = 200;
       spriteX = 37,
@@ -61,7 +61,7 @@ exports.doDraw = function(players){
   ctx.clearRect(0,0,400,400);
   ctx.fillStyle = "black";
   ctx.fillRect(0,0,400,400);
-  ctx.drawImage(bgImg, 0, 0, 400, 300, bgX, bgY, 800, 800);
+  ctx.drawImage(bgImg, 0, 0, 400, 300, bgX, bgY, 1500, 1136);
   for (p in players) {
     player = players[p];
     for (d in player) {
@@ -121,6 +121,17 @@ function animateSprite(direction){
     if(spriteIndex > 3){
         spriteIndex = 1;
     }
+}
+
+exports.updateCoords = function(deltaXY) {
+  bgX -= deltaXY.dX;
+  bgY -= deltaXY.dY;
+  bgDX -= deltaXY.dX;
+  bgDY -= deltaXY.dY;
+
+  playerX -= deltaXY.dX;
+  playerY -= deltaXY.dY;
+  socket.emit("sendPlayerLocationToServer", {x: playerX, y: playerY});
 }
 
 function moveBg(direction){

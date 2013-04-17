@@ -1,15 +1,14 @@
-(function () {
-  var MScanvas = document.getElementById("movementStick");
-  var MSctx = MScanvas.getContext("2d");
-  var MSWIDTH = MScanvas.width;
-  var MSHEIGHT = MScanvas.height;
+var MSTICK = (function () {
+  var exports = {};
 
-  var limitSize = 36;
-  var inputSize = 18;
-  var lastTime = Date.now();
-  var mStick = new Stick(inputSize);
-  var threshold = 2;
-  var speed = 10;
+    var MSWIDTH;
+    var MSHEIGHT;
+    var threshold = 2;
+    var speed = 10;
+    var limitSize = 36;
+    var inputSize = 18;
+    var lastTime = Date.now();
+    var mStick = new Stick(inputSize);
 
   function draw() {
     MSctx.clearRect(0,0,MSWIDTH,MSHEIGHT);
@@ -38,7 +37,12 @@
 
   };
 
-  function render() {
+   exports.render = function() {
+
+    MSWIDTH = MScanvas.width;
+    MSHEIGHT = MScanvas.height;
+
+
     mStick.setLimitXY(MSWIDTH/2, MSHEIGHT/2);
     mStick.setInputXY(MSWIDTH/2, MSHEIGHT/2);
 
@@ -89,9 +93,9 @@ function update(elapsed) {
       * speed * (elapsed / 1000));
 
   var deltaXY = {dX: deltaX, dY: deltaY};
-  return deltaXY;
+  PLAYER.updateCoords(deltaXY);
 };
 
-render();
+return exports;
 
 }());

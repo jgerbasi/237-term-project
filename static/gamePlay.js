@@ -11,25 +11,29 @@ var GAMEPLAY = (function() {
 
       // Gameplay Area
       var canvas = document.createElement('canvas');
-      div = document.getElementById('gameDiv'); 
+      div = document.getElementById('gameDiv');
+      div.style.width = '100%';
+      div.style.height = '50%'; 
       canvas.id     = "gameCanvas";
-      canvas.width  = 400;
-      canvas.height = 400;
+      canvas.width  = 1136;
+      canvas.height = 640;
+      canvas.style.width = '100%';
+      canvas.style.height = '75%';
       canvas.style.zIndex   = 8;
       canvas.style.position = "absolute";
-      canvas.style.border   = "1px solid";
+
       div.appendChild(canvas);
 
       // Analog
-      var MScanvas = document.createElement('canvas');
+      MScanvas = document.createElement('canvas');
       div = document.getElementById('analogDiv'); 
       MScanvas.id     = "movementStick";
       MScanvas.width  = 100;
       MScanvas.height = 100;
       MScanvas.style.zIndex   = 8;
       MScanvas.style.position = "absolute";
-      MScanvas.style.border   = "1px solid";
       div.appendChild(MScanvas);
+      MSTICK.render();
     }
 
   function loop() {
@@ -50,6 +54,8 @@ var GAMEPLAY = (function() {
     canvas = document.getElementById("gameCanvas");
     canvas.setAttribute('tabindex','0');
     ctx = canvas.getContext("2d");
+    MScanvas = document.getElementById("movementStick");
+    MSctx = MScanvas.getContext("2d");
     canvas.focus();
     run();
 

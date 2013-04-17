@@ -23,6 +23,7 @@
     <div id="homeLobby" class="page">
         <button id="logoutButton" class="button"> Logout </button>
         <button id="startGameButton" class="button wideButton"> Start Game </button>
+        <button id="createGameButton" class="button wideButton"> Create Game </button>
 
         <div id="chatbox">
             <div id="messageBox">
@@ -42,6 +43,19 @@
         </div>
     </div>
 
+    <!-- GAME LOBBY DIV -->
+    <div id="gameLobby" class="page">
+        <div id="chatbox">
+            <div id="messageBox">
+                <ul id="messages">
+            </div>
+
+            <form id="chatform">
+                <input id="chatbody" type="text" name="msg">
+                <input id="submit" class="button" type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
 
     <!-- GAME Canvas DIV -->
     <div id="gameDiv" class="page">

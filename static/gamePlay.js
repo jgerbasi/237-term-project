@@ -1,6 +1,6 @@
 var GAMEPLAY = (function() {
+
   var exports = {};
-  console.log("GAMEPLAY LOADED");
   players = {};
 
   socket.on('sendPlayerLocationsToClient', function(data) {

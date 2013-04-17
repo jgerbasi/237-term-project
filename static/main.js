@@ -2,7 +2,8 @@ $(document).ready(function() {
 
   var states = {
       LOGGED_IN: 0,
-      IN_GAME: 1,
+      IN_LOBBY: 1,
+      IN_GAME: 2,
   }
 
   var currentState = states.LOGGED_IN;
@@ -38,11 +39,20 @@ $(document).ready(function() {
     $('#gameCanvas').show();
     GAMEPLAY.loadCanvas("gameDiv")
     GAMEPLAY.init();
-    console.log("start game method invoked");
+  }
+
+  function createGame() {
+    var currentState = states.IN_LOBBY;
+    $('#homeLobby').hide();
+    $('#gameLobby').show();
   }
 
   $('#startGameButton').click(function() {
     startGame();
-  })
+  });
+
+  $('#createGameButton').click(function() {
+    createGame();
+  });
 
 });

@@ -1,5 +1,6 @@
 $(document).ready(function() {
   var username = docCookies.getItem('username');
+  console.log("i like penis");
 
   var players = {};
   var player = new Object();

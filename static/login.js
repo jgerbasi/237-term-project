@@ -66,6 +66,16 @@ window.addEventListener('load', function(){
             register(username, password);
         }
 
+        $("#passwordInput").keypress(function(event) {
+            if (event.which == 13) {
+                event.preventDefault();
+                var username = usernameInput.value;
+                var password = passwordInput.value;
+
+                login(username, password);
+            }
+        });
+
         //==================
         //  server API
         //==================

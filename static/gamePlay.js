@@ -5,6 +5,7 @@ var GAMEPLAY = (function() {
 
   socket.on('sendPlayerLocationsToClient', function(data) {
     players = JSON.parse(data.playerList);
+    // console.log(players);
   });
 
   exports.loadCanvas = function() {
@@ -39,7 +40,7 @@ var GAMEPLAY = (function() {
     }
 
   function loop() {
-    socket.emit('getPlayerLocations');
+    // socket.emit('getPlayerLocations');
     PLAYER.doDraw(players);
     ENEMY.drawEnemies();
   }
@@ -62,6 +63,7 @@ var GAMEPLAY = (function() {
     MScanvas = document.getElementById("movementStick");
     MSctx = MScanvas.getContext("2d");
     canvas.focus();
+    socket.emit('readyToPlay');
     run();
 
   // const SCREEN_HEIGHT = 400,

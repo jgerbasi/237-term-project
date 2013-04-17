@@ -1,3 +1,18 @@
+function checkReady(playerList) {
+  count = 0;
+  for (p in playerList) {
+    player = playerList[p];
+    for (d in player) {
+      data = player[d];
+      if (data.ready !== undefined) {
+        if (data.ready === true) count++;
+      }
+    }
+  }
+  console.log(count === 3);
+  return count === 3;
+}
+
 exports.init = function() {
   var io = require('socket.io').listen(8888);
 
@@ -10,11 +25,15 @@ exports.init = function() {
       IN_GAME: 2,
   }
 
+  function loop() {
+    io.sockets.emit('sendPlayerLocationsToClient', {playerList: JSON.stringify(playerList)});
+  }
+
+  function startGameLoop() {
+    setInterval(loop, 30);
+  }
+
   var currentState = states.LOGGED_IN;
-
-  // setInterval(function() {
-
-  // }, 30)
 
   io.sockets.on("connection", function(socket) {
       playerList[socket.id] = { isHere: true, playerData: undefined };
@@ -25,8 +44,17 @@ exports.init = function() {
           io.sockets.emit('sendPlayerListToClient', {playerList: JSON.stringify(playerList)});
       });
 
-      socket.on('getPlayerLocations', function(data) {
-        io.sockets.emit('sendPlayerLocationsToClient', {playerList: JSON.stringify(playerList)});
+      // socket.on('getPlayerLocations', function(data) {
+      //   io.sockets.emit('sendPlayerLocationsToClient', {playerList: JSON.stringify(playerList)});
+      // });
+
+      socket.on('readyToPlay', function() {
+        console.log("GOT HERE");
+        playerList[socket.id].playerData.ready = true;
+        if (checkReady(playerList)) {
+          console.log("SHOULD NOT GET HERE");
+          startGameLoop();
+        }
       });
 
       socket.on('sendPlayerLocationToServer', function(data) {

@@ -1,4 +1,4 @@
-var socket = io.connect("128.237.183.181:8888");
+var socket = io.connect("192.168.1.125:8888");
 var username = docCookies.getItem('username');
 // var randomColor = Math.floor(Math.random()*16777215).toString(16);
 

@@ -1,8 +1,5 @@
 var ENEMY = (function() {
   var exports = {};
-  var firstRun = true;
-  // var image = new Image();
-  // image.src = "sprites/enemies.png";
   exports.enemyList = [];
 
     exports.Flyer = function(xPos, yPos, respawn) {
@@ -31,7 +28,7 @@ var ENEMY = (function() {
 
       var pY = PLAYER.getPlayerY();
       var pX = PLAYER.getPlayerX();
-      console.log("py: " + pY + "|  px: " + pX);
+      // console.log("py: " + pY + "|  px: " + pX);
 
       //enemy aggro
       if (pY > this.yPos){
@@ -47,7 +44,7 @@ var ENEMY = (function() {
         this.xPos -=3;
       }
 
-      console.log(this.xPos,this.yPos);
+      // console.log(this.xPos,this.yPos);
 
       // // enemyCollisionToMegaman();
       //   if (pY > this.yPos) 

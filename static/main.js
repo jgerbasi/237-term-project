@@ -12,6 +12,7 @@ $(document).ready(function() {
   var players = {};
   var player = new Object();
   player.name = username;
+  player.ready = false;
 
   function updatePlayerList() {
     $("#players").empty();

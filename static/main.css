@@ -117,11 +117,13 @@ h2 {
 }
 
 #gameDiv {
-  height: 400px;
-  width: 400px;
+  height: 800px;
+  width: 1000px;
 }
 
 #analogDiv {
-  height: 50px;
+  height: 100px;
   width: 100px;
+  position: absolute;
+  bottom: 0px;
 }

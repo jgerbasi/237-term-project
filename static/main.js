@@ -36,8 +36,8 @@ $(document).ready(function() {
   function startGame() {
     var currentState = states.IN_GAME;
     $('#homeLobby').hide();
-    $('#gameCanvas').show();
-    GAMEPLAY.loadCanvas("gameDiv")
+    $('#gamePage').show();
+    GAMEPLAY.loadCanvas();
     GAMEPLAY.init();
   }
 

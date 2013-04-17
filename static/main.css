@@ -112,10 +112,16 @@ h2 {
   width: 125px;
 }
 
-#gameLobby {
+#gamePage {
   display: none;
 }
 
-#canvas1 {
-  z-index: 500;
+#gameDiv {
+  height: 400px;
+  width: 400px;
+}
+
+#analogDiv {
+  height: 50px;
+  width: 100px;
 }

@@ -10,7 +10,7 @@ var GAMEPLAY = (function() {
   exports.loadCanvas = function() {
 
       // Gameplay Area
-      var canvas = document.createElement('canvas');
+      canvas = document.createElement('canvas');
       div = document.getElementById('gameDiv'); 
       canvas.id     = "gameCanvas";
       canvas.width  = 400;
@@ -21,7 +21,7 @@ var GAMEPLAY = (function() {
       div.appendChild(canvas);
 
       // Analog
-      var MScanvas = document.createElement('canvas');
+      MScanvas = document.createElement('canvas');
       div = document.getElementById('analogDiv'); 
       MScanvas.id     = "movementStick";
       MScanvas.width  = 100;

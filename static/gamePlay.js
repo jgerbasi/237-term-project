@@ -10,7 +10,7 @@ var GAMEPLAY = (function() {
   exports.loadCanvas = function() {
 
       // Gameplay Area
-      var canvas = document.createElement('canvas');
+       canvas = document.createElement('canvas');
       div = document.getElementById('gameDiv');
       div.style.width = '100%';
       div.style.height = '50%'; 
@@ -41,9 +41,12 @@ var GAMEPLAY = (function() {
   function loop() {
     socket.emit('getPlayerLocations');
     PLAYER.doDraw(players);
+    ENEMY.drawEnemies();
   }
 
+
   function run(){
+    ENEMY.getEnemies();
     canvas.addEventListener('keydown', PLAYER.onKeyDown, false);
     //canvas.addEventListener('keyup', onKeyUp, false);
 

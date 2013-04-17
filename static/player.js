@@ -2,11 +2,12 @@ var PLAYER = (function(){
   var exports = {};
 
   var username = docCookies.getItem('username');
+  console.log("canvas.width");
 
-  var spawnX = 375,
-      spawnY = 250,
-      playerX = 375,
-      playerY = 250;
+  var spawnX = 284,
+      spawnY = 160,
+      playerX = 284,
+      playerY = 160;
       spriteX = 37,
       spriteY = 0,
       spriteWidth = 23,
@@ -61,7 +62,7 @@ exports.doDraw = function(players){
   ctx.clearRect(0,0,400,400);
   ctx.fillStyle = "black";
   ctx.fillRect(0,0,400,400);
-  ctx.drawImage(bgImg, 0, 0, 400, 300, bgX, bgY, 1500, 1136);
+  ctx.drawImage(bgImg, 0, 0, 400, 300, bgX, bgY, 968, 720);
   for (p in players) {
     player = players[p];
     for (d in player) {
@@ -72,6 +73,14 @@ exports.doDraw = function(players){
     }
   }
   ctx.drawImage(spriteImage,spriteX,spriteY, spriteWidth,spriteHeight, spawnX, spawnY, spriteWidth, spriteHeight);
+}
+
+exports.getPlayerX = function(){
+  return playerX;
+}
+
+exports.getPlayerY = function(){
+  return playerY;
 }
 
 function animateSprite(direction){
@@ -135,25 +144,25 @@ exports.updateCoords = function(deltaXY) {
 }
 
 function moveBg(direction){
-  if (direction == "left" && bgX < 200){
+  if (direction == "left" && bgX < canvas.width/2){
     bgX += 10;
     bgDX += 10;
     playerX -= 10;
   }
 
-  if (direction == "right" && bgX + 800 - spriteWidth > 200){
+  if (direction == "right" && bgX + 968 - spriteWidth > 200){
     bgX -= 10;
     bgDX -= 10;
     playerX += 10;
   }
 
-  if (direction == "up" && bgY < 200){
+  if (direction == "up" && bgY < canvas.height/2){
     bgY += 10;
     bgDY += 10;
     playerY -= 10;
   }
 
-  if (direction == "down" && bgY + 800 - spriteHeight > 200){
+  if (direction == "down" && bgY + 720 - spriteHeight > 200){
     bgY -= 10;
     bgDY -= 10;
     playerY += 10;

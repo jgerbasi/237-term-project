@@ -4,20 +4,24 @@ function checkReady(playerList) {
     player = playerList[p];
     for (d in player) {
       data = player[d];
-      if (data.ready !== undefined) {
-        if (data.ready === true) count++;
+      if (data !== undefined && data.ready !== undefined) {
+        if (data.ready === true) {
+          count++;
+        }
       }
     }
   }
-  console.log(count === 3);
-  return count === 3;
+  console.log(count === 2);
+  return count === 2;
 }
 
 exports.init = function() {
   var io = require('socket.io').listen(8888);
+  io.set('log level', 1);
 
   var playerList = {};
   var lobbies = [];
+  var enemyList = {};
 
   var states = {
       LOGGED_IN: 0,
@@ -25,11 +29,82 @@ exports.init = function() {
       IN_GAME: 2,
   }
 
+  function distance(x1,y1,x2,y2) {
+    var x = x2 - x1;
+    var y = y2 - y1;
+    var hyp = Math.sqrt(x*x + y*y);
+    return hyp;
+  }
+
+  function createEnemy(x, y) {
+    var enemy = {};
+    enemy.x = x;
+    enemy.y = y;
+    return enemy;
+  }
+
+  function spawnEnemies() {
+    e1 = createEnemy(200, 300);
+    e2 = createEnemy(160, 240);
+    e3 = createEnemy(300, 200);
+    enemyList["enemy1"] = e1;
+    enemyList["enemy2"] = e2;
+    enemyList["enemy3"] = e3;
+  }
+
+  function moveEnemy(enemy, targetPlayer) {
+    if(targetPlayer !== undefined && targetPlayer !== undefined) {
+      if (targetPlayer.y > enemy.y) enemy.y += 1;
+      if (enemy.y > targetPlayer.y) enemy.y -=1;
+      if (targetPlayer.x > enemy.x) enemy.x += 1;
+      if (enemy.x > targetPlayer.x) enemy.x -=1;
+    }
+  }
+
+  function findAggroTarget(e) {
+    var shortestDistance = undefined;
+    targetData = undefined;
+    for (p in playerList) {
+      player = playerList[p];
+      for (d in player) {
+        data = player[d];
+        if (data !== undefined && data.x !== undefined && data.y !== undefined) {
+          dist = distance(e.x, e.y, data.x, data.y);
+
+          // Find shortest path to player
+          if (shortestDistance === undefined ) {
+            shortestDistance = dist;
+            targetData = data;
+          } else {
+            if (dist < shortestDistance) {
+              shortestDistance = dist;
+              targetData = data;
+            }
+          }
+        }
+      }
+    }
+    console.log(targetData);
+    moveEnemy(e, targetData);
+  }
+
+  // This is janky aggro
+  function moveEnemies() {
+    for (enemy in enemyList) {
+      e = enemyList[enemy];
+      findAggroTarget(e);
+    }
+  }
+
   function loop() {
+    moveEnemies();
+    // console.log("THIS IS THE ENEMY LIST => " + JSON.stringify(enemyList));
+    io.sockets.emit('sendEnemyLocationsToClient', {enemyList: JSON.stringify(enemyList)});
     io.sockets.emit('sendPlayerLocationsToClient', {playerList: JSON.stringify(playerList)});
   }
 
   function startGameLoop() {
+    spawnEnemies();
     setInterval(loop, 30);
   }
 
@@ -58,8 +133,10 @@ exports.init = function() {
       });
 
       socket.on('sendPlayerLocationToServer', function(data) {
-        playerList[socket.id].playerData.x = data.x;
-        playerList[socket.id].playerData.y = data.y;
+        if (playerList[socket.id].playerData !== undefined && data.x !== undefined && data.y !== undefined) {
+          playerList[socket.id].playerData.x = data.x;
+          playerList[socket.id].playerData.y = data.y;
+        }
       });
         
       socket.on('disconnect', function() {

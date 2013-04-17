@@ -143,6 +143,14 @@ exports.updateCoords = function(deltaXY) {
   socket.emit("sendPlayerLocationToServer", {x: playerX, y: playerY});
 }
 
+exports.bgOffsetX = function() {
+  return bgDX;
+}
+
+exports.bgOffsetY = function() {
+  return bgDY;
+}
+
 function moveBg(direction){
   if (direction == "left" && bgX < canvas.width/2){
     bgX += 10;

@@ -12,6 +12,8 @@ $(document).ready(function() {
   var players = {};
   var player = new Object();
   player.name = username;
+  player.x = undefined;
+  player.y = undefined;
   player.ready = false;
 
   function updatePlayerList() {

@@ -1,11 +1,17 @@
 var GAMEPLAY = (function() {
 
   var exports = {};
-  players = {};
+  var players = {};
+  var enemies = {};
 
   socket.on('sendPlayerLocationsToClient', function(data) {
     players = JSON.parse(data.playerList);
     // console.log(players);
+  });
+
+  socket.on('sendEnemyLocationsToClient', function(data) {
+    enemies = JSON.parse(data.enemyList);
+    // console.log(enemies);
   });
 
   exports.loadCanvas = function() {
@@ -42,12 +48,12 @@ var GAMEPLAY = (function() {
   function loop() {
     // socket.emit('getPlayerLocations');
     PLAYER.doDraw(players);
-    ENEMY.drawEnemies();
+    ENEMY.drawEnemies(enemies);
   }
 
 
   function run(){
-    ENEMY.getEnemies();
+    // ENEMY.getEnemies();
     canvas.addEventListener('keydown', PLAYER.onKeyDown, false);
     //canvas.addEventListener('keyup', onKeyUp, false);
 

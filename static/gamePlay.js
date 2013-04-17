@@ -5,7 +5,6 @@ var GAMEPLAY = (function() {
 
   socket.on('sendPlayerLocationsToClient', function(data) {
     players = JSON.parse(data.playerList);
-    console.log(players);
   });
 
   exports.loadCanvas = function() {
@@ -40,7 +39,6 @@ var GAMEPLAY = (function() {
 
   function run(){
     canvas.addEventListener('keydown', PLAYER.onKeyDown, false);
-    console.log("test");
     //canvas.addEventListener('keyup', onKeyUp, false);
 
     setInterval(loop, 30);

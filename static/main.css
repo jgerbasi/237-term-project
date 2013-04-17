@@ -122,6 +122,8 @@ h2 {
 }
 
 #analogDiv {
-  height: 50px;
+  height: 100px;
   width: 100px;
+  position: absolute;
+  bottom: 0px;
 }

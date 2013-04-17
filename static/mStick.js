@@ -22,7 +22,7 @@ var MSTICK = (function () {
     //Base
     MSctx.beginPath();
     MSctx.arc(MSWIDTH/2, MSHEIGHT/2, 36, 0, (Math.PI * 2), true);
-
+    MSctx.strokeStyle = "rgb(255,255,255)";
     MSctx.lineWidth = 3;
     MSctx.stroke();
 
@@ -30,7 +30,7 @@ var MSTICK = (function () {
     // Input
     MSctx.beginPath();
     MSctx.arc(mStick.input.x,mStick.input.y , 18, 0, (Math.PI * 2), true);
-    MSctx.fillStyle = "rgb(0, 0, 0)";
+    MSctx.fillStyle = "rgb(255,255,255)";
     MSctx.fill();
 
     MSctx.restore();
@@ -49,8 +49,7 @@ var MSTICK = (function () {
     MScanvas.addEventListener("touchstart", function (e) {
       e.preventDefault();
       var touch = e.touches[0];
-
-      mStick.setInputXY(touch.pageX, touch.pageY);
+      mStick.setInputXY(touch.pageX, touch.pageY - (window.innerHeight - MSHEIGHT));
       mStick.active = true;
     });
 
@@ -58,7 +57,7 @@ var MSTICK = (function () {
       e.preventDefault();
       var touch = e.touches[0];
       if(mStick.active) {
-        mStick.setInputXY(touch.pageX, touch.pageY);
+        mStick.setInputXY(touch.pageX, touch.pageY - (window.innerHeight - MSHEIGHT));
       }
     });
 

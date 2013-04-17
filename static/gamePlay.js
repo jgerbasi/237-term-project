@@ -15,12 +15,14 @@ var GAMEPLAY = (function() {
       div.style.width = '100%';
       div.style.height = '50%'; 
       canvas.id     = "gameCanvas";
-      canvas.width  = 1136;
-      canvas.height = 640;
-      canvas.style.width = '100%';
+      canvas.width  = 568;
+      canvas.height = 320;
+      canvas.style.width = '80%';
+      canvas.style.left = "10%";
       canvas.style.height = '75%';
       canvas.style.zIndex   = 8;
       canvas.style.position = "absolute";
+      
 
       div.appendChild(canvas);
 

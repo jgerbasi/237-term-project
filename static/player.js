@@ -3,10 +3,10 @@ var PLAYER = (function(){
 
   var username = docCookies.getItem('username');
 
-  var spawnX = 750,
-      spawnY = 500,
-      playerX = 200,
-      playerY = 200;
+  var spawnX = 375,
+      spawnY = 250,
+      playerX = 375,
+      playerY = 250;
       spriteX = 37,
       spriteY = 0,
       spriteWidth = 23,
@@ -129,8 +129,8 @@ exports.updateCoords = function(deltaXY) {
   bgDX -= deltaXY.dX;
   bgDY -= deltaXY.dY;
 
-  playerX -= deltaXY.dX;
-  playerY -= deltaXY.dY;
+  playerX += deltaXY.dX;
+  playerY += deltaXY.dY;
   socket.emit("sendPlayerLocationToServer", {x: playerX, y: playerY});
 }
 

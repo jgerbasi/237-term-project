@@ -14,8 +14,10 @@ var PLAYER = (function(){
       spriteIndex = 1,
       frames = 3,
       direction = "",
-      bgX = 0,
-      bgY = 0;
+      bgX = -200,
+      bgY = -200;
+      bgDX = 0;
+      bgDY = 0;
 
   var spriteImage = new Image();
       spriteImage.src = "sheet.png";
@@ -59,17 +61,17 @@ exports.doDraw = function(players){
   ctx.clearRect(0,0,400,400);
   ctx.fillStyle = "black";
   ctx.fillRect(0,0,400,400);
-  ctx.drawImage(bgImg, 0, 0, 400, 300, bgX, bgY, 400, 400);
+  ctx.drawImage(bgImg, 0, 0, 400, 300, bgX, bgY, 800, 800);
   for (p in players) {
     player = players[p];
     for (d in player) {
       data = player[d];
       if (data.name !== username && data.x !== undefined && data.y !== undefined) {
-        ctx.drawImage(spriteImage,spriteX,spriteY, spriteWidth,spriteHeight, data.x, data.y, spriteWidth, spriteHeight);
+        ctx.drawImage(spriteImage,spriteX,spriteY, spriteWidth,spriteHeight, (data.x + bgDX), (data.y + bgDY), spriteWidth, spriteHeight);
       }
     }
   }
-  ctx.drawImage(spriteImage,spriteX,spriteY, spriteWidth,spriteHeight, playerX, playerY, spriteWidth, spriteHeight);
+  ctx.drawImage(spriteImage,spriteX,spriteY, spriteWidth,spriteHeight, spawnX, spawnY, spriteWidth, spriteHeight);
 }
 
 function animateSprite(direction){
@@ -115,7 +117,6 @@ function animateSprite(direction){
         spriteX = 70;
     }
 
-    exports.doDraw();
     spriteIndex +=1;
     if(spriteIndex > 3){
         spriteIndex = 1;
@@ -123,24 +124,28 @@ function animateSprite(direction){
 }
 
 function moveBg(direction){
-  if (direction == "left"){
-    bgX += 5;
-    playerX -= 5;
+  if (direction == "left" && bgX < 200){
+    bgX += 10;
+    bgDX += 10;
+    playerX -= 10;
   }
 
-  if (direction == "right"){
-    bgX -= 5;
-    playerX += 5;
+  if (direction == "right" && bgX + 800 - spriteWidth > 200){
+    bgX -= 10;
+    bgDX -= 10;
+    playerX += 10;
   }
 
-  if (direction == "up"){
-    bgY += 5;
-    playerY -= 5;
+  if (direction == "up" && bgY < 200){
+    bgY += 10;
+    bgDY += 10;
+    playerY -= 10;
   }
 
-  if (direction == "down"){
-    bgY -= 5;
-    playerY += 5;
+  if (direction == "down" && bgY + 800 - spriteHeight > 200){
+    bgY -= 10;
+    bgDY -= 10;
+    playerY += 10;
   }
   socket.emit("sendPlayerLocationToServer", {x: playerX, y: playerY});
 }

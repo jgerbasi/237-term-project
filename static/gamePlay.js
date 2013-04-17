@@ -30,7 +30,7 @@ var GAMEPLAY = (function() {
     console.log("test");
     //canvas.addEventListener('keyup', onKeyUp, false);
 
-    setInterval(loop, 300);
+    setInterval(loop, 30);
   }
   // window.onload(PLAYER.doDraw());
 

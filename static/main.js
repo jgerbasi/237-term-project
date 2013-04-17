@@ -1,6 +1,12 @@
 $(document).ready(function() {
+
+  var states = {
+      LOGGED_IN: 0,
+      IN_GAME: 1,
+  }
+
+  var currentState = states.LOGGED_IN;
   var username = docCookies.getItem('username');
-  console.log("i like penis");
 
   var players = {};
   var player = new Object();
@@ -12,7 +18,6 @@ $(document).ready(function() {
       player = players[id];
       if (player !== undefined) {
         if (player.playerData !== undefined) {
-            console.log(player.playerData.name);
             $("#players").append($("<li>").html(player.playerData.name));
         }
       }
@@ -26,5 +31,18 @@ $(document).ready(function() {
     console.log(players);
     updatePlayerList();
   });
+
+  function startGame() {
+    var currentState = states.IN_GAME;
+    $('#homeLobby').hide();
+    $('#gameCanvas').show();
+    GAMEPLAY.loadCanvas("gameDiv")
+    GAMEPLAY.init();
+    console.log("start game method invoked");
+  }
+
+  $('#startGameButton').click(function() {
+    startGame();
+  })
 
 });

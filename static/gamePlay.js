@@ -1,23 +1,49 @@
-var canvas = document.getElementById("canvas1");
-var ctx = canvas.getContext("2d");
+var GAMEPLAY = (function() {
+  var exports = {};
+  console.log("GAMEPLAY LOADED");
+  players = {};
 
-// const SCREEN_HEIGHT = 400,
-//       SCREEN_WIDTH = 400;
+  socket.on('sendPlayerLocationsToClient', function(data) {
+    players = JSON.parse(data.playerList);
+    console.log(players);
+  });
 
-function loop() {
-  PLAYER.doDraw();
-}
+  exports.loadCanvas = function(div_id) {
+      var canvas = document.createElement('canvas');
+      div = document.getElementById(div_id); 
+      canvas.id     = "gameCanvas";
+      canvas.width  = 400;
+      canvas.height = 400;
+      canvas.style.zIndex   = 8;
+      canvas.style.position = "absolute";
+      canvas.style.border   = "1px solid";
+      div.appendChild(canvas);
+    }
 
-function run(){
+  function loop() {
+    socket.emit('getPlayerLocations');
+    PLAYER.doDraw(players);
+  }
+
+  function run(){
     canvas.addEventListener('keydown', PLAYER.onKeyDown, false);
+    console.log("test");
     //canvas.addEventListener('keyup', onKeyUp, false);
 
-    // make canvas focusable, then give it focus!
+    setInterval(loop, 300);
+  }
+  // window.onload(PLAYER.doDraw());
+
+  exports.init = function () {
+    console.log("init began");
+    canvas = document.getElementById("gameCanvas");
     canvas.setAttribute('tabindex','0');
+    ctx = canvas.getContext("2d");
     canvas.focus();
+    run();
 
-    mapdev = setInterval(loop,300);
-
-}
-// window.onload(PLAYER.doDraw());
-run();
+  // const SCREEN_HEIGHT = 400,
+  //       SCREEN_WIDTH = 400;
+  };
+return exports;
+}());

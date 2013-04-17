@@ -1,17 +1,13 @@
 exports.init = function() {
   var io = require('socket.io').listen(8888);
 
-  // onlinePlayers = [];
-
   var playerList = {};
 
   var states = {
-      START: 0,
-      KILLED: 1,
-      LOGGED_IN: 2,
+      LOGGED_IN: 0,
   }
 
-  var currentState = states.START;
+  var currentState = states.LOGGED_IN;
 
   // setInterval(function() {
 
@@ -19,11 +15,22 @@ exports.init = function() {
 
   io.sockets.on("connection", function(socket) {
       playerList[socket.id] = { isHere: true, playerData: undefined };
+      socket.join('gameLobby');
 
       socket.on('sendPlayerToServer', function(data) {
           playerList[socket.id].playerData = data.player;
           io.sockets.emit('sendPlayerListToClient', {playerList: JSON.stringify(playerList)});
           console.log(playerList);
+      });
+
+      socket.on('getPlayerLocations', function(data) {
+        io.sockets.emit('sendPlayerLocationsToClient', {playerList: JSON.stringify(playerList)});
+        console.log(playerList);
+      });
+
+      socket.on('sendPlayerLocationToServer', function(data) {
+        playerList[socket.id].playerData.x = data.x;
+        playerList[socket.id].playerData.y = data.y;
       });
 
       // socket.on('sendPlayerToServer', function(data) {
@@ -40,6 +47,7 @@ exports.init = function() {
       socket.on('disconnect', function() {
           console.log("socket id => " + socket.id);
           delete playerList[socket.id];
+          socket.leave('gameLobby');
           // console.log(playerList);
           io.sockets.emit('sendPlayerListToClient', {playerList: JSON.stringify(playerList)});
       });

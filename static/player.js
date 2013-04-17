@@ -1,9 +1,12 @@
 var PLAYER = (function(){
   var exports = {};
 
+  var username = docCookies.getItem('username');
 
-  var playerX = 200,
-      playerY = 200 ,
+  var spawnX = 200,
+      spawnY = 200,
+      playerX = 200,
+      playerY = 200;
       spriteX = 37,
       spriteY = 0,
       spriteWidth = 23,
@@ -11,8 +14,8 @@ var PLAYER = (function(){
       spriteIndex = 1,
       frames = 3,
       direction = "",
-      bgX = -200,
-      bgY = -200;
+      bgX = 0,
+      bgY = 0;
 
   var spriteImage = new Image();
       spriteImage.src = "sheet.png";
@@ -52,11 +55,20 @@ exports.onKeyDown = function(){
     }
 }
 
-exports.doDraw = function(){
+exports.doDraw = function(players){
   ctx.clearRect(0,0,400,400);
   ctx.fillStyle = "black";
   ctx.fillRect(0,0,400,400);
-  ctx.drawImage(bgImg, 0, 0, 400, 300, bgX, bgY, 800, 800);
+  ctx.drawImage(bgImg, 0, 0, 400, 300, bgX, bgY, 400, 400);
+  for (p in players) {
+    player = players[p];
+    for (d in player) {
+      data = player[d];
+      if (data.name !== username && data.x !== undefined && data.y !== undefined) {
+        ctx.drawImage(spriteImage,spriteX,spriteY, spriteWidth,spriteHeight, data.x, data.y, spriteWidth, spriteHeight);
+      }
+    }
+  }
   ctx.drawImage(spriteImage,spriteX,spriteY, spriteWidth,spriteHeight, playerX, playerY, spriteWidth, spriteHeight);
 }
 
@@ -113,19 +125,24 @@ function animateSprite(direction){
 function moveBg(direction){
   if (direction == "left"){
     bgX += 5;
+    playerX -= 5;
   }
 
   if (direction == "right"){
     bgX -= 5;
+    playerX += 5;
   }
 
   if (direction == "up"){
     bgY += 5;
+    playerY -= 5;
   }
 
   if (direction == "down"){
     bgY -= 5;
+    playerY += 5;
   }
+  socket.emit("sendPlayerLocationToServer", {x: playerX, y: playerY});
 }
 return exports;
 }());

@@ -1,4 +1,4 @@
-var socket = io.connect("http://128.237.228.141:8888");
+var socket = io.connect("http://128.237.245.241:8888");
 var username = docCookies.getItem('username');
 // var randomColor = Math.floor(Math.random()*16777215).toString(16);
 

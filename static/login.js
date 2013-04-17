@@ -49,22 +49,43 @@ window.addEventListener('load', function(){
 
         var loginButton = document.getElementById('loginButton');
         var registerButton = document.getElementById('registerButton');
+        var registerPage = document.getElementById('registerPage');
 
         var usernameInput = document.getElementById('usernameInput');
         var passwordInput = document.getElementById('passwordInput');
 
-        loginButton.onclick = function(){
-            var username = usernameInput.value;
-            var password = passwordInput.value;
+        if (loginButton !== null) {
+            loginButton.onclick = function(){
+                var username = usernameInput.value;
+                var password = passwordInput.value;
 
-            login(username, password);
+                login(username, password);
+            }
         }
-        registerButton.onclick = function(){
-            var username = usernameInput.value;
-            var password = passwordInput.value;
 
-            register(username, password);
+        if (registerButton !== null) {
+            registerButton.onclick = function(){
+                var username = usernameInput.value;
+                var password = passwordInput.value;
+                var passwordConfirmation = passwordInputConfirmation.value;
+
+                if (username === "") {
+                    alert("Invalid username, must contain at least one character.");
+                }
+
+                if (password === passwordConfirmation) {
+                    register(username, password);
+                } else {
+                    alert("Passwords do not match, please try again.");
+                }
+            } 
         }
+
+        if (registerPage !== null) {
+            registerPage.onclick = function(){
+                window.location.href='register.html';
+            }
+        } 
 
         $("#passwordInput").keypress(function(event) {
             if (event.which == 13) {

@@ -8,9 +8,11 @@ var GAMEPLAY = (function() {
     console.log(players);
   });
 
-  exports.loadCanvas = function(div_id) {
+  exports.loadCanvas = function() {
+
+      // Gameplay Area
       var canvas = document.createElement('canvas');
-      div = document.getElementById(div_id); 
+      div = document.getElementById('gameDiv'); 
       canvas.id     = "gameCanvas";
       canvas.width  = 400;
       canvas.height = 400;
@@ -18,6 +20,17 @@ var GAMEPLAY = (function() {
       canvas.style.position = "absolute";
       canvas.style.border   = "1px solid";
       div.appendChild(canvas);
+
+      // Analog
+      var MScanvas = document.createElement('canvas');
+      div = document.getElementById('analogDiv'); 
+      MScanvas.id     = "movementStick";
+      MScanvas.width  = 100;
+      MScanvas.height = 50;
+      MScanvas.style.zIndex   = 8;
+      MScanvas.style.position = "absolute";
+      MScanvas.style.border   = "1px solid";
+      div.appendChild(MScanvas);
     }
 
   function loop() {

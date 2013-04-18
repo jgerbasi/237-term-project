@@ -92,6 +92,7 @@ function update(elapsed) {
       * speed * (elapsed / 1000));
 
   var sdeltaXY = {dX: sdeltaX, dY: sdeltaY};
+  // console.log("X: " + sdeltaXY.dX + "Y: " + sdeltaXY.dY);
   PLAYER.makeBullet(sdeltaXY);
 };
 

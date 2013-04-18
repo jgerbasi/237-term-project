@@ -75,6 +75,9 @@ exports.doDraw = function(players){
     }
   }
   ctx.drawImage(spriteImage,spriteX,spriteY, spriteWidth,spriteHeight, spawnX, spawnY, spriteWidth, spriteHeight);
+  ctx.fillStyle = "blue";
+  console.log(bulletX,bulletY);
+  ctx.fillRect(bulletX,bulletY, 10, 10);
 }
 
 exports.makeBullet = function(sDeltaXY){
@@ -85,12 +88,12 @@ exports.makeBullet = function(sDeltaXY){
 }
 
 exports.moveBullet = function(sDeltaXY){
-  if(sDeltaXY.dX !== 0 || sDeltaXY.dY !==0){
+  // if(sDeltaXY.dX !== undefined || sDeltaXY.dY !== undefined){
   bulletX += sDeltaXY.dX;
   bulletY += sDeltaXY.dY;
-  ctx.fillStyle = "blue";
-  ctx.fillRect(bulletX, bulletY, 40, 40);
-  }
+  // ctx.fillStyle = "blue";
+  // ctx.fillRect(bulletX, bulletY, 40, 40);
+  // }
 }
 
 exports.getPlayerX = function(){

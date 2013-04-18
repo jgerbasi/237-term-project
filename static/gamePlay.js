@@ -34,16 +34,16 @@ var GAMEPLAY = (function() {
       div.appendChild(canvas);
 
       //Analog
-      // MScanvas = document.createElement('canvas');
-      // div = document.getElementById('analogDiv'); 
-      // MScanvas.id     = "movementStick";
-      // MScanvas.width  = 100;
-      // MScanvas.height = 100;
-      // MScanvas.style.zIndex   = 8;
-      // MScanvas.style.position = "absolute";
-      // div.appendChild(MScanvas);
-      // console.log(MSTICK);
-      // MSTICK.render();
+      MScanvas = document.createElement('canvas');
+      div = document.getElementById('analogDiv'); 
+      MScanvas.id     = "movementStick";
+      MScanvas.width  = 100;
+      MScanvas.height = 100;
+      MScanvas.style.zIndex   = 8;
+      MScanvas.style.position = "absolute";
+      div.appendChild(MScanvas);
+      console.log(MSTICK);
+      MSTICK.render();
 
       SScanvas = document.createElement('canvas');
       div = document.getElementById('shootDiv'); 
@@ -74,8 +74,8 @@ var GAMEPLAY = (function() {
     canvas.setAttribute('tabindex','0');
     ctx = canvas.getContext("2d");
 
-    // MScanvas = document.getElementById("movementStick");
-    // MSctx = MScanvas.getContext("2d");
+    MScanvas = document.getElementById("movementStick");
+    MSctx = MScanvas.getContext("2d");
 
     SScanvas = document.getElementById("shootingStick");
     SSctx = SScanvas.getContext("2d");

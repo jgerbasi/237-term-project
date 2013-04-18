@@ -16,13 +16,12 @@ var PLAYER = (function(){
       frames = 3,
       direction = "",
       bgX = -200,
-      bgY = -200;
-      bgDX = 0;
-      bgDY = 0;
-      bulletX = spawnX;
+      bgY = -200,
+      bgDX = 0,
+      bgDY = 0,
+      bulletX = spawnX,
       bulletY = spawnY;
 
-  var firing = false;
   var spriteImage = new Image();
       spriteImage.src = "sheet.png";
 
@@ -76,17 +75,22 @@ exports.doDraw = function(players){
     }
   }
   ctx.drawImage(spriteImage,spriteX,spriteY, spriteWidth,spriteHeight, spawnX, spawnY, spriteWidth, spriteHeight);
-  if(bulletX > spawnX){
-      console.log("fire");
-      ctx.fillStyle = "blue";
-      ctx.fillRect(bulletX, bulletY, 40, 40);
-      firing = false;
-  }
 }
 
-exports.fireBullet = function(sDeltaXY){
-  bulletX += sDeltaXY.x;
-  bulletY += sDeltaXY.y;
+exports.makeBullet = function(sDeltaXY){
+  var change = sDeltaXY;
+  bulletX = playerX;
+  bulletY = playerY;
+  PLAYER.moveBullet(change);
+}
+
+exports.moveBullet = function(sDeltaXY){
+  if(sDeltaXY.dX !== 0 || sDeltaXY.dY !==0){
+  bulletX += sDeltaXY.dX;
+  bulletY += sDeltaXY.dY;
+  ctx.fillStyle = "blue";
+  ctx.fillRect(bulletX, bulletY, 40, 40);
+  }
 }
 
 exports.getPlayerX = function(){

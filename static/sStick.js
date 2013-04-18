@@ -92,7 +92,7 @@ function update(elapsed) {
       * speed * (elapsed / 1000));
 
   var sdeltaXY = {dX: sdeltaX, dY: sdeltaY};
-  PLAYER.fireBullet(sdeltaXY);
+  PLAYER.makeBullet(sdeltaXY);
 };
 
 return exports;

@@ -57,20 +57,16 @@ var GAMEPLAY = (function() {
     }
 
   function loop() {
-    // socket.emit('getPlayerLocations');
     PLAYER.doDraw(players);
     ENEMY.drawEnemies(enemies);
   }
 
 
   function run(){
-    // ENEMY.getEnemies();
     canvas.addEventListener('keydown', PLAYER.onKeyDown, false);
-    //canvas.addEventListener('keyup', onKeyUp, false);
 
     setInterval(loop, 30);
   }
-  // window.onload(PLAYER.doDraw());
 
   exports.init = function () {
     console.log("init began");
@@ -89,8 +85,6 @@ var GAMEPLAY = (function() {
     socket.emit('readyToPlay');
     run();
 
-  // const SCREEN_HEIGHT = 400,
-  //       SCREEN_WIDTH = 400;
   };
 return exports;
 }());

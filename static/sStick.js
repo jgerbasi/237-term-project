@@ -49,7 +49,7 @@ var SSTICK = (function () {
     SScanvas.addEventListener("touchstart", function (e) {
       e.preventDefault();
       var touch = e.touches[0];
-      sStick.setInputXY(touch.pageX, touch.pageY - (window.innerHeight - SSHEIGHT));
+      sStick.setInputXY(touch.pageX - (window.innerWidth - SSWIDTH) , touch.pageY - (window.innerHeight - SSHEIGHT));
       sStick.active = true;
     });
 
@@ -57,7 +57,7 @@ var SSTICK = (function () {
       e.preventDefault();
       var touch = e.touches[0];
       if(sStick.active) {
-        sStick.setInputXY(touch.pageX, touch.pageY - (window.innerHeight - SSHEIGHT));
+        sStick.setInputXY(touch.pageX - (window.innerWidth - SSWIDTH), touch.pageY - (window.innerHeight - SSHEIGHT));
       }
     });
 

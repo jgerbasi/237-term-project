@@ -82,8 +82,8 @@ exports.doDraw = function(players){
 
 exports.makeBullet = function(sDeltaXY){
   var change = sDeltaXY;
-  bulletX = playerX;
-  bulletY = playerY;
+//  bulletX = playerX;
+//  bulletY = playerY;
   PLAYER.moveBullet(change);
 }
 

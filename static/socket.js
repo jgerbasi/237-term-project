@@ -1,6 +1,5 @@
 var socket = io.connect("192.168.1.125:8888");
 var username = docCookies.getItem('username');
-// var randomColor = Math.floor(Math.random()*16777215).toString(16);
 
 $(document).ready(function() {
 
@@ -25,9 +24,6 @@ $(document).ready(function() {
 
 socket.on("newmsg", function(data) {
   var name = $("<span>").html(data.sender);
-  // console.log(randomColor);
-  // name.css("color", "#" + randomColor);
-  // console.log(name);
   var li = $("<li>");
   li.append(name);
   li.append(data.body);

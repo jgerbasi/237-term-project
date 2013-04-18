@@ -127,3 +127,11 @@ h2 {
   position: absolute;
   bottom: 0px;
 }
+
+#shootDiv {
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+}

@@ -32,7 +32,7 @@ $(document).ready(function() {
 
   socket.on('sendPlayerListToClient', function(data) {
     players = JSON.parse(data.playerList);
-    console.log(players);
+    //console.log(players);
     updatePlayerList();
   });
 

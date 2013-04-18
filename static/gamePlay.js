@@ -33,16 +33,27 @@ var GAMEPLAY = (function() {
 
       div.appendChild(canvas);
 
-      // Analog
-      MScanvas = document.createElement('canvas');
-      div = document.getElementById('analogDiv'); 
-      MScanvas.id     = "movementStick";
-      MScanvas.width  = 100;
-      MScanvas.height = 100;
-      MScanvas.style.zIndex   = 8;
-      MScanvas.style.position = "absolute";
-      div.appendChild(MScanvas);
-      MSTICK.render();
+      //Analog
+      // MScanvas = document.createElement('canvas');
+      // div = document.getElementById('analogDiv'); 
+      // MScanvas.id     = "movementStick";
+      // MScanvas.width  = 100;
+      // MScanvas.height = 100;
+      // MScanvas.style.zIndex   = 8;
+      // MScanvas.style.position = "absolute";
+      // div.appendChild(MScanvas);
+      // console.log(MSTICK);
+      // MSTICK.render();
+
+      SScanvas = document.createElement('canvas');
+      div = document.getElementById('shootDiv'); 
+      SScanvas.id     = "shootingStick";
+      SScanvas.width  = 100;
+      SScanvas.height = 100;
+      SScanvas.style.zIndex   = 8;
+      SScanvas.style.position = "absolute";
+      div.appendChild(SScanvas);
+      SSTICK.render();
     }
 
   function loop() {
@@ -66,8 +77,14 @@ var GAMEPLAY = (function() {
     canvas = document.getElementById("gameCanvas");
     canvas.setAttribute('tabindex','0');
     ctx = canvas.getContext("2d");
-    MScanvas = document.getElementById("movementStick");
-    MSctx = MScanvas.getContext("2d");
+
+    // MScanvas = document.getElementById("movementStick");
+    // MSctx = MScanvas.getContext("2d");
+
+    SScanvas = document.getElementById("shootingStick");
+    SSctx = SScanvas.getContext("2d");
+
+
     canvas.focus();
     socket.emit('readyToPlay');
     run();

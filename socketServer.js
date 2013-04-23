@@ -137,8 +137,8 @@ exports.init = function() {
 
   function createBullet(player, dx, dy) {
     var bullet = {};
-    bullet.x = player.x;
-    bullet.y = player.y;
+    bullet.x = player.x + 12;
+    bullet.y = player.y + 17;
     bullet.dx = dx *3;
     bullet.dy = dy *3;
     bullet.start = true;

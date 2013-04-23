@@ -4,10 +4,14 @@ var PLAYER = (function(){
   var username = docCookies.getItem('username');
   console.log("canvas.width");
 
-  var spawnX = 284,
-      spawnY = 160,
-      playerX = 284,
-      playerY = 160;
+  const CANVASHEIGHT = 320,
+        CANVASWIDTH = 568,
+        BUFFER = 400;
+
+  var spawnX = CANVASWIDTH/2,
+      spawnY = CANVASHEIGHT/2,
+      playerX = CANVASWIDTH/2,
+      playerY = CANVASHEIGHT/2;
       spriteX = 37,
       spriteY = 0,
       spriteWidth = 23,
@@ -18,9 +22,9 @@ var PLAYER = (function(){
       bgX = -200,
       bgY = -200,
       bgDX = 0,
-      bgDY = 0,
-      bulletX = spawnX,
-      bulletY = spawnY;
+      bgDY = 0;
+      //bulletX = spawnX,
+      //bulletY = spawnY;
 
   var spriteImage = new Image();
       spriteImage.src = "sheet.png";
@@ -63,8 +67,8 @@ exports.onKeyDown = function(){
 exports.doDraw = function(players){
   // ctx.clearRect(0,0,canvas.width,canvas.height);
   ctx.fillStyle = "black";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-  ctx.drawImage(bgImg, 0, 0, 400, 300, bgX, bgY, 968, 720);
+  ctx.fillRect(0,0,CANVASWIDTH,CANVASHEIGHT);
+  ctx.drawImage(bgImg, 0, 0, 400, 300, bgX, bgY, CANVASWIDTH+BUFFER, CANVASHEIGHT+BUFFER);
   for (p in players) {
     player = players[p];
     for (d in player) {

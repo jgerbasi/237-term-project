@@ -25,8 +25,8 @@ var GAMEPLAY = (function() {
       // Gameplay Area
       canvas = document.createElement('canvas');
       div = document.getElementById('gameDiv');
-      div.style.width = '100%';
-      div.style.height = '50%'; 
+      //div.style.width = '100%';
+      //div.style.height = '50%'; 
       canvas.id     = "gameCanvas";
       canvas.width  = 568;
       canvas.height = 320;

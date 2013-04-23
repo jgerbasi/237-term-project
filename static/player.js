@@ -75,33 +75,10 @@ exports.doDraw = function(players){
     }
   }
   ctx.drawImage(spriteImage,spriteX,spriteY, spriteWidth,spriteHeight, spawnX, spawnY, spriteWidth, spriteHeight);
-  ctx.fillStyle = "blue";
-  console.log(bulletX,bulletY);
-  ctx.fillRect(bulletX,bulletY, 10, 10);
 }
 
 exports.makeBullet = function(sDeltaXY){
-  var change = sDeltaXY;
-//  bulletX = playerX;
-//  bulletY = playerY;
-  PLAYER.moveBullet(change);
-}
-
-exports.moveBullet = function(sDeltaXY){
-  // if(sDeltaXY.dX !== undefined || sDeltaXY.dY !== undefined){
-  bulletX += sDeltaXY.dX;
-  bulletY += sDeltaXY.dY;
-  // ctx.fillStyle = "blue";
-  // ctx.fillRect(bulletX, bulletY, 40, 40);
-  // }
-}
-
-exports.getPlayerX = function(){
-  return playerX;
-}
-
-exports.getPlayerY = function(){
-  return playerY;
+  socket.emit("sendBulletLocationToServer", {dX: sDeltaXY.dX, dY: sDeltaXY.dY});
 }
 
 function animateSprite(direction){
@@ -154,13 +131,29 @@ function animateSprite(direction){
 }
 
 exports.updateCoords = function(deltaXY) {
-  bgX -= deltaXY.dX;
-  bgY -= deltaXY.dY;
-  bgDX -= deltaXY.dX;
-  bgDY -= deltaXY.dY;
+  if (deltaXY.dX < 0 && bgX < canvas.width/2) {
+    bgX -= deltaXY.dX;
+    bgDX -= deltaXY.dX;
+    playerX += deltaXY.dX;
+  }
 
-  playerX += deltaXY.dX;
-  playerY += deltaXY.dY;
+  if (deltaXY.dX > 0 && bgX + 880 - spriteWidth > 200) {
+    bgX -= deltaXY.dX;
+    bgDX -= deltaXY.dX;
+    playerX += deltaXY.dX;
+  }
+
+  if (deltaXY.dY < 0 && bgY < canvas.height/2) {
+    bgY -= deltaXY.dY;
+    bgDY -= deltaXY.dY;
+    playerY += deltaXY.dY;
+  }
+
+  if (deltaXY.dY > 0 && bgY + 750 - spriteHeight > 200) {
+    bgY -= deltaXY.dY;
+    bgDY -= deltaXY.dY;
+    playerY += deltaXY.dY; 
+  }
   socket.emit("sendPlayerLocationToServer", {x: playerX, y: playerY});
 }
 

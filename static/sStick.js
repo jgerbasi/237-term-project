@@ -9,6 +9,7 @@ var SSTICK = (function () {
     var inputSize = 18;
     var lastTime = Date.now();
     var sStick = new Stick(inputSize);
+    var canShoot = true;
 
   function draw() {
     SSctx.clearRect(0,0,SSWIDTH,SSHEIGHT);
@@ -93,7 +94,18 @@ function update(elapsed) {
 
   var sdeltaXY = {dX: sdeltaX, dY: sdeltaY};
   // console.log("X: " + sdeltaXY.dX + "Y: " + sdeltaXY.dY);
-  PLAYER.makeBullet(sdeltaXY);
+  if (sdeltaXY.dX !== 0 && sdeltaXY.dY !== 0) {
+    console.log("moved shoot stick");
+    if (canShoot) {
+      PLAYER.makeBullet(sdeltaXY);
+      canShoot = false;
+      setTimeout(function() {
+        canShoot = true;
+      }, 300);
+    }
+    
+  }
+
 };
 
 return exports;

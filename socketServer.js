@@ -22,6 +22,7 @@ exports.init = function() {
   var playerList = {};
   var lobbies = [];
   var enemyList = {};
+  var bullets = [];
 
   var states = {
       LOGGED_IN: 0,
@@ -84,7 +85,6 @@ exports.init = function() {
         }
       }
     }
-    console.log(targetData);
     moveEnemy(e, targetData);
   }
 
@@ -95,12 +95,36 @@ exports.init = function() {
       findAggroTarget(e);
     }
   }
+  function moveBullets() {
+    for (var i = 0; i < bullets.length; i++) {
+      bullets[i].x += bullets[i].dx;
+      bullets[i].y += bullets[i].dy;
+      // should not be hardcoded
+      if (bullets[i].x < 0 || bullets[i].x > 578 || bullets[i].y < 0 || bullets[i].y > 320) {
+        console.log(bullets[i].x);
+        bullets.splice(i, 1);
+        i--;
+      }
+    }
+  }
+
+  function createBullet(player, dx, dy) {
+    var bullet = {};
+    bullet.x = player.x;
+    bullet.y = player.y;
+    bullet.dx = dx *3;
+    bullet.dy = dy *3;
+    bullet.start = true;
+    bullets.push(bullet);
+  }
 
   function loop() {
     moveEnemies();
+    moveBullets();
     // console.log("THIS IS THE ENEMY LIST => " + JSON.stringify(enemyList));
     io.sockets.emit('sendEnemyLocationsToClient', {enemyList: JSON.stringify(enemyList)});
     io.sockets.emit('sendPlayerLocationsToClient', {playerList: JSON.stringify(playerList)});
+    io.sockets.emit('sendBulletLocationsToClient', {bulletList: JSON.stringify(bullets)});
   }
 
   function startGameLoop() {
@@ -136,6 +160,15 @@ exports.init = function() {
         if (playerList[socket.id].playerData !== undefined && data.x !== undefined && data.y !== undefined) {
           playerList[socket.id].playerData.x = data.x;
           playerList[socket.id].playerData.y = data.y;
+        }
+      });
+
+      socket.on('sendBulletLocationToServer', function(data) {
+        console.log("request sent to make bullet");
+        if (data.dX !== undefined && data.dY !== undefined) {
+          console.log(data.dX, data.dY);
+          player = playerList[socket.id].playerData;
+          createBullet(player, data.dX, data.dY);
         }
       });
         

@@ -3,6 +3,7 @@ var GAMEPLAY = (function() {
   var exports = {};
   var players = {};
   var enemies = {};
+  var bullets = [];
 
   socket.on('sendPlayerLocationsToClient', function(data) {
     players = JSON.parse(data.playerList);
@@ -12,6 +13,11 @@ var GAMEPLAY = (function() {
   socket.on('sendEnemyLocationsToClient', function(data) {
     enemies = JSON.parse(data.enemyList);
     // console.log(enemies);
+  });
+
+  socket.on('sendBulletLocationsToClient', function(data) {
+    bullets = JSON.parse(data.bulletList);
+    // console.log(bullets);
   });
 
   exports.loadCanvas = function() {
@@ -59,6 +65,7 @@ var GAMEPLAY = (function() {
   function loop() {
     PLAYER.doDraw(players);
     ENEMY.drawEnemies(enemies);
+    BULLET.drawBullets(bullets);
   }
 
 

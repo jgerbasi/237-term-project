@@ -8,7 +8,7 @@ var BULLET = (function(){
       bullet = bullets[i];
       // console.log(bullets[i].x);
       ctx.fillStyle = "blue";
-      ctx.fillRect((bullet.x + bgDX), (bullet.y + bgDY), 10, 10);
+      ctx.fillRect((bullet.x + bgDX), (bullet.y + bgDY), bullet.height, bullet.width);
     }
   }
 

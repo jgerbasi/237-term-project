@@ -61,9 +61,9 @@ exports.onKeyDown = function(){
 }
 
 exports.doDraw = function(players){
-  ctx.clearRect(0,0,400,400);
+  // ctx.clearRect(0,0,canvas.width,canvas.height);
   ctx.fillStyle = "black";
-  ctx.fillRect(0,0,400,400);
+  ctx.fillRect(0,0,canvas.width,canvas.height);
   ctx.drawImage(bgImg, 0, 0, 400, 300, bgX, bgY, 968, 720);
   for (p in players) {
     player = players[p];
@@ -137,7 +137,7 @@ exports.updateCoords = function(deltaXY) {
     playerX += deltaXY.dX;
   }
 
-  if (deltaXY.dX > 0 && bgX + 880 - spriteWidth > 200) {
+  if (deltaXY.dX > 0 && bgX + 884 - spriteWidth > 200) {
     bgX -= deltaXY.dX;
     bgDX -= deltaXY.dX;
     playerX += deltaXY.dX;
@@ -149,7 +149,7 @@ exports.updateCoords = function(deltaXY) {
     playerY += deltaXY.dY;
   }
 
-  if (deltaXY.dY > 0 && bgY + 750 - spriteHeight > 200) {
+  if (deltaXY.dY > 0 && bgY + 760 - spriteHeight > 200) {
     bgY -= deltaXY.dY;
     bgDY -= deltaXY.dY;
     playerY += deltaXY.dY; 

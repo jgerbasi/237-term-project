@@ -4,10 +4,10 @@ var ENEMY = (function() {
   exports.drawEnemies = function(enemies) {
     var bgDX = PLAYER.bgOffsetX();
     var bgDY = PLAYER.bgOffsetY();
-    for (enemy in enemies) {
-      e = enemies[enemy];
+    for (var i = 0; i < enemies.length; i++) {
+      e = enemies[i];
       ctx.fillStyle = "red";
-      ctx.fillRect((e.x + bgDX), (e.y + bgDY), 20, 20);
+      ctx.fillRect((e.x + bgDX), (e.y + bgDY), e.width, e.height);
     }
   }
   return exports;

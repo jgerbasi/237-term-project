@@ -11,8 +11,8 @@ function checkReady(playerList) {
       }
     }
   }
-  console.log(count === 2);
-  return count === 2;
+  console.log(count === 1);
+  return count === 1;
 }
 
 exports.init = function() {
@@ -21,7 +21,7 @@ exports.init = function() {
 
   var playerList = {};
   var lobbies = [];
-  var enemyList = {};
+  var enemyList = [];
   var bullets = [];
 
   var states = {
@@ -41,6 +41,8 @@ exports.init = function() {
     var enemy = {};
     enemy.x = x;
     enemy.y = y;
+    enemy.width = 20;
+    enemy.height = 20;
     return enemy;
   }
 
@@ -48,9 +50,9 @@ exports.init = function() {
     e1 = createEnemy(200, 300);
     e2 = createEnemy(160, 240);
     e3 = createEnemy(300, 200);
-    enemyList["enemy1"] = e1;
-    enemyList["enemy2"] = e2;
-    enemyList["enemy3"] = e3;
+    enemyList.push(e1);
+    enemyList.push(e2);
+    enemyList.push(e3);
   }
 
   function moveEnemy(enemy, targetPlayer) {
@@ -99,13 +101,38 @@ exports.init = function() {
     for (var i = 0; i < bullets.length; i++) {
       bullets[i].x += bullets[i].dx;
       bullets[i].y += bullets[i].dy;
-      // should not be hardcoded
-      if (bullets[i].x < 0 || bullets[i].x > 578 || bullets[i].y < 0 || bullets[i].y > 320) {
-        console.log(bullets[i].x);
+      if (checkCollision(bullets[i])) {
         bullets.splice(i, 1);
         i--;
       }
+      // should not be hardcoded
+      else {
+        if (bullets[i].x < -200 || bullets[i].x > 763 || bullets[i].y < -200 || bullets[i].y > 510) {
+          console.log(bullets[i].x);
+          bullets.splice(i, 1);
+          i--;
+        }
+      }
+
     }
+  }
+
+  function checkCollision(bullet) {
+    for (var i = 0; i < enemyList.length; i++) {
+      enemy = enemyList[i];
+      // HTML5 ROCKS COLLISION DETECTION
+      if (bullet.x < enemy.x + enemy.width &&
+          bullet.x + bullet.width > enemy.x &&
+          bullet.y < enemy.y + enemy.height &&
+          bullet.y + bullet.height > enemy.y) 
+      {
+        console.log(i);
+        enemyList.splice(i, 1);
+        i--;
+        return true;
+      }
+    }
+    return false;
   }
 
   function createBullet(player, dx, dy) {
@@ -115,11 +142,13 @@ exports.init = function() {
     bullet.dx = dx *3;
     bullet.dy = dy *3;
     bullet.start = true;
+    bullet.height = 5;
+    bullet.width = 5;
     bullets.push(bullet);
   }
 
   function loop() {
-    moveEnemies();
+    // moveEnemies();
     moveBullets();
     // console.log("THIS IS THE ENEMY LIST => " + JSON.stringify(enemyList));
     io.sockets.emit('sendEnemyLocationsToClient', {enemyList: JSON.stringify(enemyList)});
@@ -164,9 +193,9 @@ exports.init = function() {
       });
 
       socket.on('sendBulletLocationToServer', function(data) {
-        console.log("request sent to make bullet");
+        // console.log("request sent to make bullet");
         if (data.dX !== undefined && data.dY !== undefined) {
-          console.log(data.dX, data.dY);
+          // console.log(data.dX, data.dY);
           player = playerList[socket.id].playerData;
           createBullet(player, data.dX, data.dY);
         }

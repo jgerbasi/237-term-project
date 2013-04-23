@@ -263,11 +263,13 @@ exports.init = function() {
       });
 
       socket.on('readyToPlay', function() {
-        playerList[socket.id].playerData.ready = true;
-        if (checkReady(playerList)) {
-          io.sockets.emit('sendStartGameToClient');
-          console.log('starting new game');
-          startGameLoop();
+        if (playerList[socket.id].playerData.ready !== undefined) {
+          playerList[socket.id].playerData.ready = true;
+          if (checkReady(playerList)) {
+            io.sockets.emit('sendStartGameToClient');
+            console.log('starting new game');
+            startGameLoop();
+          }
         }
       });
 

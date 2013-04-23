@@ -1,20 +1,3 @@
-function checkReady(playerList) {
-  count = 0;
-  for (p in playerList) {
-    player = playerList[p];
-    for (d in player) {
-      data = player[d];
-      if (data !== undefined && data.ready !== undefined) {
-        if (data.ready === true) {
-          count++;
-        }
-      }
-    }
-  }
-  console.log(count === 1);
-  return count === 1;
-}
-
 exports.init = function() {
   var io = require('socket.io').listen(8888);
   io.set('log level', 1);
@@ -23,11 +6,35 @@ exports.init = function() {
   var lobbies = [];
   var enemyList = [];
   var bullets = [];
+  var roundStart = false;
+  var round = 0;
+  var enemyCount = 0;
+  var gameOver = false;
 
   var states = {
       LOGGED_IN: 0,
       IN_LOBBY: 1,
       IN_GAME: 2,
+  }
+
+  function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function checkReady(playerList) {
+    count = 0;
+    for (p in playerList) {
+      player = playerList[p];
+      for (d in player) {
+        data = player[d];
+        if (data !== undefined && data.ready !== undefined) {
+          if (data.ready === true) {
+            count++;
+          }
+        }
+      }
+    }
+    return count === 2;
   }
 
   function distance(x1,y1,x2,y2) {
@@ -47,12 +54,49 @@ exports.init = function() {
   }
 
   function spawnEnemies() {
-    e1 = createEnemy(200, 300);
-    e2 = createEnemy(160, 240);
-    e3 = createEnemy(300, 200);
-    enemyList.push(e1);
-    enemyList.push(e2);
-    enemyList.push(e3);
+    if (enemyList.length < 3) {
+      var x = getRandomInt(-200, 763);
+      var y = getRandomInt(-200, 510);
+      enemyList.push(createEnemy(x, y));
+      enemyCount--;
+    }
+  }
+
+  function checkGameOver() {
+    for (p in playerList) {
+      player = playerList[p];
+      for (d in player) {
+        data = player[d];
+        if (data !== undefined && data.alive !== undefined) {
+          if (data.alive === true) return false;
+        }
+      }
+    }
+    gameOver = true;
+    io.sockets.emit('sendGameOverToClient');
+    return true;
+  }
+
+  function checkEnemyCollision(enemy) {
+    for (p in playerList) {
+      player = playerList[p];
+      for (d in player) {
+        data = player[d];
+        if (data !== undefined && data.x !== undefined && data.y !== undefined) {
+          // HTML5 ROCKS COLLISION DETECTION
+          if (data.x < enemy.x + enemy.width &&
+            data.x + data.width > enemy.x &&
+            data.y < enemy.y + enemy.height &&
+            data.y + data.height > enemy.y) 
+          {
+            data.alive = false;
+            checkGameOver();
+            return true;
+          }
+        }
+      }
+    }
+    return false;
   }
 
   function moveEnemy(enemy, targetPlayer) {
@@ -62,6 +106,8 @@ exports.init = function() {
       if (targetPlayer.x > enemy.x) enemy.x += 1;
       if (enemy.x > targetPlayer.x) enemy.x -=1;
     }
+    // This is just to test gameOVER scenario, ideally enemies could shoot as well
+    checkEnemyCollision(enemy);
   }
 
   function findAggroTarget(e) {
@@ -117,6 +163,15 @@ exports.init = function() {
     }
   }
 
+  function checkRoundOver() {
+    if (enemyCount === 0 && enemyList.length === 0) {
+      // send last enemy update
+      io.sockets.emit('sendEnemyLocationsToClient', {enemyList: JSON.stringify(enemyList)});
+      roundStart = false;
+      io.sockets.emit('sendRoundOverToClient');
+    }
+  }
+
   function checkCollision(bullet) {
     for (var i = 0; i < enemyList.length; i++) {
       enemy = enemyList[i];
@@ -129,6 +184,7 @@ exports.init = function() {
         console.log(i);
         enemyList.splice(i, 1);
         i--;
+        checkRoundOver();
         return true;
       }
     }
@@ -147,18 +203,52 @@ exports.init = function() {
     bullets.push(bullet);
   }
 
+  function startRound() {
+    // MAke sure everyone starts out alive
+    for (p in playerList) {
+      player = playerList[p];
+      for (d in player) {
+        data = player[d];
+        if (data !== undefined && data.alive !== undefined) {
+          data.alive = true;
+        }
+      }
+    }
+    io.sockets.emit('sendStartRoundToClient');
+    round++;
+    roundStart = true;
+    enemyCount = round;
+  }
+
+  function resetGame() {
+    enemyList = [];
+    round = 0;
+    roundstart = false;
+    enemyCount = 0;
+    gameOver = false;
+  }
+
   function loop() {
-    // moveEnemies();
-    moveBullets();
-    // console.log("THIS IS THE ENEMY LIST => " + JSON.stringify(enemyList));
-    io.sockets.emit('sendEnemyLocationsToClient', {enemyList: JSON.stringify(enemyList)});
-    io.sockets.emit('sendPlayerLocationsToClient', {playerList: JSON.stringify(playerList)});
-    io.sockets.emit('sendBulletLocationsToClient', {bulletList: JSON.stringify(bullets)});
+    if (gameOver) {
+      // stop the server side game clock
+      clearInterval(gameTimer);
+    } else {
+      if (roundStart) {
+        if (enemyCount > 0) {
+          spawnEnemies();
+        }
+        moveEnemies();
+        io.sockets.emit('sendEnemyLocationsToClient', {enemyList: JSON.stringify(enemyList)});
+      }
+      moveBullets();
+      io.sockets.emit('sendPlayerLocationsToClient', {playerList: JSON.stringify(playerList)});
+      io.sockets.emit('sendBulletLocationsToClient', {bulletList: JSON.stringify(bullets)});
+    }
+
   }
 
   function startGameLoop() {
-    spawnEnemies();
-    setInterval(loop, 30);
+    gameTimer = setInterval(loop, 30);
   }
 
   var currentState = states.LOGGED_IN;
@@ -172,18 +262,32 @@ exports.init = function() {
           io.sockets.emit('sendPlayerListToClient', {playerList: JSON.stringify(playerList)});
       });
 
-      // socket.on('getPlayerLocations', function(data) {
-      //   io.sockets.emit('sendPlayerLocationsToClient', {playerList: JSON.stringify(playerList)});
-      // });
-
       socket.on('readyToPlay', function() {
-        console.log("GOT HERE");
         playerList[socket.id].playerData.ready = true;
         if (checkReady(playerList)) {
-          console.log("SHOULD NOT GET HERE");
+          io.sockets.emit('sendStartGameToClient');
+          console.log('starting new game');
           startGameLoop();
         }
       });
+
+      // This starts a new round and shows the overlay on the client
+      // for 5 seconds and then spawns enemies
+      socket.on('newRound', function() {
+        io.sockets.emit('sendRoundWaitToClient');
+        setTimeout(function() {
+          startRound();
+        }, 5000);
+      });
+
+      socket.on('endGame', function() {
+        resetGame();
+        playerList[socket.id].playerData.ready = false;
+        io.sockets.emit('sendGameOverScreenToClient');
+        setTimeout(function() {
+          io.sockets.emit('sendReturnToLobbyToClient');
+        }, 5000);
+      })
 
       socket.on('sendPlayerLocationToServer', function(data) {
         if (playerList[socket.id].playerData !== undefined && data.x !== undefined && data.y !== undefined) {
@@ -193,9 +297,7 @@ exports.init = function() {
       });
 
       socket.on('sendBulletLocationToServer', function(data) {
-        // console.log("request sent to make bullet");
         if (data.dX !== undefined && data.dY !== undefined) {
-          // console.log(data.dX, data.dY);
           player = playerList[socket.id].playerData;
           createBullet(player, data.dX, data.dY);
         }
@@ -209,9 +311,7 @@ exports.init = function() {
       });
 
     socket.on('msg', function(data) {
-      // confirm success to sender
       socket.emit('status', { success: 'true'});
-      // broadcast message to everyone else
       socket.broadcast.emit('newmsg', { 
                                         sender: data.sender, 
                                         body: data.body });

@@ -4,20 +4,54 @@ var GAMEPLAY = (function() {
   var players = {};
   var enemies = {};
   var bullets = [];
+  var gameOver = false;
+  var round = 0;
+
+  // This starts the main gain loop on the client
+  socket.on('sendStartGameToClient', function() {
+    round = 0;
+    run();
+    socket.emit('newRound');
+  }) 
+
+  socket.on('sendRoundOverToClient', function() {
+    socket.emit('newRound');
+  })
+
+  socket.on('sendRoundWaitToClient', function() {
+    round ++;
+    var overlay = $('#gameOverlay');
+    overlay.html("ROUND " + round + " STARTING");
+    overlay.show();
+  });
+
+  socket.on('sendStartRoundToClient', function() {
+    var overlay = $('#gameOverlay');
+    overlay.hide();
+  })
+
+  socket.on('sendGameOverToClient', function() {
+    enemies = {};
+    clearInterval(gameTimer);
+    socket.emit('endGame');
+  });
+
+  socket.on('sendGameOverScreenToClient', function() {
+    var overlay = $('#gameOverlay');
+    overlay.html("GAME OVER LOL, YOU SURVIVED " + round + " ROUNDS!");
+    overlay.show();
+  })
 
   socket.on('sendPlayerLocationsToClient', function(data) {
     players = JSON.parse(data.playerList);
-    // console.log(players);
   });
 
   socket.on('sendEnemyLocationsToClient', function(data) {
     enemies = JSON.parse(data.enemyList);
-    // console.log(enemies);
   });
 
   socket.on('sendBulletLocationsToClient', function(data) {
     bullets = JSON.parse(data.bulletList);
-    // console.log(bullets);
   });
 
   exports.loadCanvas = function() {
@@ -60,6 +94,18 @@ var GAMEPLAY = (function() {
       SScanvas.style.position = "absolute";
       div.appendChild(SScanvas);
       SSTICK.render();
+
+      canvas = document.getElementById("gameCanvas");
+      canvas.setAttribute('tabindex','0');
+      ctx = canvas.getContext("2d");
+
+      MScanvas = document.getElementById("movementStick");
+      MSctx = MScanvas.getContext("2d");
+
+      SScanvas = document.getElementById("shootingStick");
+      SSctx = SScanvas.getContext("2d");
+
+      canvas.focus();
     }
 
   function loop() {
@@ -72,26 +118,8 @@ var GAMEPLAY = (function() {
   function run(){
     canvas.addEventListener('keydown', PLAYER.onKeyDown, false);
 
-    setInterval(loop, 30);
+    gameTimer = setInterval(loop, 30);
   }
 
-  exports.init = function () {
-    console.log("init began");
-    canvas = document.getElementById("gameCanvas");
-    canvas.setAttribute('tabindex','0');
-    ctx = canvas.getContext("2d");
-
-    MScanvas = document.getElementById("movementStick");
-    MSctx = MScanvas.getContext("2d");
-
-    SScanvas = document.getElementById("shootingStick");
-    SSctx = SScanvas.getContext("2d");
-
-
-    canvas.focus();
-    socket.emit('readyToPlay');
-    run();
-
-  };
 return exports;
 }());

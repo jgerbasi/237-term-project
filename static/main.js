@@ -14,7 +14,10 @@ $(document).ready(function() {
   player.name = username;
   player.x = undefined;
   player.y = undefined;
+  player.alive = true;
   player.ready = false;
+  player.width = 23;
+  player.height = 34;
 
   function updatePlayerList() {
     $("#players").empty();
@@ -28,20 +31,30 @@ $(document).ready(function() {
     }
   }
 
+  function endGame() {
+    $('#gameOverlay').hide();
+    $('#gamePage').hide();
+    $('#homeLobby').show();
+  }
+
   socket.emit('sendPlayerToServer', {player: player});
 
   socket.on('sendPlayerListToClient', function(data) {
     players = JSON.parse(data.playerList);
-    //console.log(players);
     updatePlayerList();
   });
+
+  socket.on('sendReturnToLobbyToClient', function() {
+    endGame();
+  })
+
 
   function startGame() {
     var currentState = states.IN_GAME;
     $('#homeLobby').hide();
     $('#gamePage').show();
+    socket.emit('readyToPlay');
     GAMEPLAY.loadCanvas();
-    GAMEPLAY.init();
   }
 
   function createGame() {

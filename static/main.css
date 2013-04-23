@@ -135,3 +135,14 @@ h2 {
   bottom: 0px;
   right: 0px;
 }
+
+#gameOverlay {
+  position: fixed;
+  z-index: 999;
+  top: 0px;
+  right: 40%;
+  display: none;
+  height: 100px;
+  font-size: 60px;
+  text-align: center;
+}

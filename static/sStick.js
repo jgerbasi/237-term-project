@@ -49,21 +49,21 @@ var SSTICK = (function () {
 
     SScanvas.addEventListener("touchstart", function (e) {
       e.preventDefault();
-      var touch = e.touches[0];
-      sStick.setInputXY(touch.pageX - (window.innerWidth - SSWIDTH) , touch.pageY - (window.innerHeight - SSHEIGHT));
+      var stouch = e.touches[0];
+      sStick.setInputXY(stouch.pageX - (window.innerWidth - SSWIDTH) , stouch.pageY - (window.innerHeight - SSHEIGHT));
       sStick.active = true;
     });
 
-    document.addEventListener("touchmove", function (e) {
+    SScanvas.addEventListener("touchmove", function (e) {
       e.preventDefault();
-      var touch = e.touches[0];
+      var stouch = e.targetTouches[0];
       if(sStick.active) {
-        sStick.setInputXY(touch.pageX - (window.innerWidth - SSWIDTH), touch.pageY - (window.innerHeight - SSHEIGHT));
+        sStick.setInputXY(stouch.pageX - (window.innerWidth - SSWIDTH), stouch.pageY - (window.innerHeight - SSHEIGHT));
       }
     });
 
-    document.addEventListener("touchend", function (e) {
-      var touches = e.changedTouches;
+    SScanvas.addEventListener("touchend", function (e) {
+      var stouches = e.changedTouches;
       
       sStick.active = false;
       sStick.setInputXY(SSWIDTH/2, SSHEIGHT/2);

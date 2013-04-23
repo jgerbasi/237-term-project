@@ -48,21 +48,21 @@ var MSTICK = (function () {
 
     MScanvas.addEventListener("touchstart", function (e) {
       e.preventDefault();
-      var touch = e.touches[0];
-      mStick.setInputXY(touch.pageX, touch.pageY - (window.innerHeight - MSHEIGHT));
+      var mtouch = e.touches[0];
+      mStick.setInputXY(mtouch.pageX, mtouch.pageY - (window.innerHeight - MSHEIGHT));
       mStick.active = true;
     });
 
-    document.addEventListener("touchmove", function (e) {
+    MScanvas.addEventListener("touchmove", function (e) {
       e.preventDefault();
-      var touch = e.touches[0];
+      var mtouch = e.targetTouches[0];
       if(mStick.active) {
-        mStick.setInputXY(touch.pageX, touch.pageY - (window.innerHeight - MSHEIGHT));
+        mStick.setInputXY(mtouch.pageX, mtouch.pageY - (window.innerHeight - MSHEIGHT));
       }
     });
 
-    document.addEventListener("touchend", function (e) {
-      var touches = e.changedTouches;
+    MScanvas.addEventListener("touchend", function (e) {
+      var mtouches = e.changedTouches;
       
       mStick.active = false;
       mStick.setInputXY(MSWIDTH/2, MSHEIGHT/2);

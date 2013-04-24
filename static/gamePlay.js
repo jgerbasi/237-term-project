@@ -4,44 +4,34 @@ var GAMEPLAY = (function() {
   var players = {};
   var enemies = {};
   var bullets = [];
-  var gameOver = false;
   var round = 0;
 
-  // This starts the main gain loop on the client
   socket.on('sendStartGameToClient', function() {
-    round = 0;
-    window.state = STATES.GAME_STARTED;
-    run();
-    socket.emit('newRound');
+    window.state = window.STATES.IN_GAME;
   }) 
 
-  socket.on('sendRoundOverToClient', function() {
-    socket.emit('newRound');
-  })
-
   socket.on('sendRoundWaitToClient', function() {
-    round ++;
+    window.state = window.STATES.ROUND_WAIT;
+    round++;
     var overlay = $('#gameOverlay');
     overlay.html("ROUND " + round + " STARTING");
     overlay.show();
   });
 
   socket.on('sendStartRoundToClient', function() {
+    window.state = window.STATES.IN_ROUND;
     var overlay = $('#gameOverlay');
     overlay.hide();
   })
 
   socket.on('sendGameOverToClient', function() {
-    enemies = {};
-    clearInterval(gameTimer);
-    socket.emit('endGame');
-  });
-
-  socket.on('sendGameOverScreenToClient', function() {
+    window.state = window.STATES.GAME_OVER;
+    enemies = [];
     var overlay = $('#gameOverlay');
     overlay.html("GAME OVER LOL, YOU SURVIVED " + round + " ROUNDS!");
+    round = 0;
     overlay.show();
-  })
+  });
 
   socket.on('sendPlayerLocationsToClient', function(data) {
     players = JSON.parse(data.playerList);
@@ -60,8 +50,8 @@ var GAMEPLAY = (function() {
       // Gameplay Area
       canvas = document.createElement('canvas');
       div = document.getElementById('gameDiv');
-      //div.style.width = '100%';
-      //div.style.height = '50%'; 
+      div.style.width = '100%';
+      div.style.height = '50%'; 
       canvas.id     = "gameCanvas";
       canvas.width  = 568;
       canvas.height = 320;
@@ -83,7 +73,6 @@ var GAMEPLAY = (function() {
       MScanvas.style.zIndex   = 8;
       MScanvas.style.position = "absolute";
       div.appendChild(MScanvas);
-      console.log(MSTICK);
       MSTICK.render();
 
       SScanvas = document.createElement('canvas');
@@ -110,16 +99,23 @@ var GAMEPLAY = (function() {
     }
 
   function loop() {
-    PLAYER.doDraw(players);
-    ENEMY.drawEnemies(enemies);
-    BULLET.drawBullets(bullets);
+    if (window.state === window.STATES.ROUND_WAIT) {
+      PLAYER.doDraw(players);
+      BULLET.drawBullets(bullets);
+    } else if (window.state === window.STATES.IN_ROUND) {
+      PLAYER.doDraw(players);
+      ENEMY.drawEnemies(enemies);
+      BULLET.drawBullets(bullets);
+    } else {
+      // do nothing
+    }
   }
 
 
-  function run(){
+  exports.run = function(){
     canvas.addEventListener('keydown', PLAYER.onKeyDown, false);
 
-    gameTimer = setInterval(loop, 30);
+    setInterval(loop, 30);
   }
 
 return exports;

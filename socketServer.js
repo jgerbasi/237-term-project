@@ -262,6 +262,22 @@ exports.init = function() {
           io.sockets.emit('sendPlayerListToClient', {playerList: JSON.stringify(playerList)});
       });
 
+      socket.on('sendStatsToServer', function(data) {
+        console.log(data);
+        playerData=playerList[socket.id].playerData
+        if (playerData !== undefined && playerData.health !== undefined 
+            && playerData.movement !== undefined && playerData.fireRAte !== undefined
+            && playerData.damage !== undefined){
+                playerData.health = data.health;
+                playerData.movement = data.movement;
+                playerData.fireRAte = data.fireRAte;
+                playerData.damage = data.damage;
+                console.log(playerData);
+                // io.sockets.emit('sendPlayerStatsToClient', {playerList: JSON.stringify(playerList)});
+        }
+
+      });
+
       socket.on('readyToPlay', function() {
         if (playerList[socket.id].playerData.ready !== undefined) {
           playerList[socket.id].playerData.ready = true;

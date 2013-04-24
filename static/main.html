@@ -30,6 +30,67 @@
         <button id="startGameButton" class="button wideButton"> Start Game </button>
         <button id="createGameButton" class="button wideButton"> Create Game </button>
 
+        <div id="stats">
+        <table>
+           <caption>Player Stats</caption>
+           <thead>
+              <tr>
+                 <th>Skills</th>
+                 <th>Points</th>
+                 <th>Upgrade</th>
+              </tr>
+           </thead>
+           <tbody>
+              <tr>
+                 <th>Health</th>
+                 <td id="health">0</td>
+                 <td>
+                    <button class="button add"> + </button>
+                    <button class="button sub"> - </button>
+                </td>
+              </tr>
+
+              <tr>
+                 <th>Movement</th>
+                 <td id= "movement">0</td>
+                 <td>
+                    <button class="button add"> + </button>
+                    <button class="button sub"> - </button>
+                </td>
+              </tr>
+
+              <tr>
+                 <th>Fire Rate</th>
+                 <td id="fireRate">0</td>
+                 <td>
+                    <button class="button add"> + </button>
+                    <button class="button sub"> - </button>
+                </td>
+              </tr>
+
+              <tr>
+                 <th>Damage</th>
+                 <td id="damage">0</td>
+                 <td>
+                    <button class="button add"> + </button>
+                    <button class="button sub"> - </button>
+                </td>
+              </tr>
+
+              <tr>
+                 <th>Weapon</th>
+                 <td>0</td>
+                 <td>
+                    <button class="button add"> + </button>
+                    <button class="button sub"> - </button>
+                </td>
+              </tr>
+           </tbody>
+        </table>
+
+        <button id="submitStatsButton" class="button wideButton"> Submit Stats </button>
+    </div>
+
         <div id="chatbox">
             <div id="messageBox">
                 <ul id="messages">

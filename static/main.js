@@ -16,8 +16,39 @@ $(document).ready(function() {
   player.y = undefined;
   player.alive = true;
   player.ready = false;
+  player.health = 0;
+  player.movement = 0;
+  player.fireRate = 0;
+  player.damage = 0;
   player.width = 23;
   player.height = 34;
+
+
+  //puts the chat bar in focus when typing a message
+  $('#chatbody').click(function() {
+    $('#chatbody').focus();
+  });
+
+  //updates the skill tree
+  $('.add').click(function(e) {
+    var td = $(this).parent().prev();
+    var count = parseInt(td.html());
+    count++;
+    td.html(count);
+  });
+
+  $('.sub').click(function(e) {
+    var td = $(this).parent().prev();
+    var count = parseInt(td.html());
+    if (count !== 0){
+      count--;
+      td.html(count);
+    }
+    else
+    {
+      td.html(count);
+    }
+  });
 
   function updatePlayerList() {
     $("#players").empty();
@@ -70,5 +101,15 @@ $(document).ready(function() {
   $('#createGameButton').click(function() {
     createGame();
   });
+
+  $('#submitStatsButton').click(function() {
+    console.log("clicked stats button");
+    player.health = parseInt($("#health").html());
+    player.movement = parseInt($("#movement").html());
+    player.fireRate = parseInt($("#fireRate").html());
+    player.damage = parseInt($("#damage").html());
+    socket.emit('sendStatsToServer', {player: player});
+  });
+
 
 });

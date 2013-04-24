@@ -17,6 +17,19 @@ body {
   top: 0px;
 }
 
+table, td, th
+{
+  border:1px solid green;
+  width: 25%;
+  height: 25%;
+  text-align: center;
+}
+th
+{
+  background-color:green;
+  color:white;
+}
+
 #chatbox {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   /*text-shadow: 1px 1px 1px #999;*/
@@ -61,6 +74,10 @@ body {
   margin-left: 1px;
   height: 26px;
   width: 20%;
+}
+
+#add {
+  position: relative;
 }
 
 .button {
@@ -145,4 +162,8 @@ h2 {
   height: 100px;
   font-size: 60px;
   text-align: center;
+}
+
+#stats {
+  margin-left: 10%;
 }

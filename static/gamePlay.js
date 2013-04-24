@@ -10,6 +10,7 @@ var GAMEPLAY = (function() {
   // This starts the main gain loop on the client
   socket.on('sendStartGameToClient', function() {
     round = 0;
+    window.state = STATES.GAME_STARTED;
     run();
     socket.emit('newRound');
   }) 

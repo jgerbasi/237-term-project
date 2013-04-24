@@ -73,7 +73,7 @@ exports.doDraw = function(players){
     player = players[p];
     for (d in player) {
       data = player[d];
-      if (data.name !== username && data.x !== undefined && data.y !== undefined) {
+      if (data !== null && data.name !== username && data.x !== undefined && data.y !== undefined) {
         ctx.drawImage(spriteImage,spriteX,spriteY, spriteWidth,spriteHeight, (data.x + bgDX), (data.y + bgDY), spriteWidth, spriteHeight);
       }
     }

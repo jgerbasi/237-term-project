@@ -1,12 +1,16 @@
 $(document).ready(function() {
 
-  var states = {
-      LOGGED_IN: 0,
-      IN_LOBBY: 1,
+  window.STATES = {
+      IN_LOBBY: 0,
+      READY_CHECK: 1,
       IN_GAME: 2,
+      ROUND_WAIT: 3,
+      IN_ROUND: 4,
+      ROUND_END: 5,
+      GAME_OVER: 6,
   }
 
-  var currentState = states.LOGGED_IN;
+  window.currentState = window.STATES.IN_LOBBY;
   var username = docCookies.getItem('username');
 
   var players = {};
@@ -24,8 +28,44 @@ $(document).ready(function() {
   player.width = 23;
   player.height = 34;
 
-  //adds points to the stats page
-    $('p').html(player.points);
+  socket.emit('sendPlayerToServer', {player: player});
+
+  GAMEPLAY.loadCanvas();
+  GAMEPLAY.run();
+
+  function updatePlayerList() {
+    $("#players").empty();
+    for (id in players) {
+      player = players[id];
+      if (player !== undefined) {
+        if (player.playerData !== undefined) {
+            $("#players").append($("<li>").html(player.playerData.name));
+        }
+      }
+    }
+  }
+
+  function endGame() {
+    $('#gameOverlay').hide();
+    $('#gamePage').hide();
+    $('#homeLobby').show();
+  }
+
+  function startGame() {
+    window.currentState = window.STATES.READY_CHECK;
+    $('#homeLobby').hide();
+    $('#gamePage').show();
+    socket.emit('readyToPlay');
+  }
+
+  function createGame() {
+    window.currentState = window.STATES.IN_LOBBY;
+    $('#homeLobby').hide();
+    $('#gameLobby').show();
+  }
+<<<<<<< HEAD
+//Home lobby Buttons
+=======
 
   //puts the chat bar in focus when typing a message
   $('#chatbody').click(function() {
@@ -46,57 +86,12 @@ $(document).ready(function() {
     if (count !== 0){
       count--;
       td.html(count);
-    }
-    else
-    {
+    } else {
       td.html(count);
     }
   });
 
-  function updatePlayerList() {
-    $("#players").empty();
-    for (id in players) {
-      player = players[id];
-      if (player !== undefined) {
-        if (player.playerData !== undefined) {
-            $("#players").append($("<li>").html(player.playerData.name));
-        }
-      }
-    }
-  }
-
-  function endGame() {
-    $('#gameOverlay').hide();
-    $('#gamePage').hide();
-    $('#homeLobby').show();
-  }
-
-  socket.emit('sendPlayerToServer', {player: player});
-
-  socket.on('sendPlayerListToClient', function(data) {
-    players = JSON.parse(data.playerList);
-    updatePlayerList();
-  });
-
-  socket.on('sendReturnToLobbyToClient', function() {
-    endGame();
-  })
-
-
-  function startGame() {
-    var currentState = states.IN_GAME;
-    $('#homeLobby').hide();
-    $('#gamePage').show();
-    socket.emit('readyToPlay');
-    GAMEPLAY.loadCanvas();
-  }
-
-  function createGame() {
-    var currentState = states.IN_LOBBY;
-    $('#homeLobby').hide();
-    $('#gameLobby').show();
-  }
-//Home lobby Buttons
+>>>>>>> 8899c0f9fd8616bd134244f978cd4590908a7f2b
   $('#startGameButton').click(function() {
     startGame();
   });
@@ -119,9 +114,19 @@ $(document).ready(function() {
     socket.emit('sendStatsToServer', {player: player});
   });
 
+<<<<<<< HEAD
   $('#back').click(function(){
     $('#homeLobby').show();
     $('#statsPage').hide();
+=======
+  socket.on('sendPlayerListToClient', function(data) {
+    players = JSON.parse(data.playerList);
+    updatePlayerList();
+  });
+
+  socket.on('sendReturnToLobbyToClient', function() {
+    endGame();
+>>>>>>> 8899c0f9fd8616bd134244f978cd4590908a7f2b
   })
 
 

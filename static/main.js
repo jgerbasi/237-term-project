@@ -24,6 +24,7 @@ $(document).ready(function() {
   player.movement = 0;
   player.fireRate = 0;
   player.damage = 0;
+  player.points = 10;
   player.width = 23;
   player.height = 34;
 
@@ -62,6 +63,9 @@ $(document).ready(function() {
     $('#homeLobby').hide();
     $('#gameLobby').show();
   }
+<<<<<<< HEAD
+//Home lobby Buttons
+=======
 
   //puts the chat bar in focus when typing a message
   $('#chatbody').click(function() {
@@ -87,6 +91,7 @@ $(document).ready(function() {
     }
   });
 
+>>>>>>> 8899c0f9fd8616bd134244f978cd4590908a7f2b
   $('#startGameButton').click(function() {
     startGame();
   });
@@ -95,8 +100,13 @@ $(document).ready(function() {
     createGame();
   });
 
+  $('#showPlayerStats').click(function() {
+    $('#homeLobby').hide();
+    $('#statsPage').show();
+  });
+
+//Stats Page Buttons
   $('#submitStatsButton').click(function() {
-    console.log("clicked stats button");
     player.health = parseInt($("#health").html());
     player.movement = parseInt($("#movement").html());
     player.fireRate = parseInt($("#fireRate").html());
@@ -104,6 +114,11 @@ $(document).ready(function() {
     socket.emit('sendStatsToServer', {player: player});
   });
 
+<<<<<<< HEAD
+  $('#back').click(function(){
+    $('#homeLobby').show();
+    $('#statsPage').hide();
+=======
   socket.on('sendPlayerListToClient', function(data) {
     players = JSON.parse(data.playerList);
     updatePlayerList();
@@ -111,6 +126,7 @@ $(document).ready(function() {
 
   socket.on('sendReturnToLobbyToClient', function() {
     endGame();
+>>>>>>> 8899c0f9fd8616bd134244f978cd4590908a7f2b
   })
 
 

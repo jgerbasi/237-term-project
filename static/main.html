@@ -28,14 +28,18 @@
     <!-- MAIN LOBBY DIV -->
     <div id="homeLobby" class="page">
         <button id="logoutButton" class="button"> Logout </button>
-        <button id="startGameButton" class="button wideButton"> Start Game </button>
-        <button id="createGameButton" class="button wideButton"> Create Game </button>
-        <button id="showInstructions" class="button wideButton"> Instructions </button>
-        <button id="showPlayerStats" class="button wideButton"> Show Player Stats </button>
+        <div id="topNav">
+          <button id="showInstructions" class="button wideButton"> Instructions </button>
+          <button id="showPlayerStats" class="button wideButton"> Stats </button>
+        </div>
+        <div id="gameControls">
+          <button id="startGameButton" class="button wideButton"> Join Game </button>
+          <button id="createGameButton" class="button wideButton"> Create Game </button>
+        </div>
 
         <div id="instructions">
           <p>This is a horde-style action game whereby you kill wave after wave of enemies.</p>
-          <h6>Controls</h6>
+          <h6>Controls:</h6>
           <ul>
             <li>Left Analog : Move Character</li>
             <li>Right Analog : Shoot</li>
@@ -62,67 +66,58 @@
 
 <!-- This is the Stats Div -->
     <div id="statsPage">
+        <button id="back" class="button wideButton"> Back </button>
+        <div id="statsTable">
         <table>
            <caption>Player Stats</caption>
            <thead>
               <tr>
                  <th>Skills</th>
                  <th>Points</th>
-                 <th>Upgrade</th>
               </tr>
            </thead>
            <tbody>
               <tr>
-                 <th>Health</th>
+                 <td>Health</td>
                  <td id="health">0</td>
-                 <td>
-                    <button class="button add"> + </button>
-                    <button class="button sub"> - </button>
-                </td>
+                 <td><button class="button add"> + </button></td>
+                 <td><button class="button sub"> - </button></td>
               </tr>
 
               <tr>
-                 <th>Movement</th>
+                 <td>Movement</td>
                  <td id= "movement">0</td>
-                 <td>
-                    <button class="button add"> + </button>
-                    <button class="button sub"> - </button>
-                </td>
+                 <td><button class="button add"> + </button></td>
+                 <td><button class="button sub"> - </button></td>
               </tr>
 
               <tr>
-                 <th>Fire Rate</th>
+                 <td>Fire Rate</td>
                  <td id="fireRate">0</td>
-                 <td>
-                    <button class="button add"> + </button>
-                    <button class="button sub"> - </button>
-                </td>
+                 <td><button class="button add"> + </button></td>
+                 <td><button class="button sub"> - </button></td>
               </tr>
 
               <tr>
-                 <th>Damage</th>
+                 <td>Damage</td>
                  <td id="damage">0</td>
-                 <td>
-                    <button class="button add"> + </button>
-                    <button class="button sub"> - </button>
-                </td>
+                 <td><button class="button add"> + </button></td>
+                 <td><button class="button sub"> - </button></td>
               </tr>
 
               <tr>
-                 <th>Weapon</th>
+                 <td>Weapon</td>
                  <td>0</td>
-                 <td>
-                    <button class="button add"> + </button>
-                    <button class="button sub"> - </button>
-                </td>
+                 <td><button class="button add"> + </button></td>
+                 <td><button class="button sub"> - </button></td>
               </tr>
            </tbody>
         </table>
-        <div id="Points">
-            <p>?</p>
+        <div id="points">
+            <p>Points Left: <span>5</span></p>
         </div>
-        <button id="submitStatsButton" class="button wideButton"> Submit Stats </button>
-        <button id="back" class="button wideButton"> Back </button>
+        <button id="submitStatsButton" class="button wideButton"> Save Stats </button>
+        </div>
     </div>
 
 
@@ -139,6 +134,11 @@
             </form>
         </div>
     </div> -->
+
+    <div id="loadingScreen">
+      WAITING FOR OTHER PLAYERS TO JOIN ...
+
+    </div>
 
     <!-- GAME Canvas DIV -->
     <div id="gamePage">

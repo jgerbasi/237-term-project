@@ -1,5 +1,11 @@
 $(document).ready(function() {
 
+  var isPortraitMode = window.innerWidth < window.innerHeight;
+
+  if (isPortraitMode) {
+    alert("Please tilt your screen sideways!");
+  }
+
   window.STATES = {
       IN_LOBBY: 0,
       READY_CHECK: 1,
@@ -54,7 +60,7 @@ $(document).ready(function() {
   function startGame() {
     window.currentState = window.STATES.READY_CHECK;
     $('#homeLobby').hide();
-    $('#gamePage').show();
+    $('#loadingScreen').show();
     socket.emit('readyToPlay');
   }
 
@@ -78,7 +84,7 @@ $(document).ready(function() {
   });
 
   $('.sub').click(function(e) {
-    var td = $(this).parent().prev();
+    var td = $(this).parent().prev().prev();
     var count = parseInt(td.html());
     if (count !== 0){
       count--;
@@ -88,7 +94,6 @@ $(document).ready(function() {
     }
   });
 
->>>>>>> 8899c0f9fd8616bd134244f978cd4590908a7f2b
   $('#startGameButton').click(function() {
     startGame();
   });

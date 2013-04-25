@@ -7,6 +7,8 @@ var GAMEPLAY = (function() {
   var round = 0;
 
   socket.on('sendStartGameToClient', function() {
+    $('#loadingScreen').hide();
+    $('#gamePage').show();
     window.state = window.STATES.IN_GAME;
   }) 
 

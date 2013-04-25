@@ -43,6 +43,8 @@ button {
 :-ms-input-placeholder { font-size:25px; padding:0px;} /* ie */
 input:-moz-placeholder { font-size:25px; padding:0px;}
 
-a{
-  font-size: 30px;
+a {
+  display: block;
+  margin-top: 5px;
+  font-size: 25px;
 }

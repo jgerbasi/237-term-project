@@ -18,6 +18,7 @@
     <script src="mStick.js"></script>
     <script src="sStick.js"></script>
     <script src="gamePlay.js"></script>
+    <script src="sdetection.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <title>Main</title>
@@ -30,6 +31,7 @@
         <button id="startGameButton" class="button wideButton"> Start Game </button>
         <button id="createGameButton" class="button wideButton"> Create Game </button>
         <button id="showInstructions" class="button wideButton"> Instructions </button>
+        <button id="showPlayerStats" class="button wideButton"> Show Player Stats </button>
 
         <div id="instructions">
           <p>This is a horde-style action game whereby you kill wave after wave of enemies.</p>
@@ -40,7 +42,26 @@
           </ul>
         </div>
 
-        <div id="stats">
+        <div id="chatbox">
+            <div id="messageBox">
+                <ul id="messages">
+            </div>
+
+            <form id="chatform">
+                <input id="chatbody" type="text" name="msg">
+                <input id="submit" class="button" type="submit" value="Submit">
+            </form>
+        </div>
+        <div id="playerList">
+            <h2>Players Online</h2>
+            <div id="playerListWrapper">
+                <ul id="players">
+            </div>
+        </div>
+    </div>
+
+<!-- This is the Stats Div -->
+    <div id="statsPage">
         <table>
            <caption>Player Stats</caption>
            <thead>
@@ -97,27 +118,13 @@
               </tr>
            </tbody>
         </table>
-
+        <div id="Points">
+            <p>?</p>
+        </div>
         <button id="submitStatsButton" class="button wideButton"> Submit Stats </button>
+        <button id="back" class="button wideButton"> Back </button>
     </div>
 
-        <div id="chatbox">
-            <div id="messageBox">
-                <ul id="messages">
-            </div>
-
-            <form id="chatform">
-                <input id="chatbody" type="text" name="msg">
-                <input id="submit" class="button" type="submit" value="Submit">
-            </form>
-        </div>
-        <div id="playerList">
-            <h2>Players Online</h2>
-            <div id="playerListWrapper">
-                <ul id="players">
-            </div>
-        </div>
-    </div>
 
     <!-- GAME LOBBY DIV -->
 <!--     <div id="gameLobby" class="page">

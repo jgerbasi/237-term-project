@@ -17,19 +17,6 @@ body {
   top: 0px;
 }
 
-table, td, th
-{
-  border:1px solid green;
-  width: 25%;
-  height: 25%;
-  text-align: center;
-}
-th
-{
-  background-color:green;
-  color:white;
-}
-
 #chatbox {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   /*text-shadow: 1px 1px 1px #999;*/
@@ -164,10 +151,25 @@ h2 {
   text-align: center;
 }
 
-#stats {
+#statsPage {
+  display:none;
   margin-left: 10%;
 }
 
 #instructions {
   display: none;
+  height: 150px;
+}
+
+table, td, th
+{
+  border:1px solid green;
+  width: 10px;
+  height: 10px;
+  text-align: center;
+}
+th
+{
+  background-color:green;
+  color:white;
 }

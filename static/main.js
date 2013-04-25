@@ -104,6 +104,10 @@ $(document).ready(function() {
     socket.emit('sendStatsToServer', {player: player});
   });
 
+  $('#showInstructions').click(function() {
+    $('#instructions').toggle();
+  });
+
   socket.on('sendPlayerListToClient', function(data) {
     players = JSON.parse(data.playerList);
     updatePlayerList();

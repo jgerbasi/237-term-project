@@ -175,6 +175,22 @@ $('#callOut').click(function(){
     alert("u clicked 3");
   });
 
+  $('#health').click(function(){
+    alert("health");
+  });
+
+  $('#movment').click(function(){
+    alert("movement");
+  });
+
+  $('#fireRate').click(function(){
+    alert("fireRate");
+  });
+
+  $('#damage').click(function(){
+    alert("damage");
+  });
+
   socket.on('sendPlayerListToClient', function(data) {
     players = JSON.parse(data.playerList);
     updatePlayerList();

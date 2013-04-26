@@ -125,6 +125,36 @@ $(document).ready(function() {
     $('#statsPage').hide();
   });
 
+// callOut Div
+
+$('#callOut').click(function(){
+  word = "halp faggot";
+  socket.emit('sendCallOutToServer', {word:word})
+});
+
+
+// clicking the gun divs
+  $('#gun1').click(function(){
+    $('#gun1').css("border-color:#000");
+    $('#gun2').css("border-color:#fff");
+    $('#gun3').css("border-color:#fff");
+    alert("u clicked 1");
+  });
+
+  $('#gun2').click(function(){
+    $('#gun1').css("border-color:#fff");
+    $('#gun2').css("border-color:#000");
+    $('#gun3').css("border-color:#fff");
+    alert("u clicked 2");
+  });
+
+  $('#gun3').click(function(){
+    $('#gun1').css("border-color:#fff");
+    $('#gun2').css("border-color:#fff");
+    $('#gun3').css("border-color:#000");
+    alert("u clicked 3");
+  });
+
   socket.on('sendPlayerListToClient', function(data) {
     players = JSON.parse(data.playerList);
     updatePlayerList();

@@ -23,6 +23,7 @@ var PLAYER = (function(){
       bgY = -200,
       bgDX = 0,
       bgDY = 0;
+      callout = "Help!"
       //bulletX = spawnX,
       //bulletY = spawnY;
 
@@ -79,6 +80,10 @@ exports.doDraw = function(players){
     }
   }
   ctx.drawImage(spriteImage,spriteX,spriteY, spriteWidth,spriteHeight, spawnX, spawnY, spriteWidth, spriteHeight);
+}
+
+exports.callOut = function(players){
+//voice help
 }
 
 exports.makeBullet = function(sDeltaXY){

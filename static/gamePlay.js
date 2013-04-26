@@ -66,7 +66,7 @@ var GAMEPLAY = (function() {
 
       div.appendChild(canvas);
 
-      //Analog
+      //Analogs
       MScanvas = document.createElement('canvas');
       div = document.getElementById('analogDiv'); 
       MScanvas.id     = "movementStick";
@@ -87,6 +87,7 @@ var GAMEPLAY = (function() {
       div.appendChild(SScanvas);
       SSTICK.render();
 
+      //Game Canvas
       canvas = document.getElementById("gameCanvas");
       canvas.setAttribute('tabindex','0');
       ctx = canvas.getContext("2d");

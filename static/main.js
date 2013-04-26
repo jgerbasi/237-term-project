@@ -34,6 +34,8 @@ $(document).ready(function() {
   player.width = 23;
   player.height = 34;
 
+  window.lobby = undefined;
+
   socket.emit('sendPlayerToServer', {player: player});
 
   GAMEPLAY.loadCanvas();
@@ -60,14 +62,28 @@ $(document).ready(function() {
   function startGame() {
     window.currentState = window.STATES.READY_CHECK;
     $('#homeLobby').hide();
+    $('#gameLobby').hide();
     $('#loadingScreen').show();
     socket.emit('readyToPlay');
+  }
+
+  function joinLobby() {
+    $('#homeLobby').hide();
+    $('#gameLobby').show();
+    socket.emit('joinLobby', {player: player});
   }
 
   function createGame() {
     window.currentState = window.STATES.IN_LOBBY;
     $('#homeLobby').hide();
     $('#gameLobby').show();
+    socket.emit('makeNewLobby', {lobbyName: username, player: player});
+  }
+
+  function failedToJoin() {
+    $('#homeLobby').show();
+    $('#gameLobby').hide();
+    alert("No Lobbies Available To Join");
   }
 
   //puts the chat bar in focus when typing a message
@@ -92,6 +108,10 @@ $(document).ready(function() {
     } else {
       td.html(count);
     }
+  });
+
+  $('#joinGameButton').click(function() {
+    joinLobby();
   });
 
   $('#startGameButton').click(function() {
@@ -164,5 +184,12 @@ $('#callOut').click(function(){
     endGame();
   })
 
+  socket.on('noLobbyAvailable', function() {
+    failedToJoin();
+  });
+
+  socket.on('updateLobbyName', function(data) {
+    window.lobby = data.lobby;
+  });
 
 });

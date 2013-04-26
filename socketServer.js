@@ -108,6 +108,16 @@ exports.init = function() {
     enemyCount = round;
   }
 
+  // function loop() {
+  //   for (var i = 0; i < lobbies.length; i++) {
+  //     var lobbyName = lobbies[i].name;
+  //     var currentState = lobbes[i].state;
+  //     io.sockets.in(lobbyName).emit();
+  //     SERVER_ENEMY.update(lobbies[i]);
+  //     SERVER_ENEMY.spawnEnemies();
+  //   }
+  // }
+
   function loop() {
     if (currentState === STATES.IN_LOBBY) {
       // nothing
@@ -148,11 +158,40 @@ exports.init = function() {
 
   io.sockets.on("connection", function(socket) {
       playerList[socket.id] = { isHere: true, playerData: undefined };
-      socket.join('gameLobby');
 
       socket.on('sendPlayerToServer', function(data) {
           playerList[socket.id].playerData = data.player;
           io.sockets.emit('sendPlayerListToClient', {playerList: JSON.stringify(playerList)});
+      });
+
+      socket.on('makeNewLobby', function(data) {
+        socket.join(data.lobbyName);
+        lobby = new Object;
+        lobby.name = data.lobbyName;
+        lobby.state = STATES.IN_LOBBY;
+        lobby.enemyList = [];
+        lobby.playerList = [];
+        lobby.playerList.push(data.player);
+        lobby.enemyList = [];
+        lobby.bulletList = [];
+        lobbies.push(lobby);
+        socket.emit('updateLobbyName', {lobby: lobby.name});
+      });
+
+      socket.on('joinLobby', function(data) {
+        foundLobby = false;
+        for (var i = 0; i < lobbies.length; i++) {
+          if (lobbies[i].playerList.length < 4) {
+            socket.join(lobbies[i].name);
+            lobbies[i].playerList.push(playerList[socket.id].playerData);
+            console.log(lobbies[i].playerList);
+            foundLobby = true;
+            socket.emit('updateLobbyName', {lobby: lobbies[i].name});
+          }
+        }
+        if (!foundLobby) {
+          socket.emit('noLobbyAvailable');
+        }
       });
 
       socket.on('sendStatsToServer', function(data) {

@@ -1,3 +1,10 @@
+// var enemyList = [];
+// var playerList = [];
+
+exports.update = function(lobby) {
+  enemyList = lobby.enemyList;
+}
+
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }

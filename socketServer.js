@@ -241,6 +241,13 @@ exports.init = function() {
         }
       });
 
+      socket.on('sendCallOutToServer', function(data) {
+        if (data.callOut !== undefined){
+          player = playerList[socket.id].playerData;
+          PLAYER.callOut(player, data.callout);
+        }
+      });
+
     // ============================
     // ==== Chatroom ==============
     // ============================

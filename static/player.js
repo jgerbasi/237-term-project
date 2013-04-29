@@ -78,6 +78,10 @@ exports.doDraw = function(players){
   ctx.drawImage(spriteImage,spriteX,spriteY, spriteWidth,spriteHeight, spawnX, spawnY, spriteWidth, spriteHeight);
 }
 
+exports.callOut = function(players){
+//voice help
+}
+
 exports.makeBullet = function(sDeltaXY){
   socket.emit("sendBulletLocationToServer", {dX: sDeltaXY.dX, dY: sDeltaXY.dY, lobby: window.lobby});
 }

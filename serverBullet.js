@@ -1,3 +1,6 @@
+var bullets = [];
+var enemyList = [];
+
 function checkCollision(bullet) {
   for (var i = 0; i < enemyList.length; i++) {
     enemy = enemyList[i];
@@ -16,11 +19,13 @@ function checkCollision(bullet) {
   return false;
 }
 
-exports.moveBullets = function() {
+exports.moveBullets = function(lobby) {
+  bullets = lobby.bulletList;
+  enemyList = lobby.enemyList;
   for (var i = 0; i < bullets.length; i++) {
       bullets[i].x += bullets[i].dx;
       bullets[i].y += bullets[i].dy;
-      if (checkCollision(bullets[i])) {
+      if (checkCollision(bullets[i], lobby)) {
         bullets.splice(i, 1);
         i--;
       }
@@ -36,7 +41,7 @@ exports.moveBullets = function() {
     }
   }
 
-exports.createBullet = function(player, dx, dy) {
+exports.createBullet = function(player, dx, dy, lobby) {
   var bullet = {};
   bullet.x = player.x + 12;
   bullet.y = player.y + 17;
@@ -45,5 +50,6 @@ exports.createBullet = function(player, dx, dy) {
   bullet.start = true;
   bullet.height = 5;
   bullet.width = 5;
+  lobby.bulletList.push(bullet);
   bullets.push(bullet);
 }

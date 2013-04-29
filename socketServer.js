@@ -4,12 +4,8 @@ exports.init = function() {
   var SERVER_BULLET = require('./serverBullet');
   io.set('log level', 1);
 
-  global.playerList = {};
+  var playerList = {};
   var lobbies = [];
-  global.enemyList = [];
-  global.bullets = [];
-  var round = 0;
-  global.enemyCount = 0;
 
   var STATES = {
       IN_LOBBY: 0,
@@ -21,136 +17,117 @@ exports.init = function() {
       GAME_OVER: 6,
   }
 
-  var currentState = STATES.IN_LOBBY;
-
-  function checkReady(playerList) {
+  function checkReady(lobby) {
     count = 0;
-    for (p in playerList) {
-      player = playerList[p];
-      for (d in player) {
-        data = player[d];
-        if (data !== undefined && data.ready !== undefined) {
-          if (data.ready === true) {
-            count++;
-          }
+    for (p in lobby.playerList) {
+      player = lobby.playerList[p];
+      if (player !== undefined && player.ready !== undefined) {
+        if (player.ready === true) {
+          count++;
         }
-      }
+      }   
     }
     return count === 2;
   }
 
-  function resetGame() {
-    enemyList = [];
-    round = 0;
-    enemyCount = 0;
-    for (p in playerList) {
-      player = playerList[p];
-      for (d in player) {
-        data = player[d];
-        if (data !== undefined && data.ready !== undefined) {
-          data.ready = false;
-        }
+  function resetGame(lobby) {
+    lobby.enemyList = [];
+    lobby.round = 0;
+    lobby.enemyCount = 0;
+    for (p in lobby.playerList) {
+      player = lobby.playerList[p];
+      if (player !== undefined && player.ready !== undefined) {
+        player.ready = false;
       }
     }
   }
 
-  function endGame() {
-    currentState = STATES.GAME_OVER;
-    io.sockets.emit('sendGameOverToClient');
-    resetGame();
+  function endGame(lobby) {
+    lobby.state = STATES.GAME_OVER;
+    io.sockets.in(lobby.name).emit('sendGameOverToClient');
+    resetGame(lobby);
     setTimeout(function() {
-      io.sockets.emit('sendReturnToLobbyToClient');
+      io.sockets.in(lobby.name).emit('sendReturnToLobbyToClient');
     }, 5000);
   }
 
-  function checkGameOver() {
-    for (p in playerList) {
-      player = playerList[p];
-      for (d in player) {
-        data = player[d];
-        if (data !== undefined && data.alive !== undefined) {
-          if (data.alive === true) return false;
-        }
+  function checkGameOver(lobby) {
+    for (p in lobby.playerList) {
+      player = lobby.playerList[p];
+      if (player !== undefined && player.alive !== undefined) {
+        if (player.alive === true) return false;
       }
     }
-    endGame();
+    endGame(lobby);
     return true;
   }
 
-  function checkRoundOver() {
-    if (enemyCount === 0 && enemyList.length === 0) {
+  function checkRoundOver(lobby) {
+    if (lobby.enemyCount === 0 && lobby.enemyList.length === 0) {
       // send last enemy update
-      io.sockets.emit('sendEnemyLocationsToClient', {enemyList: JSON.stringify(enemyList)});
-      currentState = STATES.ROUND_END;
-      io.sockets.emit('sendRoundWaitToClient');
+      io.sockets.in(lobby.name).emit('sendEnemyLocationsToClient', {enemyList: JSON.stringify(lobby.enemyList)});
+      lobby.state = STATES.ROUND_END;
+      io.sockets.in(lobby.name).emit('sendRoundWaitToClient');
       setTimeout(function() {
-        startRound();
-        io.sockets.emit('sendStartRoundToClient');
+        startRound(lobby);
+        io.sockets.in(lobby.name).emit('sendStartRoundToClient');
       }, 5000);
       return true;
     }
     return false;
   }
 
-  function startRound() {
+  function startRound(lobby) {
     // MAke sure everyone starts out alive
-    for (p in playerList) {
-      player = playerList[p];
-      for (d in player) {
-        data = player[d];
-        if (data !== undefined && data.alive !== undefined) {
-          data.alive = true;
-        }
+    for (p in lobby.playerList) {
+      player = lobby.playerList[p];
+      if (player !== undefined && player.alive !== undefined) {
+        player.alive = true;
       }
     }
-    round++;
-    currentState = STATES.IN_ROUND;
-    enemyCount = round;
+    lobby.round++;
+    lobby.state = STATES.IN_ROUND;
+    lobby.enemyCount = lobby.round;
   }
 
-  // function loop() {
-  //   for (var i = 0; i < lobbies.length; i++) {
-  //     var lobbyName = lobbies[i].name;
-  //     var currentState = lobbes[i].state;
-  //     io.sockets.in(lobbyName).emit();
-  //     SERVER_ENEMY.update(lobbies[i]);
-  //     SERVER_ENEMY.spawnEnemies();
-  //   }
-  // }
-
   function loop() {
-    if (currentState === STATES.IN_LOBBY) {
-      // nothing
-    } else if (currentState === STATES.READY_CHECK) {
-      // nothing
-    } else if (currentState === STATES.IN_GAME) {
-      SERVER_BULLET.moveBullets();
-      io.sockets.emit('sendPlayerLocationsToClient', {playerList: JSON.stringify(playerList)});
-      io.sockets.emit('sendBulletLocationsToClient', {bulletList: JSON.stringify(bullets)});
-    } else if (currentState === STATES.ROUND_WAIT) {
-      SERVER_BULLET.moveBullets();
-      io.sockets.emit('sendPlayerLocationsToClient', {playerList: JSON.stringify(playerList)});
-      io.sockets.emit('sendBulletLocationsToClient', {bulletList: JSON.stringify(bullets)});
-    } else if (currentState === STATES.IN_ROUND) {
-      if (enemyCount > 0) {
-        SERVER_ENEMY.spawnEnemies();
+    for (var i = 0; i < lobbies.length; i++) {
+      var lobby = lobbies[i];
+      var lobbyName = lobby.name;
+      var currentState = lobbies[i].state;
+      if (currentState === STATES.IN_LOBBY) {
+        // nothing
+      } else if (currentState === STATES.READY_CHECK) {
+        // nothing
+      } else if (currentState === STATES.IN_GAME) {
+        SERVER_BULLET.moveBullets(lobby);
+        io.sockets.in(lobbyName).emit('sendPlayerLocationsToClient', {playerList: JSON.stringify(lobby.playerList)});
+        io.sockets.in(lobbyName).emit('sendBulletLocationsToClient', {bulletList: JSON.stringify(lobby.bulletList)});
+      } else if (currentState === STATES.ROUND_WAIT) {
+        SERVER_BULLET.moveBullets(lobby);
+        io.sockets.in(lobbyName).emit('sendPlayerLocationsToClient', {playerList: JSON.stringify(lobby.playerList)});
+        io.sockets.in(lobbyName).emit('sendBulletLocationsToClient', {bulletList: JSON.stringify(lobby.bulletList)});
+      } else if (currentState === STATES.IN_ROUND) {
+        if (lobby.enemyCount > 0) {
+          SERVER_ENEMY.spawnEnemies(lobby);
+        }
+        if (!checkRoundOver(lobby)) {
+          checkGameOver(lobby);
+        }
+        SERVER_ENEMY.moveEnemies(lobby);
+        io.sockets.in(lobbyName).emit('sendEnemyLocationsToClient', {enemyList: JSON.stringify(lobby.enemyList)});
+        SERVER_BULLET.moveBullets(lobby);
+        io.sockets.in(lobbyName).emit('sendPlayerLocationsToClient', {playerList: JSON.stringify(lobby.playerList)});
+        io.sockets.in(lobbyName).emit('sendBulletLocationsToClient', {bulletList: JSON.stringify(lobby.bulletList)});
+      } else if (currentState === STATES.ROUND_END) {
+        SERVER_BULLET.moveBullets(lobby);
+        io.sockets.in(lobbyName).emit('sendPlayerLocationsToClient', {playerList: JSON.stringify(lobby.playerList)});
+        io.sockets.in(lobbyName).emit('sendBulletLocationsToClient', {bulletList: JSON.stringify(lobby.bulletList)});
+      } else if (currentState === STATES.GAME_OVER) {
+        // nothing
+      } else {
+        // should not get here
       }
-      if (!checkRoundOver()) {
-        checkGameOver();
-      }
-      SERVER_ENEMY.moveEnemies();
-      io.sockets.emit('sendEnemyLocationsToClient', {enemyList: JSON.stringify(enemyList)});
-      SERVER_BULLET.moveBullets();
-      io.sockets.emit('sendPlayerLocationsToClient', {playerList: JSON.stringify(playerList)});
-      io.sockets.emit('sendBulletLocationsToClient', {bulletList: JSON.stringify(bullets)});
-    } else if (currentState === STATES.ROUND_END) {
-      SERVER_BULLET.moveBullets();
-      io.sockets.emit('sendPlayerLocationsToClient', {playerList: JSON.stringify(playerList)});
-      io.sockets.emit('sendBulletLocationsToClient', {bulletList: JSON.stringify(bullets)});
-    } else if (currentState === STATES.GAME_OVER) {
-      // nothing
-    } else {
-      // should not get here
     }
   }
 
@@ -170,10 +147,13 @@ exports.init = function() {
         lobby.name = data.lobbyName;
         lobby.state = STATES.IN_LOBBY;
         lobby.enemyList = [];
-        lobby.playerList = [];
-        lobby.playerList.push(data.player);
+        lobby.playerList = {};
+        lobby.playerCount = 0;
+        lobby.playerList[socket.id] = (playerList[socket.id].playerData);
+        lobby.playerCount++;
         lobby.enemyList = [];
         lobby.bulletList = [];
+        lobby.round = 0;
         lobbies.push(lobby);
         socket.emit('updateLobbyName', {lobby: lobby.name});
       });
@@ -181,10 +161,12 @@ exports.init = function() {
       socket.on('joinLobby', function(data) {
         foundLobby = false;
         for (var i = 0; i < lobbies.length; i++) {
-          if (lobbies[i].playerList.length < 4) {
+          if (lobbies[i].playerCount < 4 && lobbies[i].round === 0) {
             socket.join(lobbies[i].name);
-            lobbies[i].playerList.push(playerList[socket.id].playerData);
+            lobbies[i].playerList[socket.id] = (playerList[socket.id].playerData);
             console.log(lobbies[i].playerList);
+            lobby.playerCount++;
+
             foundLobby = true;
             socket.emit('updateLobbyName', {lobby: lobbies[i].name});
           }
@@ -210,37 +192,52 @@ exports.init = function() {
 
       });
 
-      socket.on('readyToPlay', function() {
-        if (playerList[socket.id].playerData.ready !== undefined) {
-          playerList[socket.id].playerData.ready = true;
-          currentState = STATES.READY_CHECK;
-          if (checkReady(playerList)) {
-            currentState = STATES.IN_GAME;
-            io.sockets.emit('sendStartGameToClient');
-            io.sockets.emit('sendRoundWaitToClient');
-            setTimeout(function() {
-              startRound();
-              io.sockets.emit('sendStartRoundToClient');
-            }, 5000);
+      socket.on('readyToPlay', function(data) {
+        for (var i = 0; i < lobbies.length; i++) {
+          var lobby = lobbies[i];
+          var lobbyName = lobby.name;
+          console.log("lobby => " + lobby);
+          if (lobby.playerList[socket.id] !== undefined && lobby.playerList[socket.id].ready !== undefined) {
+            if (lobbyName === data.lobby) {
+              lobby.playerList[socket.id].ready = true;
+              lobby.state = STATES.READY_CHECK;
+              if (checkReady(lobby)) {
+                lobby.state = STATES.IN_GAME;
+                io.sockets.in(lobby.name).emit('sendStartGameToClient');
+                io.sockets.in(lobby.name).emit('sendRoundWaitToClient');
+                setTimeout(function() {
+                  startRound(lobby);
+                  io.sockets.in(lobbyName).emit('sendStartRoundToClient');
+                }, 5000);
+              }
+            }
           }
         }
       });
 
-      socket.on('sendRoundWaitToServer', function() {
-        currentState = STATES.ROUND_WAIT;
-      });
-
       socket.on('sendPlayerLocationToServer', function(data) {
-        if (playerList[socket.id].playerData !== undefined && data.x !== undefined && data.y !== undefined) {
-          playerList[socket.id].playerData.x = data.x;
-          playerList[socket.id].playerData.y = data.y;
+        for (var i = 0; i < lobbies.length; i++) {
+          var lobby = lobbies[i];
+          var lobbyName = lobby.name;
+          if (lobby.playerList[socket.id] !== undefined && data.x !== undefined && data.y !== undefined && data.lobby !== undefined) {
+            if (lobbyName === data.lobby) {
+              lobby.playerList[socket.id].x = data.x;
+              lobby.playerList[socket.id].y = data.y;
+            }
+          }
         }
       });
 
       socket.on('sendBulletLocationToServer', function(data) {
-        if (data.dX !== undefined && data.dY !== undefined) {
-          player = playerList[socket.id].playerData;
-          SERVER_BULLET.createBullet(player, data.dX, data.dY);
+        for (var i = 0; i < lobbies.length; i++) {
+          var lobby = lobbies[i];
+          var lobbyName = lobby.name;
+          if (data.dX !== undefined && data.dY !== undefined && data.lobby !== undefined) {
+            if (lobbyName === data.lobby) {
+              player = lobby.playerList[socket.id];
+              SERVER_BULLET.createBullet(player, data.dX, data.dY, lobby);
+            }
+          }
         }
       });
 

@@ -43,15 +43,18 @@ exports.moveBullets = function(lobby) {
 
 exports.createBullet = function(player, dx, dy, lobby) {
   var bullet = {};
-  // bullet.damage = player.damage;
-  // bullet.name = player.name;
-  bullet.x = player.x + 12;
-  bullet.y = player.y + 17;
-  bullet.dx = dx *3;
-  bullet.dy = dy *3;
-  bullet.start = true;
-  bullet.height = 5;
-  bullet.width = 5;
-  lobby.bulletList.push(bullet);
-  bullets.push(bullet);
+  if(player!== undefined){
+    bullet.damage = player.damage;
+    bullet.name = player.name;
+    bullet.x = player.x + 12;
+    bullet.y = player.y + 17;
+    bullet.dx = dx *3;
+    bullet.dy = dy *3;
+    bullet.start = true;
+    bullet.height = 5;
+    bullet.width = 5;
+    lobby.bulletList.push(bullet);
+    bullets.push(bullet);
+  }
+  
 }

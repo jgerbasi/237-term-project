@@ -53,22 +53,6 @@ var GAMEPLAY = (function() {
     //   $('#gun3').css("border-color:#000");
     //   alert("u clicked 3");
     // });
-
-    $('#health').click(function(){
-      alert("health");
-    });
-
-    $('#movment').click(function(){
-      alert("movement");
-    });
-
-    $('#fireRate').click(function(){
-      alert("fireRate");
-    });
-
-    $('#damage').click(function(){
-      alert("damage");
-    });
   });
 
   socket.on('sendStartGameToClient', function() {

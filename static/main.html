@@ -77,42 +77,35 @@
            <tbody>
               <tr>
                  <td>Health</td>
-                 <td id="health">0</td>
+                 <td id="health"></td>
                  <td><button class="button add"> + </button></td>
                  <td><button class="button sub"> - </button></td>
               </tr>
 
               <tr>
                  <td>Movement</td>
-                 <td id= "movement">0</td>
+                 <td id= "movement"></td>
                  <td><button class="button add"> + </button></td>
                  <td><button class="button sub"> - </button></td>
               </tr>
 
               <tr>
                  <td>Fire Rate</td>
-                 <td id="fireRate">0</td>
+                 <td id="fireRate"></td>
                  <td><button class="button add"> + </button></td>
                  <td><button class="button sub"> - </button></td>
               </tr>
 
               <tr>
                  <td>Damage</td>
-                 <td id="damage">0</td>
-                 <td><button class="button add"> + </button></td>
-                 <td><button class="button sub"> - </button></td>
-              </tr>
-
-              <tr>
-                 <td>Weapon</td>
-                 <td>0</td>
+                 <td id="damage"></td>
                  <td><button class="button add"> + </button></td>
                  <td><button class="button sub"> - </button></td>
               </tr>
            </tbody>
         </table>
-        <div id="points">
-            <p>Points Left: <span>5</span></p>
+        <div>
+            <p>Points Left: <span id="points">5</span></p>
         </div>
         <button id="submitStatsButton" class="button wideButton"> Save Stats </button>
         </div>
@@ -147,16 +140,16 @@
         <div id="run">RUN</div>
 
 
-        <div class="guns">
-          <div id="gun1">GUN 1</div>
-          <div id="gun2"> GUN 2</div>
-          <!-- <div id="gun3"> GUN 3</div> -->
+        <div id="gunsColumn">
+          <div class="guns" id="gun1">Select Rifle</div>  
+          <div class="guns" id="gun2">Select Machine Gun</div>
         </div>
-        <div class="levelUp">
-          <div id="health">Health</div>
-          <div id="movement">Movement</div>
-          <div id="fireRate">FireRate</div>
-          <div id="damage">Damage</div>
+
+        <div id="levelUpRow">
+          <div id = "health"><img src="images/health.png" class = "center"/></div>
+          <div id = "movement"><img src="images/movement.png" class = "center"/></div>
+          <div id = "fireRate"><img src="images/fireRate.png" class = "center"/></div>
+          <div id = "damage"><img src="images/damage.png" class = "center"/></div>
         </div>
     </div>
   </body>

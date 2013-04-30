@@ -16,7 +16,6 @@ var PLAYER = (function(){
       spriteWidth = 23,
       spriteHeight = 34,
       spriteIndex = 1,
-      frames = 3,
       direction = "",
       bgX = -200,
       bgY = -200,

@@ -97,7 +97,6 @@ function update(elapsed) {
   var sdeltaXY = {dX: sdeltaX, dY: sdeltaY};
   // console.log("X: " + sdeltaXY.dX + "Y: " + sdeltaXY.dY);
   if (sdeltaXY.dX !== 0 && sdeltaXY.dY !== 0) {
-    console.log("moved shoot stick");
     if (canShoot) {
       PLAYER.makeBullet(sdeltaXY);
       canShoot = false;

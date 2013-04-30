@@ -289,7 +289,7 @@ table {
 .levelUp{
   position: absolute;
   z-index: 8;
-  background-color: #fff
+  background-color: #fff;
   height: 100px;
   width: 60%;
   left: 25%;

@@ -4,6 +4,7 @@ var GAMEPLAY = (function() {
   var players = {};
   var enemies = {};
   var bullets = [];
+  var gun = 1;
   var round = 0;
 
   socket.on('sendStartGameToClient', function() {
@@ -109,6 +110,7 @@ var GAMEPLAY = (function() {
       PLAYER.doDraw(players);
       ENEMY.drawEnemies(enemies);
       BULLET.drawBullets(bullets);
+      GUN.drawGun(gun);
     } else {
       // do nothing
     }

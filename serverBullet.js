@@ -7,7 +7,7 @@ function checkCollision(bullet) {
         bullet.y < enemy.y + enemy.height &&
         bullet.y + bullet.height > enemy.y) 
     {
-      console.log(i);
+      enemy.health -= bullet.damage;
       enemyList.splice(i, 1);
       i--;
       return true;
@@ -38,6 +38,8 @@ exports.moveBullets = function() {
 
 exports.createBullet = function(player, dx, dy) {
   var bullet = {};
+  bullet.damage = player.damage
+  bullet.name = player.name;
   bullet.x = player.x + 12;
   bullet.y = player.y + 17;
   bullet.dx = dx *3;

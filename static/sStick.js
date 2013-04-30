@@ -101,7 +101,7 @@ function update(elapsed) {
       canShoot = false;
       setTimeout(function() {
         canShoot = true;
-      }, 300);
+      }, 100/(PLAYER.fireRate/10));
     }
     
   }

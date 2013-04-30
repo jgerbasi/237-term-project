@@ -286,7 +286,7 @@ table {
 
 .levelUp{
   position: absolute;
-  background-color: #fff;
+  background-color: #fff
   height: 100px;
   width: 60%;
   left: 25%;
@@ -297,32 +297,24 @@ table {
   margin-left: 20%;
   display: inline-block;
   width: 15%;
-  border-style:solid;
-  border-width: 5px;
   /*background-image:url('images/health.jpeg')*/
 }
 
 #movement{
   display: inline-block;
   width: 15%;
-  border-style:solid;
-  border-width: 5px;
   /*background-image:url('images/movement.jpeg')*/
 }
 
 #fireRate{
   display: inline-block;
   width: 15%;
-  border-style:solid;
-  border-width: 5px;
   /*background-image:url('images/firerate.jpeg')*/
 }
 
 #damage{
   display: inline-block;
   width: 15%;
-  border-style:solid;
-  border-width: 5px;
   /*background-image:url('images/damage.jpeg')*/
 }
 

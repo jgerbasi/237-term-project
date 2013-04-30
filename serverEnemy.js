@@ -22,6 +22,9 @@ function createEnemy(x, y) {
   enemy.y = y;
   enemy.width = 20;
   enemy.height = 20;
+  enemy.damage = getRandomInt(round, 2*round);
+  enemy.health = getRandomInt(5*round, 10*round);
+  enemy.speed = getRandomInt(1,2);
   return enemy;
 }
 
@@ -45,10 +48,10 @@ exports.moveEnemies = function() {
 
 function moveEnemy(enemy, targetPlayer) {
   if(targetPlayer !== undefined && targetPlayer !== undefined) {
-    if (targetPlayer.y > enemy.y) enemy.y += 1;
-    if (enemy.y > targetPlayer.y) enemy.y -=1;
-    if (targetPlayer.x > enemy.x) enemy.x += 1;
-    if (enemy.x > targetPlayer.x) enemy.x -=1;
+    if (targetPlayer.y > enemy.y) enemy.y += enemy.speed;
+    if (enemy.y > targetPlayer.y) enemy.y -= enemy.speed;
+    if (targetPlayer.x > enemy.x) enemy.x += enemy.speed;
+    if (enemy.x > targetPlayer.x) enemy.x -= enemy.speed;
   }
   // This is just to test gameOVER scenario, ideally enemies could shoot as well
   checkEnemyCollision(enemy);
@@ -92,8 +95,15 @@ function checkEnemyCollision(enemy) {
           data.y < enemy.y + enemy.height &&
           data.y + data.height > enemy.y) 
         {
-          data.alive = false;
-          return true;
+          //damages the player
+          data.health -= enemy.damage;
+          console.log(data.health);
+          if (data.health <= 0)
+          {
+            data.alive = false;
+            return true;
+          }
+            
         }
       }
     }

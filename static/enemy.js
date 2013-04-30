@@ -1,6 +1,7 @@
 var ENEMY = (function() {
   var exports = {};
 
+
   exports.drawEnemies = function(enemies) {
     var bgDX = PLAYER.bgOffsetX();
     var bgDY = PLAYER.bgOffsetY();

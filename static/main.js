@@ -26,10 +26,10 @@ $(document).ready(function() {
   player.y = undefined;
   player.alive = true;
   player.ready = false;
-  player.health = 0;
-  player.movement = 0;
-  player.fireRate = 0;
-  player.damage = 0;
+  player.health = 5;
+  player.movement = 5;
+  player.fireRate = 5;
+  player.damage = 5;
   player.points = 10;
   player.width = 23;
   player.height = 34;
@@ -125,6 +125,7 @@ $(document).ready(function() {
   $('#showPlayerStats').click(function() {
     $('#homeLobby').hide();
     $('#statsPage').show();
+    $('#gameLobby').hide();
   });
 
 //Stats Page Buttons

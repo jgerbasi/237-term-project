@@ -2,7 +2,6 @@ var PLAYER = (function(){
   var exports = {};
 
   var username = docCookies.getItem('username');
-  console.log("canvas.width");
 
   const CANVASHEIGHT = 320,
         CANVASWIDTH = 568,

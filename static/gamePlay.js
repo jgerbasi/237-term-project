@@ -72,7 +72,8 @@ var GAMEPLAY = (function() {
   });
 
   socket.on('sendStartGameToClient', function() {
-    $('#loadingScreen').hide();
+    // $('#loadingScreen').hide();
+    $('#gameLobby').hide();
     $('#gamePage').show();
     window.state = window.STATES.IN_GAME;
   }) 
@@ -86,6 +87,7 @@ var GAMEPLAY = (function() {
   });
 
   socket.on('sendStartRoundToClient', function() {
+    console.log("sent start round to client");
     window.state = window.STATES.IN_ROUND;
     var overlay = $('#gameOverlay');
     overlay.hide();

@@ -348,7 +348,8 @@ table {
   height: 40%;
   background-color: #0000ff;
   border-style:solid;
-  border-width: 1px;  
+  border-width: 1px;
+  display: none;  
 }
 
 #run{
@@ -361,5 +362,6 @@ table {
   height: 20%;
   background-color: #0000ff;
   border-style:solid;
-  border-width: 1px;  
+  border-width: 1px; 
+  display: none; 
 }

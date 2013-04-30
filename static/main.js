@@ -116,6 +116,8 @@ $(document).ready(function() {
 
   $('#startGameButton').click(function() {
     startGame();
+    $('#help').hide();
+    $('#run').hide();
   });
 
   $('#createGameButton').click(function() {
@@ -149,9 +151,39 @@ $(document).ready(function() {
 // callOut Div
 
 $('#callOut').click(function(){
-  word = "halp faggot";
-  socket.emit('sendCallOutToServer', {word:word})
+  $('#help').show();
+  $('#run').show();
+  $('#callOut').hide();
+  // word = "halp faggot";
+  // socket.emit('sendCallOutToServer', {word:word})
 });
+
+$('#help').click(function(){
+  $('#help').hide();
+  $('#run').hide();
+  $('#callOut').show();
+  var audioElement1 = document.createElement('audio');
+  audioElement1.setAttribute('src', 'help.mp3');
+  audioElement1.setAttribute('autoplay', 'autoplay');
+  $.get();
+  audioElement1.play();
+});
+
+$('#run').click(function(){
+  $('#help').hide();
+  $('#run').hide();
+  $('#callOut').show();
+  var audioElement2 = document.createElement('audio');
+  audioElement2.setAttribute('src', 'run.mp3');
+  audioElement2.setAttribute('autoplay', 'autoplay');
+  $.get();
+  audioElement2.play();
+});
+
+
+
+
+
 
 
 // clicking the gun divs

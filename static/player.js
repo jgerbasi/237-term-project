@@ -68,9 +68,7 @@ exports.doDraw = function(players){
   ctx.drawImage(bgImg, 0, 0, 400, 300, bgX, bgY, CANVASWIDTH+BUFFER, CANVASHEIGHT+BUFFER);
   for (p in players) {
     var player = players[p];
-    console.log(player);
     if (player !== null && player.name !== username && player.x !== undefined && player.y !== undefined) {
-      console.log(player.x, player.y);
       ctx.drawImage(spriteImage,spriteX,spriteY, spriteWidth,spriteHeight, (player.x + bgDX), (player.y + bgDY), spriteWidth, spriteHeight);
     }
   }

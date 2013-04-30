@@ -17,14 +17,15 @@ function distance(x1,y1,x2,y2) {
   return hyp;
 }
 
-function createEnemy(x, y) {
+function createEnemy(x, y, lobby) {
+  round = lobby.round;
   var enemy = {};
   enemy.x = x;
   enemy.y = y;
   enemy.width = 20;
   enemy.height = 20;
-  enemy.damage = getRandomInt(round, 2*round);
-  enemy.health = getRandomInt(5*round, 10*round);
+  // enemy.damage = getRandomInt(round, 2*round);
+  // enemy.health = getRandomInt(5*round, 10*round);
   enemy.speed = getRandomInt(1,2);
   return enemy;
 }
@@ -35,7 +36,7 @@ exports.spawnEnemies = function(lobby) {
   if (enemyList.length < 3) {
     var x = getRandomInt(-200, 763);
     var y = getRandomInt(-200, 510);
-    var newEnemy = createEnemy(x, y);
+    var newEnemy = createEnemy(x, y, lobby);
     enemyList.push(newEnemy);
     lobby.enemyList.push(newEnemy);
     lobby.enemyCount--;

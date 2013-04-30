@@ -27,7 +27,7 @@ exports.init = function() {
         }
       }   
     }
-    return count === 2;
+    return count === 1;
   }
 
   function resetGame(lobby) {

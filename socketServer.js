@@ -6,6 +6,7 @@ exports.init = function() {
 
   var playerList = {};
   var lobbies = [];
+  global.initLobby = {};
 
   var STATES = {
       IN_LOBBY: 0,
@@ -27,7 +28,8 @@ exports.init = function() {
         }
       }   
     }
-    return count === 1;
+    console.log("player count ", lobby.playerCount);
+    return count === lobby.playerCount;
   }
 
   function resetGame(lobby) {
@@ -48,6 +50,7 @@ exports.init = function() {
     resetGame(lobby);
     setTimeout(function() {
       io.sockets.in(lobby.name).emit('sendReturnToLobbyToClient');
+      io.sockets.in(lobby.name).emit('updateLobbyName', {lobby: lobby.name, players: lobby.playerList});
     }, 5000);
   }
 
@@ -78,6 +81,7 @@ exports.init = function() {
   }
 
   function startRound(lobby) {
+    console.log("lobby => ", lobby);
     // MAke sure everyone starts out alive
     for (p in lobby.playerList) {
       player = lobby.playerList[p];
@@ -88,6 +92,7 @@ exports.init = function() {
     lobby.round++;
     lobby.state = STATES.IN_ROUND;
     lobby.enemyCount = lobby.round;
+    console.log(lobby.playerList);
   }
 
   function loop() {
@@ -143,7 +148,7 @@ exports.init = function() {
 
       socket.on('makeNewLobby', function(data) {
         socket.join(data.lobbyName);
-        lobby = new Object;
+        var lobby = new Object;
         lobby.name = data.lobbyName;
         lobby.state = STATES.IN_LOBBY;
         lobby.enemyList = [];
@@ -155,20 +160,20 @@ exports.init = function() {
         lobby.bulletList = [];
         lobby.round = 0;
         lobbies.push(lobby);
-        socket.emit('updateLobbyName', {lobby: lobby.name});
+        socket.emit('updateLobbyName', {lobby: lobby.name, players: lobby.playerList});
       });
 
       socket.on('joinLobby', function(data) {
-        foundLobby = false;
+        var foundLobby = false;
         for (var i = 0; i < lobbies.length; i++) {
-          if (lobbies[i].playerCount < 4 && lobbies[i].round === 0) {
+          if (lobbies[i].playerCount < 4 && lobbies[i].state === STATES.IN_LOBBY) {
+            console.log(lobbies[i].round);
             socket.join(lobbies[i].name);
             lobbies[i].playerList[socket.id] = (playerList[socket.id].playerData);
-            console.log(lobbies[i].playerList);
-            lobby.playerCount++;
+            lobbies[i].playerCount++;
 
             foundLobby = true;
-            socket.emit('updateLobbyName', {lobby: lobbies[i].name});
+            io.sockets.in(lobbies[i].name).emit('updateLobbyName', {lobby: lobbies[i].name, players: lobbies[i].playerList});
           }
         }
         if (!foundLobby) {
@@ -177,7 +182,6 @@ exports.init = function() {
       });
 
       socket.on('sendStatsToServer', function(data) {
-        console.log(data);
         playerData=playerList[socket.id].playerData
         if (playerData !== undefined && playerData.health !== undefined 
             && playerData.movement !== undefined && playerData.fireRAte !== undefined
@@ -186,7 +190,6 @@ exports.init = function() {
                 playerData.movement = data.movement;
                 playerData.fireRAte = data.fireRAte;
                 playerData.damage = data.damage;
-                console.log(playerData);
                 // io.sockets.emit('sendPlayerStatsToClient', {playerList: JSON.stringify(playerList)});
         }
 
@@ -196,19 +199,22 @@ exports.init = function() {
         for (var i = 0; i < lobbies.length; i++) {
           var lobby = lobbies[i];
           var lobbyName = lobby.name;
-          console.log("lobby => " + lobby);
           if (lobby.playerList[socket.id] !== undefined && lobby.playerList[socket.id].ready !== undefined) {
             if (lobbyName === data.lobby) {
-              lobby.playerList[socket.id].ready = true;
-              lobby.state = STATES.READY_CHECK;
-              if (checkReady(lobby)) {
-                lobby.state = STATES.IN_GAME;
-                io.sockets.in(lobby.name).emit('sendStartGameToClient');
-                io.sockets.in(lobby.name).emit('sendRoundWaitToClient');
+              console.log("lobby name => ", lobbyName);
+              lobbies[i].playerList[socket.id].ready = true;
+              lobbies[i].state = STATES.READY_CHECK;
+              io.sockets.in(lobbies[i].name).emit('updateLobbyName', {lobby: lobbies[i].name, players: lobbies[i].playerList});
+              if (checkReady(lobbies[i])) {
+                lobbies[i].state = STATES.IN_GAME;
+                io.sockets.in(lobbies[i].name).emit('sendStartGameToClient');
+                io.sockets.in(lobbies[i].name).emit('sendRoundWaitToClient');
+                global.initLobby = lobbies[i]
                 setTimeout(function() {
-                  startRound(lobby);
-                  io.sockets.in(lobbyName).emit('sendStartRoundToClient');
-                }, 5000);
+                  console.log("lobby in set timeout => ", global.initLobby);
+                  startRound(global.initLobby);
+                  io.sockets.in(global.initLobby.name).emit('sendStartRoundToClient');
+                }, 1000);
               }
             }
           }
@@ -241,10 +247,35 @@ exports.init = function() {
         }
       });
 
-      socket.on('sendCallOutToServer', function(data) {
-        if (data.callOut !== undefined){
-          player = playerList[socket.id].playerData;
-          PLAYER.callOut(player, data.callout);
+      socket.on('sendCalloutToServer', function(data) {
+        for (var i = 0; i < lobbies.length; i++) {  
+          var lobby = lobbies[i];
+          var lobbyName = lobby.name;
+          if (data.callout !== undefined && data.lobby !== undefined){
+            if (lobbyName === data.lobby) {
+              if (data.callout === "help") io.sockets.in(lobby.name).emit('sendHelpCalloutToClient');
+              if (data.callout === "run") io.sockets.in(lobby.name).emit('sendRunCalloutToClient');
+            }
+          }
+        }
+      });
+
+      socket.on('sendLobbyExitToServer', function(data) {
+        for (var i = 0; i < lobbies.length; i++) {
+          var lobby = lobbies[i];
+          var lobbyName = lobby.name;
+          if (data.lobby !== undefined) {
+            if (lobbyName === data.lobby) {
+              console.log("test");
+              socket.leave(lobby.name);
+              lobby.playerCount--;
+              var playerID = socket.id;
+              var lobbyPlayerList = lobby.playerList; 
+              delete lobbyPlayerList[playerID];
+              io.sockets.in(lobby.name).emit('updateLobbyName', {lobby: lobby.name, players: lobby.playerList});
+              if (lobby.playerCount == 0) lobbies.splice(i, 1);
+            }
+          }
         }
       });
 

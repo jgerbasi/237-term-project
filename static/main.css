@@ -289,7 +289,7 @@ table {
 .levelUp{
   position: absolute;
   z-index: 8;
-  background-color: #fff
+  background-color: #fff;
   height: 100px;
   width: 60%;
   left: 25%;
@@ -348,7 +348,8 @@ table {
   height: 40%;
   background-color: #0000ff;
   border-style:solid;
-  border-width: 1px;  
+  border-width: 1px;
+  display: none;  
 }
 
 #run{
@@ -361,5 +362,15 @@ table {
   height: 20%;
   background-color: #0000ff;
   border-style:solid;
-  border-width: 1px;  
+  border-width: 1px; 
+  display: none; 
+}
+
+#gameLobby {
+  display: none;
+}
+
+#lobbyPlayerList span {
+  position: absolute;
+  right: 0px;
 }

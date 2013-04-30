@@ -47,8 +47,31 @@ $(document).ready(function() {
       player = players[id];
       if (player !== undefined) {
         if (player.playerData !== undefined) {
-            $("#players").append($("<li>").html(player.playerData.name));
+            var li = $("<li>").html(player.playerData.name);
+            $("#players").append(li);
         }
+      }
+    }
+  }
+
+  function updateLobbyPlayerList(players) {
+    console.log(players);
+    $("#lobbyPlayers").empty();
+    for (id in players) {
+      player = players[id];
+      if (player !== undefined) {
+        var li = $("<li>").html(player.name);
+        var span = $("<span>");
+        if (player.ready === true) {
+          span.html("Ready");
+          span.css('color', 'green');
+          li.append(span);
+        } else {
+          span.html("Not Ready");
+          span.css('color', 'red');
+          li.append(span);
+        }
+        $("#lobbyPlayers").append(li);
       }
     }
   }
@@ -61,9 +84,9 @@ $(document).ready(function() {
 
   function startGame() {
     window.currentState = window.STATES.READY_CHECK;
-    $('#homeLobby').hide();
-    $('#gameLobby').hide();
-    $('#loadingScreen').show();
+    // $('#homeLobby').hide();
+    // $('#gameLobby').hide();
+    // $('#loadingScreen').show();
     socket.emit('readyToPlay', {lobby: window.lobby});
   }
 
@@ -116,8 +139,6 @@ $(document).ready(function() {
 
   $('#startGameButton').click(function() {
     startGame();
-    $('#help').hide();
-    $('#run').hide();
   });
 
   $('#createGameButton').click(function() {
@@ -148,80 +169,10 @@ $(document).ready(function() {
     $('#statsPage').hide();
   });
 
-// callOut Div
-
-$('#callOut').click(function(){
-  $('#help').show();
-  $('#run').show();
-  $('#callOut').hide();
-  // word = "halp faggot";
-  // socket.emit('sendCallOutToServer', {word:word})
-});
-
-$('#help').click(function(){
-  $('#help').hide();
-  $('#run').hide();
-  $('#callOut').show();
-  var audioElement1 = document.createElement('audio');
-  audioElement1.setAttribute('src', 'help.mp3');
-  audioElement1.setAttribute('autoplay', 'autoplay');
-  $.get();
-  audioElement1.play();
-});
-
-$('#run').click(function(){
-  $('#help').hide();
-  $('#run').hide();
-  $('#callOut').show();
-  var audioElement2 = document.createElement('audio');
-  audioElement2.setAttribute('src', 'run.mp3');
-  audioElement2.setAttribute('autoplay', 'autoplay');
-  $.get();
-  audioElement2.play();
-});
-
-
-
-
-
-
-
-// clicking the gun divs
-  $('#gun1').click(function(){
-    $('#gun1').css("border-color:#000");
-    $('#gun2').css("border-color:#fff");
-    $('#gun3').css("border-color:#fff");
-    alert("u clicked 1");
-  });
-
-  $('#gun2').click(function(){
-    $('#gun1').css("border-color:#fff");
-    $('#gun2').css("border-color:#000");
-    $('#gun3').css("border-color:#fff");
-    alert("u clicked 2");
-  });
-
-  $('#gun3').click(function(){
-    $('#gun1').css("border-color:#fff");
-    $('#gun2').css("border-color:#fff");
-    $('#gun3').css("border-color:#000");
-    alert("u clicked 3");
-  });
-
-  $('#health').click(function(){
-    alert("health");
-  });
-
-  $('#movment').click(function(){
-    alert("movement");
-  });
-
-  $('#fireRate').click(function(){
-    alert("fireRate");
-  });
-
-  $('#damage').click(function(){
-    alert("damage");
+  $('#exitLobby').click(function() {
+    $('#gameLobby').hide();
+    $('#homeLobby').show();
+    socket.emit('sendLobbyExitToServer', {lobby: window.lobby});
   });
 
   socket.on('sendPlayerListToClient', function(data) {
@@ -239,6 +190,8 @@ $('#run').click(function(){
 
   socket.on('updateLobbyName', function(data) {
     window.lobby = data.lobby;
+    console.log(data.players);
+    updateLobbyPlayerList(data.players);
   });
 
 });

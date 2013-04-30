@@ -93,7 +93,6 @@ function checkEnemyCollision(enemy) {
   for (p in playerList) {
     player = playerList[p];
       if (player !== undefined && player.x !== undefined && player.y !== undefined) {
-        console.log("now we here");
         // HTML5 ROCKS COLLISION DETECTION
         if (player.x < enemy.x + enemy.width &&
           player.x + player.width > enemy.x &&

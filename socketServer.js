@@ -27,7 +27,7 @@ exports.init = function() {
         }
       }   
     }
-    return count === 1;
+    return count === 2;
   }
 
   function resetGame(lobby) {
@@ -241,10 +241,16 @@ exports.init = function() {
         }
       });
 
-      socket.on('sendCallOutToServer', function(data) {
-        if (data.callOut !== undefined){
-          player = playerList[socket.id].playerData;
-          PLAYER.callOut(player, data.callout);
+      socket.on('sendCalloutToServer', function(data) {
+        for (var i = 0; i < lobbies.length; i++) {  
+          var lobby = lobbies[i];
+          var lobbyName = lobby.name;
+          if (data.callout !== undefined && data.lobby !== undefined){
+            if (lobbyName === data.lobby) {
+              if (data.callout === "help") io.sockets.in(lobby.name).emit('sendHelpCalloutToClient');
+              if (data.callout === "run") io.sockets.in(lobby.name).emit('sendRunCalloutToClient');
+            }
+          }
         }
       });
 

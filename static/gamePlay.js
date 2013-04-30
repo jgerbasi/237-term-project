@@ -6,6 +6,70 @@ var GAMEPLAY = (function() {
   var bullets = [];
   var round = 0;
 
+  // callOut Div
+
+  $(document).ready(function() {
+
+    $('#callOut').click(function(){
+      console.log("clicked on callout");
+      $('#help').show();
+      $('#run').show();
+      $('#callOut').hide();
+    });
+
+    $('#help').click(function(){
+      $('#help').hide();
+      $('#run').hide();
+      $('#callOut').show();
+      socket.emit('sendCalloutToServer', {callout: "help", lobby: window.lobby});
+    });
+
+    $('#run').click(function(){
+      $('#help').hide();
+      $('#run').hide();
+      $('#callOut').show();
+      socket.emit('sendCalloutToServer', {callout: "run", lobby: window.lobby});
+    });
+
+    // clicking the gun divs
+    $('#gun1').click(function(){
+      $('#gun1').css("border-color:#000");
+      $('#gun2').css("border-color:#fff");
+      $('#gun3').css("border-color:#fff");
+      alert("u clicked 1");
+    });
+
+    $('#gun2').click(function(){
+      $('#gun1').css("border-color:#fff");
+      $('#gun2').css("border-color:#000");
+      $('#gun3').css("border-color:#fff");
+      alert("u clicked 2");
+    });
+
+    $('#gun3').click(function(){
+      $('#gun1').css("border-color:#fff");
+      $('#gun2').css("border-color:#fff");
+      $('#gun3').css("border-color:#000");
+      alert("u clicked 3");
+    });
+
+    $('#health').click(function(){
+      alert("health");
+    });
+
+    $('#movment').click(function(){
+      alert("movement");
+    });
+
+    $('#fireRate').click(function(){
+      alert("fireRate");
+    });
+
+    $('#damage').click(function(){
+      alert("damage");
+    });
+  });
+
   socket.on('sendStartGameToClient', function() {
     $('#loadingScreen').hide();
     $('#gamePage').show();
@@ -45,6 +109,22 @@ var GAMEPLAY = (function() {
 
   socket.on('sendBulletLocationsToClient', function(data) {
     bullets = JSON.parse(data.bulletList);
+  });
+
+  socket.on('sendHelpCalloutToClient', function() {
+    var audioElement1 = document.createElement('audio');
+    audioElement1.setAttribute('src', 'help.mp3');
+    audioElement1.setAttribute('autoplay', 'autoplay');
+    $.get();
+    audioElement1.play();
+  });
+
+  socket.on('sendRunCalloutToClient', function() {
+    var audioElement2 = document.createElement('audio');
+    audioElement2.setAttribute('src', 'run.mp3');
+    audioElement2.setAttribute('autoplay', 'autoplay');
+    $.get();
+    audioElement2.play();
   });
 
   exports.loadCanvas = function() {

@@ -41,6 +41,7 @@ exports.moveBullets = function(lobby) {
   }
 
 exports.createBullet = function(player, dx, dy, lobby) {
+  if (player !== undefined && player.x !== undefined && player.y !== undefined){
   var bullet = {};
  // bullet.damage = player.damage;
  // bullet.name = player.name;
@@ -53,4 +54,5 @@ exports.createBullet = function(player, dx, dy, lobby) {
   bullet.width = 5;
   lobby.bulletList.push(bullet);
   bullets.push(bullet);
+}
 }

@@ -28,6 +28,7 @@ exports.init = function() {
         }
       }   
     }
+
     console.log("player count ", lobby.playerCount);
     return count === lobby.playerCount;
   }

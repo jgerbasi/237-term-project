@@ -47,8 +47,31 @@ $(document).ready(function() {
       player = players[id];
       if (player !== undefined) {
         if (player.playerData !== undefined) {
-            $("#players").append($("<li>").html(player.playerData.name));
+            var li = $("<li>").html(player.playerData.name);
+            $("#players").append(li);
         }
+      }
+    }
+  }
+
+  function updateLobbyPlayerList(players) {
+    console.log(players);
+    $("#lobbyPlayers").empty();
+    for (id in players) {
+      player = players[id];
+      if (player !== undefined) {
+        var li = $("<li>").html(player.name);
+        var span = $("<span>");
+        if (player.ready === true) {
+          span.html("Ready");
+          span.css('color', 'green');
+          li.append(span);
+        } else {
+          span.html("Not Ready");
+          span.css('color', 'red');
+          li.append(span);
+        }
+        $("#lobbyPlayers").append(li);
       }
     }
   }
@@ -61,9 +84,9 @@ $(document).ready(function() {
 
   function startGame() {
     window.currentState = window.STATES.READY_CHECK;
-    $('#homeLobby').hide();
-    $('#gameLobby').hide();
-    $('#loadingScreen').show();
+    // $('#homeLobby').hide();
+    // $('#gameLobby').hide();
+    // $('#loadingScreen').show();
     socket.emit('readyToPlay', {lobby: window.lobby});
   }
 
@@ -146,6 +169,12 @@ $(document).ready(function() {
     $('#statsPage').hide();
   });
 
+  $('#exitLobby').click(function() {
+    $('#gameLobby').hide();
+    $('#homeLobby').show();
+    socket.emit('sendLobbyExitToServer', {lobby: window.lobby});
+  });
+
   socket.on('sendPlayerListToClient', function(data) {
     players = JSON.parse(data.playerList);
     updatePlayerList();
@@ -161,6 +190,8 @@ $(document).ready(function() {
 
   socket.on('updateLobbyName', function(data) {
     window.lobby = data.lobby;
+    console.log(data.players);
+    updateLobbyPlayerList(data.players);
   });
 
 });

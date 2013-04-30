@@ -365,3 +365,12 @@ table {
   border-width: 1px; 
   display: none; 
 }
+
+#gameLobby {
+  display: none;
+}
+
+#lobbyPlayerList span {
+  position: absolute;
+  right: 0px;
+}

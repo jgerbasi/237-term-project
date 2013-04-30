@@ -43,7 +43,7 @@ exports.moveBullets = function(lobby) {
 
 exports.createBullet = function(player, dx, dy, lobby) {
   var bullet = {};
-  bullet.damage = player.damage
+  bullet.damage = player.damage;
   bullet.name = player.name;
   bullet.x = player.x + 12;
   bullet.y = player.y + 17;

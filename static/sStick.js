@@ -50,6 +50,7 @@ var SSTICK = (function () {
     SScanvas.addEventListener("touchstart", function (e) {
       e.preventDefault();
       var stouch = e.touches[0];
+      sStick.onlyLimit = true;
       sStick.setInputXY(stouch.pageX - (window.innerWidth - SSWIDTH) , stouch.pageY - (window.innerHeight - SSHEIGHT));
       sStick.active = true;
     });
@@ -57,6 +58,7 @@ var SSTICK = (function () {
     SScanvas.addEventListener("touchmove", function (e) {
       e.preventDefault();
       var stouch = e.targetTouches[0];
+      //sStick.onlyLimit = true;
       if(sStick.active) {
         sStick.setInputXY(stouch.pageX - (window.innerWidth - SSWIDTH), stouch.pageY - (window.innerHeight - SSHEIGHT));
       }
@@ -64,7 +66,7 @@ var SSTICK = (function () {
 
     SScanvas.addEventListener("touchend", function (e) {
       var stouches = e.changedTouches;
-      
+      sStick.onlyLimit = false;
       sStick.active = false;
       sStick.setInputXY(SSWIDTH/2, SSHEIGHT/2);
       
@@ -101,7 +103,7 @@ function update(elapsed) {
       canShoot = false;
       setTimeout(function() {
         canShoot = true;
-      }, 100/(PLAYER.fireRate/10));
+      }, 300);
     }
     
   }

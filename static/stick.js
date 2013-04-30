@@ -1,6 +1,7 @@
 function Stick (maxLength, active) {
 	this.active = active;
 	this.atLimit = false;
+	this.onlyLimit = false;
 	this.length = 1;
 	this.maxLength = maxLength;
 	this.limit = {
@@ -66,7 +67,7 @@ Stick.prototype.update = function () {
 	var diff = this.subtractVectors(this.input, this.limit);
 	var length = this.getVectorLength(diff);
 
-	if (Math.round(length) >= this.maxLength) {
+	if (Math.round(length) >= this.maxLength || this.onlyLimit) {
 		length = this.maxLength;
 
 		var rads = this.getRadians(diff.x, diff.y);
@@ -75,7 +76,8 @@ Stick.prototype.update = function () {
 		this.input = this.getVectorFromRadians(rads, length);
 		this.input.x += this.limit.x;
 		this.input.y += this.limit.y;
-	} else {
+	} 
+	else {
 		this.atLimit = false;
 	}
 

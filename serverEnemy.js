@@ -17,14 +17,15 @@ function distance(x1,y1,x2,y2) {
   return hyp;
 }
 
-function createEnemy(x, y) {
+function createEnemy(x, y, lobby) {
+  var round = lobby.round;
   var enemy = {};
   enemy.x = x;
   enemy.y = y;
   enemy.width = 20;
   enemy.height = 20;
-  enemy.damage = getRandomInt(round, 2*round);
-  enemy.health = getRandomInt(5*round, 10*round);
+  enemy.damage = round;
+  enemy.health = 10;
   enemy.speed = getRandomInt(1,2);
   return enemy;
 }
@@ -35,7 +36,7 @@ exports.spawnEnemies = function(lobby) {
   if (enemyList.length < 3) {
     var x = getRandomInt(-200, 763);
     var y = getRandomInt(-200, 510);
-    var newEnemy = createEnemy(x, y);
+    var newEnemy = createEnemy(x, y, lobby);
     enemyList.push(newEnemy);
     lobby.enemyList.push(newEnemy);
     lobby.enemyCount--;
@@ -91,27 +92,24 @@ function findAggroTarget(e) {
 function checkEnemyCollision(enemy) {
   for (p in playerList) {
     player = playerList[p];
-    for (d in player) {
-      data = player[d];
-      if (data !== undefined && data.x !== undefined && data.y !== undefined) {
+      if (player !== undefined && player.x !== undefined && player.y !== undefined) {
+        console.log("now we here");
         // HTML5 ROCKS COLLISION DETECTION
-        if (data.x < enemy.x + enemy.width &&
-          data.x + data.width > enemy.x &&
-          data.y < enemy.y + enemy.height &&
-          data.y + data.height > enemy.y) 
+        if (player.x < enemy.x + enemy.width &&
+          player.x + player.width > enemy.x &&
+          player.y < enemy.y + enemy.height &&
+          player.y + player.height > enemy.y) 
         {
           //damages the player
-          data.health -= enemy.damage;
-          console.log(data.health);
-          if (data.health <= 0)
+          player.health -= enemy.damage;
+          if (player.health <= 0)
           {
-            data.alive = false;
+            player.alive = false;
             return true;
           }
             
         }
       }
     }
-  }
   return false;
 }

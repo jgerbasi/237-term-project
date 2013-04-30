@@ -32,7 +32,6 @@ exports.moveBullets = function(lobby) {
       // should not be hardcoded
       else {
         if (bullets[i].x < -200 || bullets[i].x > 763 || bullets[i].y < -200 || bullets[i].y > 510) {
-          console.log(bullets[i].x);
           bullets.splice(i, 1);
           i--;
         }
@@ -42,9 +41,10 @@ exports.moveBullets = function(lobby) {
   }
 
 exports.createBullet = function(player, dx, dy, lobby) {
+  if (player !== undefined && player.x !== undefined && player.y !== undefined){
   var bullet = {};
-  bullet.damage = player.damage;
-  bullet.name = player.name;
+ // bullet.damage = player.damage;
+ // bullet.name = player.name;
   bullet.x = player.x + 12;
   bullet.y = player.y + 17;
   bullet.dx = dx *3;
@@ -54,4 +54,5 @@ exports.createBullet = function(player, dx, dy, lobby) {
   bullet.width = 5;
   lobby.bulletList.push(bullet);
   bullets.push(bullet);
+}
 }

@@ -95,11 +95,10 @@ function update(elapsed) {
       * speed * (elapsed / 1000));
 
   var sdeltaXY = {dX: sdeltaX, dY: sdeltaY};
-  // console.log("X: " + sdeltaXY.dX + "Y: " + sdeltaXY.dY);
   if (sdeltaXY.dX !== 0 && sdeltaXY.dY !== 0) {
-    console.log("moved shoot stick");
     if (canShoot) {
       PLAYER.makeBullet(sdeltaXY);
+      GUN.moveGun(sdeltaXY);
       canShoot = false;
       setTimeout(function() {
         canShoot = true;

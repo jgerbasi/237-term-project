@@ -4,6 +4,7 @@ var GAMEPLAY = (function() {
   var players = {};
   var enemies = {};
   var bullets = [];
+  var gun = 1;
   var round = 0;
 
   // callOut Div
@@ -36,38 +37,22 @@ var GAMEPLAY = (function() {
       $('#gun1').css("border-color:#000");
       $('#gun2').css("border-color:#fff");
       $('#gun3').css("border-color:#fff");
-      alert("u clicked 1");
+      gun = 1;
     });
 
     $('#gun2').click(function(){
       $('#gun1').css("border-color:#fff");
       $('#gun2').css("border-color:#000");
       $('#gun3').css("border-color:#fff");
-      alert("u clicked 2");
+      gun = 2;
     });
 
-    $('#gun3').click(function(){
-      $('#gun1').css("border-color:#fff");
-      $('#gun2').css("border-color:#fff");
-      $('#gun3').css("border-color:#000");
-      alert("u clicked 3");
-    });
-
-    $('#health').click(function(){
-      alert("health");
-    });
-
-    $('#movment').click(function(){
-      alert("movement");
-    });
-
-    $('#fireRate').click(function(){
-      alert("fireRate");
-    });
-
-    $('#damage').click(function(){
-      alert("damage");
-    });
+    // $('#gun3').click(function(){
+    //   $('#gun1').css("border-color:#fff");
+    //   $('#gun2').css("border-color:#fff");
+    //   $('#gun3').css("border-color:#000");
+    //   alert("u clicked 3");
+    // });
   });
 
   socket.on('sendStartGameToClient', function() {
@@ -186,11 +171,13 @@ var GAMEPLAY = (function() {
   function loop() {
     if (window.state === window.STATES.ROUND_WAIT) {
       PLAYER.doDraw(players);
+      GUN.drawGun(gun,players);
       BULLET.drawBullets(bullets);
     } else if (window.state === window.STATES.IN_ROUND) {
       PLAYER.doDraw(players);
       ENEMY.drawEnemies(enemies);
       BULLET.drawBullets(bullets);
+      GUN.drawGun(gun,players);
     } else {
       // do nothing
     }

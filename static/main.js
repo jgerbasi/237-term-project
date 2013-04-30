@@ -104,7 +104,7 @@ $(document).ready(function() {
   }
 
   function failedToJoin() {
-    $('#homeLobby').show();
+    $('#homeLobby').show();health
     $('#gameLobby').hide();
     alert("No Lobbies Available To Join");
   }
@@ -114,20 +114,29 @@ $(document).ready(function() {
     $('#chatbody').focus();
   });
 
-  //updates the skill tree
+  //updates the skill tree with populated data
+  document.getElementById("health").innerHTML=player.health;
+  document.getElementById("movement").innerHTML=player.movement;
+  document.getElementById("fireRate").innerHTML=player.fireRate;
+  document.getElementById("damage").innerHTML=player.damage;
+
   $('.add').click(function(e) {
+    if(document.getElementById("points").innerHTML > 0){
     var td = $(this).parent().prev();
     var count = parseInt(td.html());
     count++;
     td.html(count);
+    document.getElementById("points").innerHTML--;
+  }
   });
 
   $('.sub').click(function(e) {
     var td = $(this).parent().prev().prev();
     var count = parseInt(td.html());
-    if (count !== 0){
+    if (count !== 0 & td.html().value > 5){
       count--;
       td.html(count);
+      document.getElementById("points").innerHTML++;
     } else {
       td.html(count);
     }

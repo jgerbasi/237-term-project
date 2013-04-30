@@ -57,9 +57,9 @@ var GAMEPLAY = (function() {
       canvas.id     = "gameCanvas";
       canvas.width  = 568;
       canvas.height = 320;
-      canvas.style.width = '80%';
-      canvas.style.left = "10%";
-      canvas.style.height = '75%';
+      canvas.style.width = '100%';
+      //canvas.style.left = "10%";
+      canvas.style.height = '100%';
       canvas.style.zIndex   = 8;
       canvas.style.position = "absolute";
       

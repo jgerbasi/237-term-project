@@ -22,9 +22,6 @@ var PLAYER = (function(){
       bgY = -200,
       bgDX = 0,
       bgDY = 0;
-      callout = "Help!"
-      //bulletX = spawnX,
-      //bulletY = spawnY;
 
   var spriteImage = new Image();
       spriteImage.src = "sheet.png";
@@ -70,12 +67,11 @@ exports.doDraw = function(players){
   ctx.fillRect(0,0,CANVASWIDTH,CANVASHEIGHT);
   ctx.drawImage(bgImg, 0, 0, 400, 300, bgX, bgY, CANVASWIDTH+BUFFER, CANVASHEIGHT+BUFFER);
   for (p in players) {
-    player = players[p];
-    for (d in player) {
-      data = player[d];
-      if (data !== null && data.name !== username && data.x !== undefined && data.y !== undefined) {
-        ctx.drawImage(spriteImage,spriteX,spriteY, spriteWidth,spriteHeight, (data.x + bgDX), (data.y + bgDY), spriteWidth, spriteHeight);
-      }
+    var player = players[p];
+    console.log(player);
+    if (player !== null && player.name !== username && player.x !== undefined && player.y !== undefined) {
+      console.log(player.x, player.y);
+      ctx.drawImage(spriteImage,spriteX,spriteY, spriteWidth,spriteHeight, (player.x + bgDX), (player.y + bgDY), spriteWidth, spriteHeight);
     }
   }
   ctx.drawImage(spriteImage,spriteX,spriteY, spriteWidth,spriteHeight, spawnX, spawnY, spriteWidth, spriteHeight);
@@ -86,7 +82,7 @@ exports.callOut = function(players){
 }
 
 exports.makeBullet = function(sDeltaXY){
-  socket.emit("sendBulletLocationToServer", {dX: sDeltaXY.dX, dY: sDeltaXY.dY});
+  socket.emit("sendBulletLocationToServer", {dX: sDeltaXY.dX, dY: sDeltaXY.dY, lobby: window.lobby});
 }
 
 function animateSprite(direction){
@@ -162,7 +158,7 @@ exports.updateCoords = function(deltaXY) {
     bgDY -= deltaXY.dY;
     playerY += deltaXY.dY; 
   }
-  socket.emit("sendPlayerLocationToServer", {x: playerX, y: playerY});
+  socket.emit("sendPlayerLocationToServer", {x: playerX, y: playerY, lobby: window.lobby});
 }
 
 exports.bgOffsetX = function() {
@@ -197,7 +193,7 @@ function moveBg(direction){
     bgDY -= 10;
     playerY += 10;
   }
-  socket.emit("sendPlayerLocationToServer", {x: playerX, y: playerY});
+  socket.emit("sendPlayerLocationToServer", {x: playerX, y: playerY, lobby: window.lobby});
 }
 return exports;
 }());

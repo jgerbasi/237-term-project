@@ -1,5 +1,6 @@
-// var enemyList = [];
-// var playerList = [];
+var enemyList = [];
+var playerList = [];
+var enemyCount = 0;
 
 exports.update = function(lobby) {
   enemyList = lobby.enemyList;
@@ -28,18 +29,25 @@ function createEnemy(x, y) {
   return enemy;
 }
 
-exports.spawnEnemies = function() {
+exports.spawnEnemies = function(lobby) {
+  enemyList = lobby.enemyList;
+  enemyCount = lobby.enemyCount;
   if (enemyList.length < 3) {
     var x = getRandomInt(-200, 763);
     var y = getRandomInt(-200, 510);
-    enemyList.push(createEnemy(x, y));
-    enemyCount--;
+    var newEnemy = createEnemy(x, y);
+    enemyList.push(newEnemy);
+    lobby.enemyList.push(newEnemy);
+    lobby.enemyCount--;
   }
 }
 
 
 // This is janky aggro
-exports.moveEnemies = function() {
+exports.moveEnemies = function(lobby) {
+  enemyList = lobby.enemyList;
+  playerList = lobby.playerList;
+  enemyCount = lobby.enemyCount;
   for (enemy in enemyList) {
     e = enemyList[enemy];
     findAggroTarget(e);
@@ -59,28 +67,25 @@ function moveEnemy(enemy, targetPlayer) {
 
 function findAggroTarget(e) {
   var shortestDistance = undefined;
-  targetData = undefined;
+  targetPlayer = undefined;
   for (p in playerList) {
     player = playerList[p];
-    for (d in player) {
-      data = player[d];
-      if (data !== undefined && data.x !== undefined && data.y !== undefined) {
-        dist = distance(e.x, e.y, data.x, data.y);
+    if (player !== undefined && player.x !== undefined && player.y !== undefined) {
+      dist = distance(e.x, e.y, player.x, player.y);
 
-        // Find shortest path to player
-        if (shortestDistance === undefined ) {
+      // Find shortest path to player
+      if (shortestDistance === undefined ) {
+        shortestDistance = dist;
+        targetPlayer = player;
+      } else {
+        if (dist < shortestDistance) {
           shortestDistance = dist;
-          targetData = data;
-        } else {
-          if (dist < shortestDistance) {
-            shortestDistance = dist;
-            targetData = data;
-          }
+          targetPlayer = player;
         }
       }
     }
   }
-  moveEnemy(e, targetData);
+  moveEnemy(e, targetPlayer);
 }
 
 function checkEnemyCollision(enemy) {

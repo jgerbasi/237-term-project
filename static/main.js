@@ -22,8 +22,8 @@ $(document).ready(function() {
   var players = {};
   var player = new Object();
   player.name = username;
-  player.x = undefined;
-  player.y = undefined;
+  player.x = 0;
+  player.y = 0;
   player.alive = true;
   player.ready = false;
   player.health = 5;
@@ -56,7 +56,7 @@ $(document).ready(function() {
   function endGame() {
     $('#gameOverlay').hide();
     $('#gamePage').hide();
-    $('#homeLobby').show();
+    $('#gameLobby').show();
   }
 
   function startGame() {
@@ -64,7 +64,7 @@ $(document).ready(function() {
     $('#homeLobby').hide();
     $('#gameLobby').hide();
     $('#loadingScreen').show();
-    socket.emit('readyToPlay');
+    socket.emit('readyToPlay', {lobby: window.lobby});
   }
 
   function joinLobby() {

@@ -58,7 +58,6 @@ var SSTICK = (function () {
     SScanvas.addEventListener("touchmove", function (e) {
       e.preventDefault();
       var stouch = e.targetTouches[0];
-      //sStick.onlyLimit = true;
       if(sStick.active) {
         sStick.setInputXY(stouch.pageX - (window.innerWidth - SSWIDTH), stouch.pageY - (window.innerHeight - SSHEIGHT));
       }

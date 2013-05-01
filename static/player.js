@@ -61,7 +61,6 @@ exports.onKeyDown = function(){
 }
 
 exports.doDraw = function(players){
-  // ctx.clearRect(0,0,canvas.width,canvas.height);
   ctx.fillStyle = "black";
   ctx.fillRect(0,0,CANVASWIDTH,CANVASHEIGHT);
   ctx.drawImage(bgImg, 0, 0, 400, 300, bgX, bgY, CANVASWIDTH+BUFFER, CANVASHEIGHT+BUFFER);

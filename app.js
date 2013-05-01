@@ -103,7 +103,6 @@ mongoExpressAuth.init({
         collectionName: 'accounts'
     }
 }, function(){
-    console.log('mongo ready!');
     app.listen(3000);
 });
 

@@ -15,9 +15,7 @@ $(document).ready(function() {
 
   socket.on("status", function(data) {
     if (data.success) {
-      console.log("Message successfully sent");
     } else {
-      console.log("Message failed to send");
     }
   });
 });

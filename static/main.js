@@ -55,7 +55,6 @@ $(document).ready(function() {
   }
 
   function updateLobbyPlayerList(players) {
-    console.log(players);
     $("#lobbyPlayers").empty();
     for (id in players) {
       player = players[id];
@@ -84,9 +83,7 @@ $(document).ready(function() {
 
   function startGame() {
     window.currentState = window.STATES.READY_CHECK;
-    // $('#homeLobby').hide();
-    // $('#gameLobby').hide();
-    // $('#loadingScreen').show();
+
     socket.emit('readyToPlay', {lobby: window.lobby});
   }
 
@@ -199,7 +196,6 @@ $(document).ready(function() {
 
   socket.on('updateLobbyName', function(data) {
     window.lobby = data.lobby;
-    console.log(data.players);
     updateLobbyPlayerList(data.players);
   });
 

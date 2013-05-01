@@ -6,7 +6,6 @@ var BULLET = (function(){
     var bgDY = PLAYER.bgOffsetY();
     for (var i = 0; i < bullets.length; i++) {
       bullet = bullets[i];
-      // console.log(bullets[i].x);
       ctx.fillStyle = "blue";
       ctx.fillRect((bullet.x + bgDX), (bullet.y + bgDY), bullet.height, bullet.width);
     }

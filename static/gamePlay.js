@@ -46,17 +46,9 @@ var GAMEPLAY = (function() {
       $('#gun3').css("border-color:#fff");
       gun = 2;
     });
-
-    // $('#gun3').click(function(){
-    //   $('#gun1').css("border-color:#fff");
-    //   $('#gun2').css("border-color:#fff");
-    //   $('#gun3').css("border-color:#000");
-    //   alert("u clicked 3");
-    // });
   });
 
   socket.on('sendStartGameToClient', function() {
-    // $('#loadingScreen').hide();
     $('#gameLobby').hide();
     $('#gamePage').show();
     window.state = window.STATES.IN_GAME;
@@ -127,7 +119,6 @@ var GAMEPLAY = (function() {
       canvas.width  = 568;
       canvas.height = 320;
       canvas.style.width = '100%';
-      //canvas.style.left = "10%";
       canvas.style.height = '100%';
       canvas.style.zIndex   = 8;
       canvas.style.position = "absolute";

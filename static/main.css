@@ -145,10 +145,10 @@ h2 {
   position: fixed;
   z-index: 999;
   top: 0px;
-  right: 40%;
+  right: 5%;
   display: none;
   height: 100px;
-  font-size: 60px;
+  font-size: 54px;
   text-align: center;
 }
 

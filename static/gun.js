@@ -27,8 +27,6 @@ var GUN = (function(){
     dx = sDeltaXY.dX;
     dy = sDeltaXY.dY;
     angle = Math.atan2(dy,dx) * 180/Math.PI;
-    console.log("angle " + angle);
-          // console.log("dx: " + dx + "dy: " + dy);
   }
 
   exports.drawGun = function(gun) {

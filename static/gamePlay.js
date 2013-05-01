@@ -12,7 +12,6 @@ var GAMEPLAY = (function() {
   $(document).ready(function() {
 
     $('#callOut').click(function(){
-      console.log("clicked on callout");
       $('#help').show();
       $('#run').show();
       $('#callOut').hide();
@@ -63,7 +62,6 @@ var GAMEPLAY = (function() {
   });
 
   socket.on('sendStartRoundToClient', function() {
-    console.log("sent start round to client");
     window.state = window.STATES.IN_ROUND;
     var overlay = $('#gameOverlay');
     overlay.hide();
@@ -88,8 +86,6 @@ var GAMEPLAY = (function() {
 
   socket.on('sendBulletLocationsToClient', function(data) {
     bullets = JSON.parse(data.bulletList);
-    console.log("bullet list client => ", bullets);
-    console.log("lobby cleint name => ", window.lobby);
   });
 
   socket.on('sendHelpCalloutToClient', function() {

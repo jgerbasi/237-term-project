@@ -96,6 +96,8 @@ var GAMEPLAY = (function() {
 
   socket.on('sendBulletLocationsToClient', function(data) {
     bullets = JSON.parse(data.bulletList);
+    console.log("bullet list client => ", bullets);
+    console.log("lobby cleint name => ", window.lobby);
   });
 
   socket.on('sendHelpCalloutToClient', function() {

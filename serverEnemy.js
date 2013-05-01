@@ -49,7 +49,7 @@ SpeedEnemy.prototype.constructor = SpeedEnemy;
 
 function animate(enemy){
   if (enemy.direction === "right"){
-    console.log("right:" + enemy.spriteIndex);
+    // console.log("right:" + enemy.spriteIndex);
     if(enemy.spriteIndex === 1){
       enemy.spriteX = 2;
       enemy.spriteY = 32;
@@ -65,7 +65,7 @@ function animate(enemy){
   }
 
   if (enemy.direction === "down"){
-        console.log("down:" + enemy.spriteIndex);
+        // console.log("down:" + enemy.spriteIndex);
 
     if(enemy.spriteIndex === 1){
       enemy.spriteX = 2;
@@ -83,7 +83,7 @@ function animate(enemy){
   }
 
   if (enemy.direction === "left"){
-        console.log("left:" + enemy.spriteIndex);
+        // console.log("left:" + enemy.spriteIndex);
 
     if(enemy.spriteIndex === 1){
       enemy.spriteX = 7;
@@ -100,7 +100,7 @@ function animate(enemy){
   }
 
   if (enemy.direction === "up"){
-        console.log("up:" + enemy.spriteIndex);
+        // console.log("up:" + enemy.spriteIndex);
 
     if(enemy.spriteIndex === 1){
       enemy.spriteX = 6;

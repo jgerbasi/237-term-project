@@ -1,4 +1,4 @@
-var bullets = [];
+// var bullets = [];
 var enemyList = [];
 
 function checkCollision(bullet) {
@@ -53,6 +53,8 @@ exports.createBullet = function(player, dx, dy, lobby) {
   bullet.height = 5;
   bullet.width = 5;
   lobby.bulletList.push(bullet);
-  bullets.push(bullet);
+  console.log("lobby => ", lobby.name);
+  console.log("bulletListLENGTH => ", lobby.bulletList.length);
+  // bullets.push(bullet);
 }
 }

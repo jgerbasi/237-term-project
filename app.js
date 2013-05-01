@@ -52,10 +52,45 @@ function closeDb(){
 // open hordeStats colleciton
 var hordeStats = null;
 
-openDb(function(coll) {
-   hordeStats = coll; 
-});
+openDb(onDbOpen);
 
+function onDbOpen(collection) {
+    writeStats(collection, onWriteStats);
+    hordeStats = collection;
+}
+
+function onWriteStats(err){
+    if (err)
+        throw err;
+    console.log('documents inserted!');
+    closeDb();
+}
+
+function writeStats(collection, done){
+    var doc1 = { n: 1 };
+    collection.insert(doc1, function(err){
+        if (err){
+            done(err);
+            return;
+        }
+        var doc2 = { n: 2 };
+        collection.insert(doc2, function(err){
+            if (err){
+                 done(err);
+                 return;
+            }
+            var doc3 = { n: 3 };
+            collection.insert(doc3, function(err){
+                if (err){
+                    done(err);
+                    return;
+                }
+                var doc4 = { n: 4 };
+                collection.insert(doc4, done);
+            });
+        });
+    });
+}
 
 
 //===========================
